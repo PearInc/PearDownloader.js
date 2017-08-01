@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">一个支持多协议、多源、混合P2P-CDN的流媒体播放器</h4>
+<h4 align="center">一个支持多协议、多源、混合P2P-CDN的下载器</h4>
 <br>
 
 **PearDownloader（梨享下载器）** 是完全用JavaScript写的开源文件下载器，

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/download.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -47,7 +46,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="download.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="download.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/download.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1608">
@@ -90,20 +89,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="438">
-                <caret line="86" column="3" lean-forward="false" selection-start-line="86" selection-start-column="3" selection-end-line="86" selection-end-column="3" />
+              <first_editor relative-caret-position="176">
+                <caret line="8" column="40" lean-forward="true" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
                 <folding>
-                  <marker date="1501592708000" expanded="true" signature="1283:1419" ph="..." />
-                  <marker date="1501592708000" expanded="true" signature="1285:1345" ph="/** 第一个参数为video标签的id或class ...*/" />
-                  <marker date="1501592708000" expanded="true" signature="1719:1759" ph="{&quot;user&quot;: 'demo'...}" />
-                  <marker date="1501592708000" expanded="true" signature="1787:2011" ph="{...}" />
-                  <marker date="1501592708000" expanded="true" signature="1838:1972" ph="{...}" />
-                  <marker date="1501592708000" expanded="true" signature="1909:1966" ph="{...}" />
-                  <marker date="1501592708000" expanded="true" signature="1978:2009" ph="{...}" />
+                  <marker date="1501593189000" expanded="true" signature="1280:1416" ph="..." />
+                  <marker date="1501593189000" expanded="true" signature="1282:1342" ph="/** 第一个参数为video标签的id或class ...*/" />
+                  <marker date="1501593189000" expanded="true" signature="1716:1756" ph="{&quot;user&quot;: 'demo'...}" />
+                  <marker date="1501593189000" expanded="true" signature="1784:2008" ph="{...}" />
+                  <marker date="1501593189000" expanded="true" signature="1835:1969" ph="{...}" />
+                  <marker date="1501593189000" expanded="true" signature="1906:1963" ph="{...}" />
+                  <marker date="1501593189000" expanded="true" signature="1975:2006" ph="{...}" />
                 </folding>
               </first_editor>
               <second_editor />
@@ -415,15 +414,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1501554696707</updated>
-      <workItem from="1501554700157" duration="11006000" />
+      <workItem from="1501554700157" duration="11444000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11006000" />
+    <option name="totallyTimeSpent" value="11444000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="2048" height="1031" extended-state="1" />
+    <frame x="0" y="23" width="2048" height="1031" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -541,25 +540,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="438">
-            <caret line="86" column="3" lean-forward="false" selection-start-line="86" selection-start-column="3" selection-end-line="86" selection-end-column="3" />
-            <folding>
-              <marker date="1501592708000" expanded="true" signature="1283:1419" ph="..." />
-              <marker date="1501592708000" expanded="true" signature="1285:1345" ph="/** 第一个参数为video标签的id或class ...*/" />
-              <marker date="1501592708000" expanded="true" signature="1719:1759" ph="{&quot;user&quot;: 'demo'...}" />
-              <marker date="1501592708000" expanded="true" signature="1787:2011" ph="{...}" />
-              <marker date="1501592708000" expanded="true" signature="1838:1972" ph="{...}" />
-              <marker date="1501592708000" expanded="true" signature="1909:1966" ph="{...}" />
-              <marker date="1501592708000" expanded="true" signature="1978:2009" ph="{...}" />
-            </folding>
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/download.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1608">
@@ -570,6 +550,25 @@
             <marker date="1501577199000" expanded="true" signature="3425:3655" ph="..." />
             <marker date="1501577199000" expanded="false" signature="3591:3615" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="176">
+            <caret line="8" column="40" lean-forward="true" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
+            <folding>
+              <marker date="1501593189000" expanded="true" signature="1280:1416" ph="..." />
+              <marker date="1501593189000" expanded="true" signature="1282:1342" ph="/** 第一个参数为video标签的id或class ...*/" />
+              <marker date="1501593189000" expanded="true" signature="1716:1756" ph="{&quot;user&quot;: 'demo'...}" />
+              <marker date="1501593189000" expanded="true" signature="1784:2008" ph="{...}" />
+              <marker date="1501593189000" expanded="true" signature="1835:1969" ph="{...}" />
+              <marker date="1501593189000" expanded="true" signature="1906:1963" ph="{...}" />
+              <marker date="1501593189000" expanded="true" signature="1975:2006" ph="{...}" />
+            </folding>
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
