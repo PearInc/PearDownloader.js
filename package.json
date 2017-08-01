@@ -1,0 +1,46 @@
+{
+  "name": "peardownloader",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "babili": "^0.1.4",
+    "blueimp-md5": "^2.7.0",
+    "buffer": "^5.0.6",
+    "end-of-stream": "^1.4.0",
+    "events": "^1.1.1",
+    "fs-chunk-store": "^1.6.5",
+    "inherits": "^2.0.3",
+    "jquery": "^3.2.1",
+    "mp4box": "^0.3.15",
+    "readable-stream": "^2.2.9",
+    "render-media": "^2.10.0",
+    "webtorrent": "^0.98.16"
+  },
+  "devDependencies": {
+    "copy": "^0.1.2",
+    "del": "^2.0.2"
+  },
+  "scripts": {
+    "test": "",
+    "build": "browserify index.js -s PearDownloader > pear-downloader.js",
+    "uglify": "browserify -s PearDownloader -e ./ | babili > ./dist/pear-downloader.min.js"
+  },
+  "author": "Xie Ting Pear Limited",
+  "license": "ISC",
+  "homepage": "https://pear.hk",
+  "keywords": [
+    "WebRTC",
+    "video",
+    "player",
+    "p2p",
+    "peer-to-peer",
+    "peers",
+    "streaming",
+    "multiple source",
+    "torrent",
+    "web torrent",
+    "webrtc data channel",
+    "webtorrent"
+  ]
+}
