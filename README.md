@@ -61,8 +61,8 @@ var downloader = new PearDownloader('/tv/pear001.mp4', token, opts);
 恭喜您，您的播放器已经具备P2P能力了，而且无须任何插件！
 
 ### 获取token
-在使用PearPlayer之前，需要获取token，通过调用提供的API接口（/v1/customer/login）并传入用户名和密码，
-这里已经为访客提供了测试帐号（用户名：test　密码：123456），获取token的示例代码如下：
+在使用PearDownloader之前，需要获取token，通过调用提供的API接口（/v1/customer/login）并传入用户名和密码，
+这里已经为访客提供了测试帐号（用户名：demo　密码：demo），获取token的示例代码如下：
 ```js
 var xhr = new XMLHttpRequest();
 xhr.open("POST", 'https://api.webrtc.win:6601/v1/customer/login');
