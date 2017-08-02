@@ -1,6 +1,6 @@
 # Get Started with PearPlayer
 
-**PearPlayer** is a multi-source and multi-protocol P2P streaming player that works in the **browser**. It's easy
+**PearDownloader** is a multi-source and multi-protocol P2P streaming downloader that works in the **browser**. It's easy
 to get started!
 
 ## Import
@@ -13,27 +13,27 @@ script on your page and use `require()`:
 ```
 
 ### Browserify
-To install PearPlayer for use in the browser with `require('PearPlayer')`, run:
+To install PearPlayer for use in the browser with `require('PearDownloader')`, run:
 ```bash
-npm install pearplayer --save
+npm install peardownloader --save
 ```
 Then you can require PearPlayer like this:
 ```js
-var PearPlayer = require('PearPlayer');
+var PearDownloader = require('PearDownloader');
 ```
 
 ## Quick Examples
 
-### Hook the video and play
+### input url and download
 
 ```js
-var PearPlayer = require('PearPlayer');
+var PearDownloader = require('PearDownloader');
 var xhr = new XMLHttpRequest();
 //CP需要先登录来获取token
 xhr.open("POST", 'https://api.webrtc.win:6601/v1/customer/login');
 var data = JSON.stringify({
-    user:'test',
-    password:'123456'
+    user:'demo',
+    password:'demo'
 });
 xhr.onload = function () {
     if (this.status >= 200 && this.status < 300) {
@@ -42,10 +42,8 @@ xhr.onload = function () {
         if (!!res.token){
             console.log('token:' +res.token);
 
-            var player = new PearPlayer('#pearvideo', res.token, {//第一个参数为video标签的id或class
-                type: 'mp4',                           //播放视频的类型，目前只能是mp4
+            var downloader = new PearDownloader(url, res.token, {//第一个参数为video标签的id或class
                 algorithm: 'firstaid',                 //核心算法,默认firstaid
-                autoplay: true,                        //是否自动播发视频，默认true
                 useMonitor: true                       //是否开启monitor，会稍微影响性能，默认true
             });
         }
@@ -61,17 +59,15 @@ There is a complete example in [examples/test.html](examples/download.html)。
 ### Listen to PearPlayer events
 
 ```js
-var player = new PearPlayer('#pearvideo', token, {      //第一个参数为video标签的id或class
-                    type: 'mp4',                 //播放视频的类型,目前只能是mp4
-                    src: 'https://qq.webrtc.win/tv/pear001.mp4',  //视频播放的src
+var downloader = new PearDownloader(url, token, {      //第一个参数为url
                     useMonitor: true             //是否开启monitor,会稍微影响性能,默认false
                 });
 
-player.on('exception', onException);
-player.on('begin', onBegin);
-player.on('progress', onProgress);
-player.on('buffersources', onBufferSources);               //s: server   n: node  d: data channel  b: browser
-player.on('done', onDone);
+downloader.on('exception', onException);
+downloader.on('begin', onBegin);
+downloader.on('progress', onProgress);
+downloader.on('buffersources', onBufferSources);               //s: server   n: node  d: data channel  b: browser
+downloader.on('done', onDone);
                 
 function onBegin(fileLength, chunks) {
     console.log('start downloading buffer by first aid, file length is:' + fileLength + ' total chunks:' + chunks);
@@ -100,7 +96,7 @@ function onBufferSources(bufferSources) {    //s: server   n: node  d: data chan
 
 ## Build
 
-PearPlayer works great with [browserify](http://browserify.org/), which lets
+PearDownloader works great with [browserify](http://browserify.org/), which lets
 you use [node.js](http://nodejs.org/) style `require()` to organize your browser
 code, and load packages installed by [npm](https://npmjs.org/).
 
@@ -117,8 +113,7 @@ npm run build
 ```
 To get a compressed bundle,use:
 ```bash
-npm run build
-npm run gulp
+npm run uglify
 ```
 
 ## More Documentation
