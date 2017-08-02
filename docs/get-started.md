@@ -54,7 +54,7 @@ xhr.onload = function () {
 xhr.send(data);
 ```
 
-There is a complete example in [examples/download.html](examples/download.html)。
+There is a complete example in [examples/download.html](../examples/download.html)。
 
 ### Listen to PearDownloader events
 
