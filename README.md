@@ -46,7 +46,7 @@ Demo演示地址：https://qq.webrtc.win/downloader
 ```
 或者使用CDN：
 ```html
-
+<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest/dist/pear-downloader.min.js"></script>
 ```
 假设要下载（/tv/pear001.mp4）这个视频，只需要如下几行代码：
 ```html
