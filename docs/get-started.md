@@ -1,4 +1,4 @@
-# Get Started with PearPlayer
+# Get Started with PearDownloader
 
 **PearDownloader** is a multi-source and multi-protocol P2P streaming downloader that works in the **browser**. It's easy
 to get started!
@@ -6,8 +6,8 @@ to get started!
 ## Import
 ### Script
 Simply include the
-([`pear-downloader.min.js`](dest/pear-downloader.min.js))
-script on your page and use `require()`:
+([`pear-downloader.min.js`](dist/pear-downloader.min.js))
+script on your page:
 ```html
 <script src="pear-downloader.min.js"></script>
 ```
@@ -17,7 +17,7 @@ To install PearPlayer for use in the browser with `require('PearDownloader')`, r
 ```bash
 npm install peardownloader --save
 ```
-Then you can require PearPlayer like this:
+Then you can require PearDownloader like this:
 ```js
 var PearDownloader = require('PearDownloader');
 ```
@@ -54,9 +54,9 @@ xhr.onload = function () {
 xhr.send(data);
 ```
 
-There is a complete example in [examples/test.html](examples/download.html)。
+There is a complete example in [examples/download.html](examples/download.html)。
 
-### Listen to PearPlayer events
+### Listen to PearDownloader events
 
 ```js
 var downloader = new PearDownloader(url, token, {      //第一个参数为url
@@ -118,5 +118,5 @@ npm run uglify
 
 ## More Documentation
 
-Check out the [API Documentation](https://github.com/PearInc/PearPlayer.js/blob/master/docs/api.md)
-and [FAQ](https://github.com/PearInc/PearPlayer.js/blob/master/docs/faq.md) for more details.
+Check out the [API Documentation](https://github.com/PearInc/PearDownloader.js/blob/master/docs/api.md)
+and [FAQ](https://github.com/PearInc/PearDownloader.js/blob/master/docs/faq.md) for more details.
