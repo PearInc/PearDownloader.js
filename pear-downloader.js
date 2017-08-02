@@ -45,7 +45,7 @@ function PearDownloader(urlstr, token, opts) {
     self.useTorrent = (opts.useTorrent === false)? false : true;
     self.magnetURI = opts.magnetURI || undefined;
     self.trackers = opts.trackers && Array.isArray(opts.trackers) && opts.trackers.length > 0 ? opts.trackers : null;
-    self.autoPlay = (opts.autoplay === false)? false : true;
+    // self.autoPlay = (opts.autoplay === false)? false : true;
     self.dataChannels = opts.dataChannels || 2;
     self.peerId = getPeerId();
     self.isPlaying = false;
@@ -55,6 +55,7 @@ function PearDownloader(urlstr, token, opts) {
     self.dispatcher = null;
     self.JDMap = {};                           //根据dc的peer_id来获取jd的map
     self.nodeSet = new Set();                  //保存node的set
+    self.fileName = self.urlObj.path;
     self.file = null;
     self.dispatcherConfig = {
 
@@ -89,8 +90,8 @@ PearDownloader.prototype._start = function () {
             //     self._pearSignalHandshake();
             // }
         } else {
-            // self._fallBack();
-            console.log('TODO!')
+            self._fallBack();
+            // console.log('TODO!')
         }
     });
 };
@@ -153,9 +154,6 @@ PearDownloader.prototype._getNodes = function (token, cb) {
                     }
                 }
                 console.log('allNodes:'+JSON.stringify(allNodes));
-                // allNodes.push({uri: 'https://qq.webrtc.win/tv/pear001.mp4', type: 'node'});           //examples
-                // allNodes.push({uri: 'https://qq.webrtc.win/tv/pear001.mp4', type: 'node'});           //examples
-                // allNodes.push({uri: 'https://qq.webrtc.win/tv/pear001.mp4', type: 'node'});           //examples
                 nodeFilter(allNodes, function (nodes, fileLength) {            //筛选出可用的节点,以及回调文件大小
 
                     var length = nodes.length;
@@ -190,39 +188,12 @@ PearDownloader.prototype._getNodes = function (token, cb) {
     xhr.send();
 };
 
-// PearDownloader.prototype._fallBack = function (url) {
-//     var self = this;
-//
-//     if (this.isPlaying) return;
-//     if (url) {
-//         this.video.src = url;
-//     } else {
-//         this.video.src = this.src;
-//     }
-//     if (this.autoPlay) {
-//         this.video.play();
-//     }
-//
-//     // nodeFilter([{uri: this.src, type: 'server'}], function (nodes, fileLength) {            //筛选出可用的节点,以及回调文件大小
-//     //
-//     //     var length = nodes.length;
-//     //     console.log('nodes:'+JSON.stringify(nodes));
-//     //
-//     //     if (length) {
-//     //         self.fileLength = fileLength;
-//     //         console.log('nodeFilter fileLength:'+fileLength);
-//     //         self._startPlaying(nodes);
-//     //         if (self.useDataChannel) {
-//     //             self._pearSignalHandshake();
-//     //         }
-//     //     } else {
-//     //         // self._fallBack();
-//     //         self.emit('exception', {errCode: 2, errMsg: 'Access video source fail'});
-//     //     }
-//     // });
-//
-//     this.isPlaying = true;
-// };
+PearDownloader.prototype._fallBack = function () {
+    var self = this;
+
+    self.emit('exception', {errCode: 2, errMsg: 'there is no node'});
+
+};
 
 PearDownloader.prototype._pearSignalHandshake = function () {
     var self = this;
@@ -539,8 +510,6 @@ function Dispatcher(config) {
     self._selections = [];                           //下载队列
     self._store = FSChunkStore;
     self.destroyed = false;
-    // self.elem = null;                          //video标签的id
-    // self.video = null;
     self.path = '';
     self._bufferedPos = 0;                     //当前所在的缓冲区间
     self._lastSlideTime = -5;                  //上次滑动窗口的时间
@@ -552,7 +521,6 @@ function Dispatcher(config) {
     //firstaid参数自适应
     self._windowLength = 5;
     self.downloaders = [];
-    self.bitrate = 0;                         //码率
 
     //webtorrent
     self.torrent = null;
@@ -585,65 +553,6 @@ Dispatcher.prototype._init = function () {
     } else {
         self.slide = this._throttle(this._slide, this);
     }
-
-    //初始化video
-    // self.video = document.querySelector(self.elem);
-    // self.video.addEventListener('loadedmetadata', function () {
-    //
-    //     console.info('loadedmetadata duration:' + self.video.duration);
-    //     self.bitrate = Math.ceil(self.fileSize/self.video.duration);
-    //     self._windowLength = Math.ceil(self.bitrate * 10 / self.pieceLength);       //根据码率和时间间隔来计算窗口长度
-    //     if (self._windowLength < 3) {
-    //         self._windowLength = 3;
-    //     } else if (self._windowLength > 10) {
-    //         self._windowLength = 10;
-    //     }
-    //     self.emit('loadedmetadata');
-    // });
-    // self.video.addEventListener('seeked',function () {
-    //     console.info('video seeked');
-    //
-    //     var currentTime = Math.floor(self.video.currentTime);
-    //     for (var index=0;index<self.video.buffered.length;++index) {
-    //         if (currentTime >= Math.floor(self.video.buffered.start(index))) {
-    //
-    //             self._bufferedPos = index;
-    //         }
-    //         // self.bufferedPos = self.video.buffered.length-1;
-    //     }
-    //     // self._slide();
-    //
-    // });
-    // self.video.addEventListener('timeupdate', function () {
-    //
-    //     if (self._shouldFetchNextSegment()){
-    //         self.slide();
-    //         // self._throttle(self.slide,self);
-    //         // self._update();
-    //         self._lastSlideTime = self.video.currentTime;
-    //     }
-    // });
-    // self.video.addEventListener('waiting', function () {
-    //
-    //     console.info('waiting for buffer');
-    //     // self.requestMoreNodes();
-    //     self.sortDownloaders();                              //根据平均速度和类型算出的权重从大到小排列
-    //     for (var j=0;j<self.downloaders.length;++j) {
-    //         console.log('downloaders type:' + self.downloaders[j].type + ' mean speed:' +self.downloaders[j].meanSpeed);
-    //     }
-    //     if (self.downloaders.length === 1) {               //如果只有一个downloader,则改为串行下载
-    //         self.downloaders[0].isAsync = false;
-    //     }
-    //     self.bufferingCount ++;
-    //     console.info('bufferingCount:' + self.bufferingCount);
-    //     if (self.bufferingCount >= 5) {
-    //         self.startFrom(0, false);
-    //         self.autoSlide();
-    //         self.slide = noop;
-    //         self.bufferingCount = Number.MIN_VALUE;
-    //     }
-    //
-    // });
 
     //初始化buffersources
     for (var k=0;k<self.bufferSources;++k) {
@@ -1097,17 +1006,6 @@ Dispatcher.prototype.autoSlide = function () {
         }
     }, self._colddown*1000);
 };
-
-// Dispatcher.prototype._shouldFetchNextSegment = function() {
-//
-//     // if (self.bufferedPos === -1) return true;
-//     try {
-//         return (this.video.buffered.end(this._bufferedPos) - this.video.currentTime) < this._slideInterval;
-//     } catch (e) {
-//         console.warn('_shouldFetchNextSegment exception');
-//         return true;
-//     }
-// };
 
 Dispatcher.prototype._clearAllQueues = function () {
 

@@ -121,9 +121,7 @@
             link;
         //第一个参数为video标签的id或class
         var downloader = new PearDownloader(url, token, {
-            type: 'mp4',
             algorithm: 'firstaid',      //核心算法,默认firstaid
-            autoplay: true,             //是否自动播发视频,默认true
             interval: 5000,             //滑动窗口的时间间隔,单位毫秒,默认10s
             auto: false,                //true为连续下载buffer,false则是只有当前播放时间与已缓冲时间小于slideInterval时下载buffer,默认false
             slideInterval: 20,          //当前播放时间与已缓冲时间小于这个数值时触发窗口滑动,单位秒,默认20s
@@ -134,13 +132,12 @@
 //                    trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true
             useMonitor: true             //是否开启monitor,会稍微影响性能,默认false
         });
-
-        addToTable(1, 'pear.mp4');
+        window.downloader = downloader;
+        addToTable(1, downloader.fileName);
         progress = cpm.table.querySelectorAll('.progress-bar');
         link = cpm.table.querySelectorAll('tr td:nth-child(4) a');
-
-
-//        downloader.on('exception', onException);               //播放器出现异常时的回调函数
+        window.link = link;
+        downloader.on('exception', onException);               //下载器出现异常时的回调函数
 //        downloader.on('begin', onBegin);　　　　　　　　　　　　　 //开始下载时触发
         downloader.on('progress', function (downloaded) {
             console.log('Progress: ' + (downloaded * 100).toFixed(1) + '%');
@@ -154,9 +151,8 @@
         downloader.on('done', function () {
             downloader.file.getBlobURL(function (error, url) {
                 console.log('getBlobURL:'+url);
-                link[0].href = url;
-//                link[0].download = downloader.file.name;
-                link[0].download = 'pear.mp4';
+                link[0].href = url;//"https://qq.webrtc.win/tv/pear001.mp4"
+                link[0].download = downloader.fileName;
                 link[0].innerHTML = 'Download';
                 link[0].classList.remove('sr-only');
             })
@@ -171,6 +167,25 @@
         clientAdd(cpm.inputURL.value);
     });
 
+
+    function onException(exception) {
+        var errCode = exception.errCode;
+        switch (errCode) {
+            case 1:
+                console.log(exception.errMsg);
+                break;
+            case 2:
+                console.log(exception.errMsg);
+                link[0].href = "https://qq.webrtc.win/tv/pear001.mp4";//"https://qq.webrtc.win/tv/pear001.mp4"
+                link[0].download = downloader.fileName;
+                link[0].innerHTML = 'Download';
+                link[0].classList.remove('sr-only');
+                break;
+        }
+    }
+
+
+    
 </script>
 </body>
 
