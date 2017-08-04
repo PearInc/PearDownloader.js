@@ -149,6 +149,7 @@
 //        downloader.on('fograte', onWebRTCRate);　　　　　　　　　 //fog节点的下载比率（下载的字节数除以总的字节数）
 //        downloader.on('buffersources', onBufferSources);       //buffer map，记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
         downloader.on('done', function () {
+            $('.help-block').innerHTML = 'Downloaded!'
             downloader.file.getBlobURL(function (error, url) {
                 console.log('getBlobURL:'+url);
                 link[0].href = url;//"https://qq.webrtc.win/tv/pear001.mp4"
