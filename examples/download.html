@@ -147,7 +147,7 @@
             progress[0].style.width = percent + "%";
         });                                                   //回调目前的下载进度
 //        downloader.on('fograte', onWebRTCRate);　　　　　　　　　 //fog节点的下载比率（下载的字节数除以总的字节数）
-//        downloader.on('buffersources', onBufferSources);       //buffer map，记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
+        downloader.on('buffersources', onBufferSources);       //buffer map，记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
         downloader.on('done', function () {
             $('.help-block').innerHTML = 'Downloaded!'
             downloader.file.getBlobURL(function (error, url) {
@@ -185,7 +185,9 @@
         }
     }
 
-
+    function onBufferSources(bufferSources) {            //s: server   n: node  d: data channel  b: browser
+        console.log('Current Buffer Sources:' + bufferSources);
+    }
     
 </script>
 </body>

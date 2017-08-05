@@ -85,9 +85,9 @@ PearDownloader.prototype._start = function () {
         // nodes = [{uri: 'https://000c29d049f4.webrtc.win:64892/qq.webrtc.win/free/planet.mp4', type: 'node'}]; //test
         if (nodes) {
             self._startPlaying(nodes);
-            // if (self.useDataChannel) {
-            //     self._pearSignalHandshake();
-            // }
+            if (self.useDataChannel) {
+                self._pearSignalHandshake();
+            }
         } else {
             self._fallBack();
             // console.log('TODO!')
@@ -375,7 +375,7 @@ PearDownloader.prototype._startPlaying = function (nodes) {
                     d.addNode(hd);
                 }
             } else {
-
+                d.noMoreNodes = true;
             }
         });
 
