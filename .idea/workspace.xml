@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/backup.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/pear-downloader.min.js" afterPath="$PROJECT_DIR$/dist/pear-downloader.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/api.md" afterPath="$PROJECT_DIR$/docs/api.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/get-started.md" afterPath="$PROJECT_DIR$/docs/get-started.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/download.html" afterPath="$PROJECT_DIR$/examples/download.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/dispatcher.js" afterPath="$PROJECT_DIR$/lib/dispatcher.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/webrtc-downloader-bin.js" afterPath="$PROJECT_DIR$/lib/webrtc-downloader-bin.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pear-downloader.js" afterPath="$PROJECT_DIR$/pear-downloader.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -28,7 +22,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="api.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="api.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/api.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
@@ -50,11 +44,11 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="-380">
-                <caret line="56" column="55" lean-forward="false" selection-start-line="56" selection-start-column="55" selection-end-line="56" selection-end-column="55" />
+              <first_editor relative-caret-position="-145">
+                <caret line="59" column="8" lean-forward="false" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
                 <folding>
-                  <marker date="1502180195000" expanded="true" signature="1338:1450" ph="..." />
-                  <marker date="1502180195000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
+                  <marker date="1502180683000" expanded="true" signature="1338:1450" ph="..." />
+                  <marker date="1502180683000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
                 </folding>
               </first_editor>
               <second_editor />
@@ -87,8 +81,8 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="92" column="29" lean-forward="true" selection-start-line="92" selection-start-column="29" selection-end-line="92" selection-end-column="29" />
+            <state relative-caret-position="230">
+              <caret line="136" column="35" lean-forward="false" selection-start-line="136" selection-start-column="35" selection-end-line="136" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -104,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dispatcher.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dispatcher.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/dispatcher.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2640">
-              <caret line="120" column="8" lean-forward="false" selection-start-line="120" selection-start-column="8" selection-end-line="120" selection-end-column="8" />
+            <state relative-caret-position="252">
+              <caret line="265" column="31" lean-forward="false" selection-start-line="265" selection-start-column="31" selection-end-line="265" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -137,13 +131,13 @@
       <file leaf-file-name="download.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/download.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="73">
-              <caret line="106" column="49" lean-forward="false" selection-start-line="106" selection-start-column="49" selection-end-line="106" selection-end-column="49" />
+            <state relative-caret-position="-202">
+              <caret line="6" column="15" lean-forward="false" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="15" />
               <folding>
-                <marker date="1502180094000" expanded="true" signature="2951:3541" ph="..." />
-                <marker date="1502180094000" expanded="true" signature="3108:3411" ph="..." />
-                <marker date="1502180094000" expanded="true" signature="3155:3385" ph="..." />
-                <marker date="1502180094000" expanded="false" signature="3321:3345" ph="..." />
+                <marker date="1502181665000" expanded="true" signature="2766:3356" ph="..." />
+                <marker date="1502181665000" expanded="true" signature="2923:3226" ph="..." />
+                <marker date="1502181665000" expanded="true" signature="2970:3200" ph="..." />
+                <marker date="1502181665000" expanded="false" signature="3136:3160" ph="..." />
               </folding>
             </state>
           </provider>
@@ -175,12 +169,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>checkd</find>
-      <find>update</find>
-      <find>autoSlide</find>
-      <find>windowo</find>
-      <find>windowoffset =</find>
-      <find>_fillWindow</find>
       <find>chunks</find>
       <find>_gcSelections</find>
       <find>auto</find>
@@ -205,6 +193,12 @@
       <find>request</find>
       <find>meanSpeed</find>
       <find>progress-bar</find>
+      <find>inputURL</find>
+      <find>windowlength</find>
+      <find>_startPlaying</find>
+      <find>self.fileLength</find>
+      <find>pear</find>
+      <find>done =</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -219,13 +213,13 @@
         <option value="$PROJECT_DIR$/lib/http-downloader.js" />
         <option value="$PROJECT_DIR$/../../PearPlayer源码.md" />
         <option value="$PROJECT_DIR$/lib/webrtc-downloader-bin.js" />
-        <option value="$PROJECT_DIR$/lib/dispatcher.js" />
         <option value="$PROJECT_DIR$/examples/backup.html" />
-        <option value="$PROJECT_DIR$/index.js" />
-        <option value="$PROJECT_DIR$/examples/download.html" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/docs/get-started.md" />
         <option value="$PROJECT_DIR$/docs/api.md" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/examples/download.html" />
+        <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/lib/dispatcher.js" />
       </list>
     </option>
   </component>
@@ -449,8 +443,8 @@
     </list>
     <recent_temporary>
       <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="npm.uglify" />
-        <item index="1" class="java.lang.String" itemvalue="npm.build" />
+        <item index="0" class="java.lang.String" itemvalue="npm.build" />
+        <item index="1" class="java.lang.String" itemvalue="npm.uglify" />
       </list>
     </recent_temporary>
   </component>
@@ -470,21 +464,20 @@
       <workItem from="1501809621287" duration="7393000" />
       <workItem from="1501899825939" duration="8216000" />
       <workItem from="1502070923812" duration="4415000" />
-      <workItem from="1502179794487" duration="447000" />
+      <workItem from="1502179794487" duration="3538000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39864000" />
+    <option name="totallyTimeSpent" value="42955000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="2048" height="1031" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="23" width="2048" height="1031" extended-state="0" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.531348" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -559,10 +552,10 @@
         <state relative-caret-position="4268">
           <caret line="194" column="7" lean-forward="true" selection-start-line="194" selection-start-column="7" selection-end-line="194" selection-end-column="7" />
           <folding>
-            <marker date="1502180094000" expanded="true" signature="2951:3541" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3108:3411" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3155:3385" ph="..." />
-            <marker date="1502180094000" expanded="false" signature="3321:3345" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2766:3356" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2923:3226" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2970:3200" ph="..." />
+            <marker date="1502181665000" expanded="false" signature="3136:3160" ph="..." />
           </folding>
         </state>
       </provider>
@@ -616,8 +609,8 @@
           <first_editor relative-caret-position="946">
             <caret line="43" column="53" lean-forward="false" selection-start-line="43" selection-start-column="53" selection-end-line="43" selection-end-column="53" />
             <folding>
-              <marker date="1502180195000" expanded="true" signature="1338:1450" ph="..." />
-              <marker date="1502180195000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
+              <marker date="1502180683000" expanded="true" signature="1338:1450" ph="..." />
+              <marker date="1502180683000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
             </folding>
           </first_editor>
           <second_editor />
@@ -645,10 +638,10 @@
         <state relative-caret-position="3322">
           <caret line="151" column="43" lean-forward="false" selection-start-line="151" selection-start-column="43" selection-end-line="151" selection-end-column="43" />
           <folding>
-            <marker date="1502180094000" expanded="true" signature="2951:3541" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3108:3411" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3155:3385" ph="..." />
-            <marker date="1502180094000" expanded="false" signature="3321:3345" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2766:3356" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2923:3226" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2970:3200" ph="..." />
+            <marker date="1502181665000" expanded="false" signature="3136:3160" ph="..." />
           </folding>
         </state>
       </provider>
@@ -710,8 +703,8 @@
           <first_editor relative-caret-position="946">
             <caret line="43" column="53" lean-forward="false" selection-start-line="43" selection-start-column="53" selection-end-line="43" selection-end-column="53" />
             <folding>
-              <marker date="1502180195000" expanded="true" signature="1338:1450" ph="..." />
-              <marker date="1502180195000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
+              <marker date="1502180683000" expanded="true" signature="1338:1450" ph="..." />
+              <marker date="1502180683000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
             </folding>
           </first_editor>
           <second_editor />
@@ -747,10 +740,10 @@
         <state relative-caret-position="3322">
           <caret line="151" column="43" lean-forward="false" selection-start-line="151" selection-start-column="43" selection-end-line="151" selection-end-column="43" />
           <folding>
-            <marker date="1502180094000" expanded="true" signature="2951:3541" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3108:3411" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3155:3385" ph="..." />
-            <marker date="1502180094000" expanded="false" signature="3321:3345" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2766:3356" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2923:3226" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2970:3200" ph="..." />
+            <marker date="1502181665000" expanded="false" signature="3136:3160" ph="..." />
           </folding>
         </state>
       </provider>
@@ -804,8 +797,8 @@
           <first_editor relative-caret-position="946">
             <caret line="43" column="53" lean-forward="false" selection-start-line="43" selection-start-column="53" selection-end-line="43" selection-end-column="53" />
             <folding>
-              <marker date="1502180195000" expanded="true" signature="1338:1450" ph="..." />
-              <marker date="1502180195000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
+              <marker date="1502180683000" expanded="true" signature="1338:1450" ph="..." />
+              <marker date="1502180683000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
             </folding>
           </first_editor>
           <second_editor />
@@ -833,10 +826,10 @@
         <state relative-caret-position="3982">
           <caret line="181" column="52" lean-forward="true" selection-start-line="181" selection-start-column="52" selection-end-line="181" selection-end-column="52" />
           <folding>
-            <marker date="1502180094000" expanded="true" signature="2951:3541" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3108:3411" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3155:3385" ph="..." />
-            <marker date="1502180094000" expanded="false" signature="3321:3345" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2766:3356" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2923:3226" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2970:3200" ph="..." />
+            <marker date="1502181665000" expanded="false" signature="3136:3160" ph="..." />
           </folding>
         </state>
       </provider>
@@ -877,10 +870,10 @@
         <state relative-caret-position="3520">
           <caret line="160" column="52" lean-forward="true" selection-start-line="160" selection-start-column="52" selection-end-line="160" selection-end-column="52" />
           <folding>
-            <marker date="1502180094000" expanded="true" signature="2951:3541" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3108:3411" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3155:3385" ph="..." />
-            <marker date="1502180094000" expanded="false" signature="3321:3345" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2766:3356" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2923:3226" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2970:3200" ph="..." />
+            <marker date="1502181665000" expanded="false" signature="3136:3160" ph="..." />
           </folding>
         </state>
       </provider>
@@ -935,8 +928,8 @@
           <first_editor relative-caret-position="880">
             <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
             <folding>
-              <marker date="1502180195000" expanded="true" signature="1338:1450" ph="..." />
-              <marker date="1502180195000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
+              <marker date="1502180683000" expanded="true" signature="1338:1450" ph="..." />
+              <marker date="1502180683000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
             </folding>
           </first_editor>
           <second_editor />
@@ -985,62 +978,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/dispatcher.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2640">
-          <caret line="120" column="8" lean-forward="false" selection-start-line="120" selection-start-column="8" selection-end-line="120" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/backup.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="846">
-          <caret line="206" column="7" lean-forward="false" selection-start-line="206" selection-start-column="7" selection-end-line="206" selection-end-column="7" />
-          <folding>
-            <marker date="1502179838000" expanded="true" signature="3519:4109" ph="..." />
-            <marker date="1502179838000" expanded="true" signature="3676:3979" ph="..." />
-            <marker date="1502179838000" expanded="true" signature="3723:3953" ph="..." />
-            <marker date="1502179838000" expanded="false" signature="3889:3913" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="92" column="29" lean-forward="true" selection-start-line="92" selection-start-column="29" selection-end-line="92" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/download.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="73">
-          <caret line="106" column="49" lean-forward="false" selection-start-line="106" selection-start-column="49" selection-end-line="106" selection-end-column="49" />
-          <folding>
-            <marker date="1502180094000" expanded="true" signature="2951:3541" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3108:3411" ph="..." />
-            <marker date="1502180094000" expanded="true" signature="3155:3385" ph="..." />
-            <marker date="1502180094000" expanded="false" signature="3321:3345" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="-380">
-            <caret line="56" column="55" lean-forward="false" selection-start-line="56" selection-start-column="55" selection-end-line="56" selection-end-column="55" />
-            <folding>
-              <marker date="1502180195000" expanded="true" signature="1338:1450" ph="..." />
-              <marker date="1502180195000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
-            </folding>
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docs/get-started.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -1074,6 +1011,62 @@
             </folding>
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="-145">
+            <caret line="59" column="8" lean-forward="false" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
+            <folding>
+              <marker date="1502180683000" expanded="true" signature="1338:1450" ph="..." />
+              <marker date="1502180683000" expanded="true" signature="1340:1379" ph="/** 第一个参数为文件的url ...*/" />
+            </folding>
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/backup.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="846">
+          <caret line="206" column="7" lean-forward="false" selection-start-line="206" selection-start-column="7" selection-end-line="206" selection-end-column="7" />
+          <folding>
+            <marker date="1502179838000" expanded="true" signature="3519:4109" ph="..." />
+            <marker date="1502179838000" expanded="true" signature="3676:3979" ph="..." />
+            <marker date="1502179838000" expanded="true" signature="3723:3953" ph="..." />
+            <marker date="1502179838000" expanded="false" signature="3889:3913" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="136" column="35" lean-forward="false" selection-start-line="136" selection-start-column="35" selection-end-line="136" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/download.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-202">
+          <caret line="6" column="15" lean-forward="false" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="15" />
+          <folding>
+            <marker date="1502181665000" expanded="true" signature="2766:3356" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2923:3226" ph="..." />
+            <marker date="1502181665000" expanded="true" signature="2970:3200" ph="..." />
+            <marker date="1502181665000" expanded="false" signature="3136:3160" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/dispatcher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="265" column="31" lean-forward="false" selection-start-line="265" selection-start-column="31" selection-end-line="265" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>

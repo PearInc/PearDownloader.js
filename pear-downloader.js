@@ -86,13 +86,19 @@ PearDownloader.prototype._start = function () {
         console.log('_getNodes:'+JSON.stringify(nodes));
         // nodes = [{uri: 'https://000c29d049f4.webrtc.win:64892/qq.webrtc.win/free/planet.mp4', type: 'node'}]; //test
         if (nodes) {
-            self._startPlaying(nodes);
-            if (self.useDataChannel) {
-                self._pearSignalHandshake();
-            }
+
         } else {
-            self._fallBack();
+            // self._fallBack();
             // console.log('TODO!')
+            nodes = [];
+            nodes.push({uri: self.src, type: 'server'});
+            nodes.push({uri: self.src, type: 'server'});
+            nodes.push({uri: self.src, type: 'server'});
+            nodes.push({uri: self.src, type: 'server'});
+        }
+        self._startPlaying(nodes);
+        if (self.useDataChannel) {
+            self._pearSignalHandshake();
         }
     });
 };
@@ -128,59 +134,62 @@ PearDownloader.prototype._getNodes = function (token, cb) {
             console.log(this.response);
             var res = JSON.parse(this.response);
             // console.log(res.nodes);
-            if (!res.nodes){
-                cb(null);
-            } else {
-                var nodes = res.nodes;
-                var allNodes = [];
-                var isLocationHTTP = location.protocol === 'http:' ? true : false;
-                for (var i=0; i<nodes.length; ++i){
-                    var protocol = nodes[i].protocol;
-                    if (protocol === 'webtorrent') {
-                        if (!self.magnetURI) {                     //如果用户没有指定magnetURI
-                            self.magnetURI = nodes[i].magnet_uri;
-                            console.log('_getNodes magnetURI:'+nodes[i].magnet_uri);
-                        }
-                    } else {
-                        if (isLocationHTTP || protocol !== 'http') {
-                            var host = nodes[i].host;
-                            var type = nodes[i].type;
-                            var path = self.urlObj.host + self.urlObj.path;
-                            var url = protocol+'://'+host+'/'+path;
-                            if (!self.nodeSet.has(url)) {
-                                allNodes.push({uri: url, type: type});
-                                self.nodeSet.add(url);
-                            }
+            var nodes = res.nodes;
+            if (!nodes) nodes = [];
+            var allNodes = [];
+            var isLocationHTTP = location.protocol === 'http:' ? true : false;
+            for (var i=0; i<nodes.length; ++i){
+                var protocol = nodes[i].protocol;
+                if (protocol === 'webtorrent') {
+                    if (!self.magnetURI) {                     //如果用户没有指定magnetURI
+                        self.magnetURI = nodes[i].magnet_uri;
+                        console.log('_getNodes magnetURI:'+nodes[i].magnet_uri);
+                    }
+                } else {
+                    if (isLocationHTTP || protocol !== 'http') {
+                        var host = nodes[i].host;
+                        var type = nodes[i].type;
+                        var path = self.urlObj.host + self.urlObj.path;
+                        var url = protocol+'://'+host+'/'+path;
+                        if (!self.nodeSet.has(url)) {
+                            allNodes.push({uri: url, type: type});
+                            self.nodeSet.add(url);
                         }
                     }
                 }
-                console.log('allNodes:'+JSON.stringify(allNodes));
-                nodeFilter(allNodes, function (nodes, fileLength) {            //筛选出可用的节点,以及回调文件大小
-
-                    var length = nodes.length;
-                    console.log('nodes:'+JSON.stringify(nodes));
-
-                    if (length) {
-                        self.fileLength = fileLength;
-                        console.log('nodeFilter fileLength:'+fileLength);
-                        // self.nodes = nodes;
-                        if (length <= 2) {
-                            // fallBack(nodes[0]);
-                            nodes.push({uri: self.src, type: 'server'});
-                            cb(nodes);
-                            // self._fallBack();           //test
-                        } else if (nodes.length >= 20){
-                            nodes = nodes.slice(0, 20);
-                            cb(nodes);
-                        } else {
-                            cb(nodes);
-                        }
-                    } else {
-                        // self._fallBack();
-                        cb(null);
-                    }
-                });
             }
+            if (allNodes.length === 0) {
+                allNodes.push({uri: self.src, type: 'server'});
+                allNodes.push({uri: self.src, type: 'server'});
+                allNodes.push({uri: self.src, type: 'server'});
+                allNodes.push({uri: self.src, type: 'server'});
+            }
+            console.log('allNodes:'+JSON.stringify(allNodes));
+            nodeFilter(allNodes, function (nodes, fileLength) {            //筛选出可用的节点,以及回调文件大小
+
+                var length = nodes.length;
+                console.log('nodes:'+JSON.stringify(nodes));
+
+                if (length) {
+                    self.fileLength = fileLength;
+                    console.log('nodeFilter fileLength:'+fileLength);
+                    // self.nodes = nodes;
+                    if (length <= 2) {
+                        // fallBack(nodes[0]);
+                        nodes.push({uri: self.src, type: 'server'});
+                        cb(nodes);
+                        // self._fallBack();           //test
+                    } else if (nodes.length >= 20){
+                        nodes = nodes.slice(0, 20);
+                        cb(nodes);
+                    } else {
+                        cb(nodes);
+                    }
+                } else {
+                    // self._fallBack();
+                    cb(null);
+                }
+            });
         } else {
             // self._fallBack();
             cb(null);
@@ -192,7 +201,7 @@ PearDownloader.prototype._getNodes = function (token, cb) {
 PearDownloader.prototype._fallBack = function () {
     var self = this;
 
-    self.emit('exception', {errCode: 2, errMsg: 'there is no node'});
+    // self.emit('exception', {errCode: 2, errMsg: 'there is no node'});
 
 };
 
@@ -292,6 +301,7 @@ PearDownloader.prototype._startPlaying = function (nodes) {
     }
     self.dispatcherConfig.fileSize = self.fileLength;
     // self.dispatcherConfig.sortedURIs = nodes;
+    console.log('6666666666:'+self.fileLength);
     var fileConfig = {
         length: self.fileLength,
         offset: 0,
@@ -725,7 +735,7 @@ Dispatcher.prototype._checkDone = function () {
     }
     if (!self.done && done) {
         self.done = true;
-        // console.log('dispatcher done');
+        self._clearAllQueues();
         self.emit('done');
         if (self.useMonitor) {
             self.emit('downloaded', 1.0);

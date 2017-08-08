@@ -40,15 +40,11 @@
 <body>
 <div id="main">
 
-    <!--<video id="pearvideo" src="https://qq.webrtc.win/tv/pear001.mp4" controls>-->
-        <!--&lt;!&ndash;<video id="pearvideo" src="https://qq.webrtc.win/free/planet.mp4" controls>&ndash;&gt;-->
-    <!--</video>-->
-
     <div class="jumbotron">
         <h1>Pear Downloader <small>download file</small></h1>
         <p>Download by URL</p>
         <div class="input-group">
-            <input type="text" class="form-control cpm-inputurl" placeholder="input url..." value="https://qq.webrtc.win/tv/pear001.mp4">
+            <input type="text" class="form-control cpm-inputurl" placeholder="input url..." value="https://qq.webrtc.win/documents/Pear-Demo_Apple-BP-1977-PCW-Comments.pdf">
             <section class="input-group-btn">
                 <button class="btn btn-primary cpm-downloadfiles">
                     <span class="glyphicon glyphicon-arrow-down"></span>
@@ -143,7 +139,7 @@
             $('.help-block').innerHTML = 'Downloaded!'
             downloader.file.getBlobURL(function (error, url) {
                 console.log('getBlobURL:'+url);
-                link[0].href = url;//"https://qq.webrtc.win/tv/pear001.mp4"
+                link[0].href = url;
                 link[0].download = downloader.fileName;
                 link[0].innerHTML = 'Download';
                 link[0].classList.remove('sr-only');
@@ -168,7 +164,7 @@
                 break;
             case 2:
                 console.log(exception.errMsg);
-                link[0].href = "https://qq.webrtc.win/tv/pear001.mp4";//"https://qq.webrtc.win/tv/pear001.mp4"
+                link[0].href = cpm.inputURL.value;
                 link[0].download = downloader.fileName;
                 link[0].innerHTML = 'Download';
                 link[0].classList.remove('sr-only');

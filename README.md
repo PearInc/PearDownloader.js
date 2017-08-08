@@ -57,7 +57,7 @@ Demo演示地址：https://qq.webrtc.win/download
 var downloader = new PearDownloader('/tv/pear001.mp4', opts);
 </script>
 ```
-恭喜您，您的播放器已经具备P2P能力了，而且无须任何插件！
+恭喜您，您的下载器已经具备P2P能力了，而且无须任何插件！
 
 ### 谁在用我们的产品？
 
