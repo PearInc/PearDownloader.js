@@ -27,7 +27,7 @@ var PearDownloader = require('PearDownloader');
 
 # PearDownloader API
 
-## `var downloader = new PearDownloader(url, token, opts)`
+## `var downloader = new PearDownloader(url, opts)`
 
 创建一个新的PearDownloader实例，url是待下载文件的url，token是登陆pear服务器获取的授权，有效期7个小时。
 

@@ -21,16 +21,17 @@ var BLOCK_LENGTH = 32 * 1024;
 
 inherits(PearDownloader, EventEmitter);
 
-function PearDownloader(urlstr, token, opts) {
+function PearDownloader(urlstr, opts) {
     var self = this;
-    if (!(self instanceof PearDownloader)) return new PearDownloader(urlstr, token, opts);
+    // if (!(self instanceof PearDownloader)) return new PearDownloader(urlstr, token, opts);
+    if (!(self instanceof PearDownloader)) return new PearDownloader(urlstr, opts);
     EventEmitter.call(self);
-
+    token = '';
     opts = opts || {};
     // self.video = document.querySelector(selector);
 
     if (typeof urlstr !== 'string') throw new Error('url must be a string!');
-    if (typeof token !== 'string') throw new Error('token must be a string!');
+    // if (typeof token !== 'string') throw new Error('token must be a string!');
     // if (!(opts.type && opts.type === 'mp4')) throw new Error('only mp4 is supported!');
     // if (!((opts.src && typeof opts.src === 'string') || self.video.src)) throw new Error('video src is not valid!');
     // if (!(config.token && typeof config.token === 'string')) throw new Error('token is not valid!');
@@ -113,9 +114,9 @@ PearDownloader.prototype._getNodes = function (token, cb) {
     })(postData);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", 'https://api.webrtc.win:6601/v1/customer/nodes'+postData);
+    xhr.open("GET", 'https://api.webrtc.win:6601/v1/customer/pear/nodes'+postData);
     xhr.timeout = 2000;
-    xhr.setRequestHeader('X-Pear-Token', self.token);
+    // xhr.setRequestHeader('X-Pear-Token', self.token);
     xhr.ontimeout = function() {
         // self._fallBack();
         cb(null);
@@ -413,6 +414,10 @@ PearDownloader.prototype._startPlaying = function (nodes) {
     d.on('downloaded', function (downloaded) {
 
         self.emit('progress', downloaded);
+    });
+    d.on('meanspeed', function (meanSpeed) {
+
+        self.emit('meanspeed', meanSpeed);
     });
     d.on('fograte', function (fogRate) {
 

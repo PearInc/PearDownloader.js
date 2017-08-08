@@ -28,30 +28,7 @@ var PearDownloader = require('PearDownloader');
 
 ```js
 var PearDownloader = require('PearDownloader');
-var xhr = new XMLHttpRequest();
-//CP需要先登录来获取token
-xhr.open("POST", 'https://api.webrtc.win:6601/v1/customer/login');
-var data = JSON.stringify({
-    user:'demo',
-    password:'demo'
-});
-xhr.onload = function () {
-    if (this.status >= 200 && this.status < 300) {
-
-        var res = JSON.parse(this.response);
-        if (!!res.token){
-            console.log('token:' +res.token);
-
-            var downloader = new PearDownloader(url, res.token, {//第一个参数为video标签的id或class
-                algorithm: 'firstaid',                 //核心算法,默认firstaid
-                useMonitor: true                       //是否开启monitor，会稍微影响性能，默认true
-            });
-        }
-    } else {
-        alert('请求出错!');
-    }
-};
-xhr.send(data);
+var downloader = new PearDownloader(url);
 ```
 
 There is a complete example in [examples/download.html](../examples/download.html)。
@@ -59,7 +36,7 @@ There is a complete example in [examples/download.html](../examples/download.htm
 ### Listen to PearDownloader events
 
 ```js
-var downloader = new PearDownloader(url, token, {      //第一个参数为url
+var downloader = new PearDownloader(url, {      //第一个参数为url
                     useMonitor: true             //是否开启monitor,会稍微影响性能,默认false
                 });
 

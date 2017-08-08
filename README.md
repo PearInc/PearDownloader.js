@@ -52,36 +52,12 @@ Demo演示地址：https://qq.webrtc.win/download
 <script>
 /**
  * 第一个参数为文件的url
- * 第二个参数为获得授权后的token
  * opts是可选的参数配置
  */
-var downloader = new PearDownloader('/tv/pear001.mp4', token, opts);
+var downloader = new PearDownloader('/tv/pear001.mp4', opts);
 </script>
 ```
 恭喜您，您的播放器已经具备P2P能力了，而且无须任何插件！
-
-### 获取token
-在使用PearDownloader之前，需要获取token，通过调用提供的API接口（/v1/customer/login）并传入用户名和密码，
-这里已经为访客提供了测试帐号（用户名：demo　密码：demo），获取token的示例代码如下：
-```js
-var xhr = new XMLHttpRequest();
-xhr.open("POST", 'https://api.webrtc.win:6601/v1/customer/login');
-var data = JSON.stringify({
-    user:'demo',
-    password:'demo'
-});
-xhr.onload = function () {
-    if (this.status >= 200 && this.status < 300) {
-        var res = JSON.parse(this.response);
-        if (!!res.token){
-            console.log('token:' +res.token);
-        }
-    } else {
-        alert('请求出错!');
-    }
-};
-xhr.send(data);
-```
 
 ### 谁在用我们的产品？
 

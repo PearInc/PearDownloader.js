@@ -41,7 +41,7 @@
 <div id="main">
 
     <!--<video id="pearvideo" src="https://qq.webrtc.win/tv/pear001.mp4" controls>-->
-        <!--&lt;!&ndash;<video id="pearvideo" src="https://qq.webrtc.win/free/planet.mp4" controls>&ndash;&gt;-->
+    <!--&lt;!&ndash;<video id="pearvideo" src="https://qq.webrtc.win/free/planet.mp4" controls>&ndash;&gt;-->
     <!--</video>-->
 
     <div class="jumbotron">
@@ -77,6 +77,27 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.1.0/dist/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
+    var token = '';
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", 'https://api.webrtc.win:6601/v1/customer/login');
+    var data = JSON.stringify({
+        user:'demo',
+        password:'demo'
+    });
+    xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+
+            var res = JSON.parse(this.response);
+            if (!!res.token){
+                console.log('token:' +res.token);
+                token = res.token;
+            }
+        } else {
+            alert('请求出错!');
+        }
+    };
+    xhr.send(data);
+
 
     var cpm = {
             inputURL: document.querySelectorAll('.cpm-inputurl')[0],
@@ -85,9 +106,9 @@
             downloadresult: document.querySelectorAll('.cpm-downloadresult')[0],
             table: document.querySelectorAll('.cpm-downloadresult table tbody')[0]
         },
-    addToTable = function (i, n, s, d) {
-        cpm.table.innerHTML +=
-            `<tr>
+        addToTable = function (i, n, s, d) {
+            cpm.table.innerHTML +=
+                `<tr>
                     <td>${i}</td>
                     <td>${n}</td>
                     <td></td>
@@ -99,59 +120,59 @@
                     </td>
                     <td><a class="sr-only" href="javascript:void(0);" download="pear.file">Waiting</a></td>
                 </tr>`
-    },
-    clientAdd = function (url) {
-        console.log('url:'+url);
-        var progress, size, speed, link;
-        //第一个参数为video标签的id或class
-        var downloader = new PearDownloader(url, {
-            algorithm: 'firstaid',      //核心算法,默认firstaid
-            interval: 5000,             //滑动窗口的时间间隔,单位毫秒,默认10s
-            auto: false,                //true为连续下载buffer,false则是只有当前播放时间与已缓冲时间小于slideInterval时下载buffer,默认false
-            slideInterval: 20,          //当前播放时间与已缓冲时间小于这个数值时触发窗口滑动,单位秒,默认20s
-            useDataChannel: true,       //是否开启data channel,默认true
-            dataChannels: 10,            //创建data channel的最大数量,默认2
-            useTorrent: true,           //是否开启Browser P2P(基于Webtorrent)，默认true
+        },
+        clientAdd = function (url) {
+            console.log('url:'+url);
+            var progress, size, speed, link;
+            //第一个参数为video标签的id或class
+            var downloader = new PearDownloader(url, token, {
+                algorithm: 'firstaid',      //核心算法,默认firstaid
+                interval: 5000,             //滑动窗口的时间间隔,单位毫秒,默认10s
+                auto: false,                //true为连续下载buffer,false则是只有当前播放时间与已缓冲时间小于slideInterval时下载buffer,默认false
+                slideInterval: 20,          //当前播放时间与已缓冲时间小于这个数值时触发窗口滑动,单位秒,默认20s
+                useDataChannel: true,       //是否开启data channel,默认true
+                dataChannels: 10,            //创建data channel的最大数量,默认2
+                useTorrent: true,           //是否开启Browser P2P(基于Webtorrent)，默认true
 //                    magnetURI: magnetURI,       //可手动传入magnetURI，需先将useTorrent设为true
 //                    trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true
-            useMonitor: true             //是否开启monitor,会稍微影响性能,默认false
-        });
-        window.downloader = downloader;
-        addToTable(1, downloader.fileName, 0, 0);
-        progress = cpm.table.querySelectorAll('.progress-bar');
-        link = cpm.table.querySelectorAll('tr td:last-child a');
-        size = cpm.table.querySelectorAll('tr td:nth-child(3)');
-        speed = cpm.table.querySelectorAll('tr td:nth-child(4)');
-        window.link = link;
-        downloader.on('exception', onException);               //下载器出现异常时的回调函数
-        downloader.on('begin', function (fileLength, chunks) {
-            size[0].innerHTML = (fileLength/1024/1024).toFixed(2) + 'MB';
-        });　　　　　　　　　　　　　 //开始下载时触发
-        downloader.on('meanspeed', function (meanSpeed) {
-            speed[0].innerHTML = Math.round(meanSpeed) + 'KB/s';
-        });
-        downloader.on('progress', function (downloaded) {
-            console.log('Progress: ' + (downloaded * 100).toFixed(1) + '%');
-            var percent = (downloaded * 100).toFixed(1);
-            percent = ((percent < 100) ? percent : 100);
-            progress[0].innerHTML = percent + "%";
-            progress[0].style.width = percent + "%";
-        });                                                   //回调目前的下载进度
+                useMonitor: true             //是否开启monitor,会稍微影响性能,默认false
+            });
+            window.downloader = downloader;
+            addToTable(1, downloader.fileName, 0, 0);
+            progress = cpm.table.querySelectorAll('.progress-bar');
+            link = cpm.table.querySelectorAll('tr td:last-child a');
+            size = cpm.table.querySelectorAll('tr td:nth-child(3)');
+            speed = cpm.table.querySelectorAll('tr td:nth-child(4)');
+            window.link = link;
+            downloader.on('exception', onException);               //下载器出现异常时的回调函数
+            downloader.on('begin', function (fileLength, chunks) {
+                size[0].innerHTML = (fileLength/1024/1024).toFixed(2) + 'MB';
+            });　　　　　　　　　　　　　 //开始下载时触发
+            downloader.on('meanspeed', function (meanSpeed) {
+                speed[0].innerHTML = Math.round(meanSpeed) + 'KB/s';
+            });
+            downloader.on('progress', function (downloaded) {
+                console.log('Progress: ' + (downloaded * 100).toFixed(1) + '%');
+                var percent = (downloaded * 100).toFixed(1);
+                percent = ((percent < 100) ? percent : 100);
+                progress[0].innerHTML = percent + "%";
+                progress[0].style.width = percent + "%";
+            });                                                   //回调目前的下载进度
 //        downloader.on('fograte', onWebRTCRate);　　　　　　　　　 //fog节点的下载比率（下载的字节数除以总的字节数）
-        downloader.on('buffersources', onBufferSources);       //buffer map，记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
-        downloader.on('done', function () {
-            $('.help-block').innerHTML = 'Downloaded!'
-            downloader.file.getBlobURL(function (error, url) {
-                console.log('getBlobURL:'+url);
-                link[0].href = url;//"https://qq.webrtc.win/tv/pear001.mp4"
-                link[0].download = downloader.fileName;
-                link[0].innerHTML = 'Download';
-                link[0].classList.remove('sr-only');
-            })
-        });　　　　　　　　           //结束下载时触发
+            downloader.on('buffersources', onBufferSources);       //buffer map，记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
+            downloader.on('done', function () {
+                $('.help-block').innerHTML = 'Downloaded!'
+                downloader.file.getBlobURL(function (error, url) {
+                    console.log('getBlobURL:'+url);
+                    link[0].href = url;//"https://qq.webrtc.win/tv/pear001.mp4"
+                    link[0].download = downloader.fileName;
+                    link[0].innerHTML = 'Download';
+                    link[0].classList.remove('sr-only');
+                })
+            });　　　　　　　　           //结束下载时触发
 //        downloader.on('traffic', onTraffic);                  //节点流量统计
 
-    };
+        };
 
     cpm.downloadfiles.addEventListener('click', function () {
         cpm.downloadresult.classList.remove('sr-only');
@@ -179,7 +200,7 @@
     function onBufferSources(bufferSources) {            //s: server   n: node  d: data channel  b: browser
         console.log('Current Buffer Sources:' + bufferSources);
     }
-    
+
 </script>
 </body>
 
