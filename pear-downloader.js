@@ -22,12 +22,13 @@ var BLOCK_LENGTH = 32 * 1024;
 
 inherits(PearDownloader, EventEmitter);
 
-function PearDownloader(urlstr, opts) {
+function PearDownloader(urlstr, token, opts) {
     var self = this;
     // if (!(self instanceof PearDownloader)) return new PearDownloader(urlstr, token, opts);
-    if (!(self instanceof PearDownloader)) return new PearDownloader(urlstr, opts);
+    if (!(self instanceof PearDownloader)) return new PearDownloader(urlstr, token, opts);
+    if (typeof token === 'object') return PearDownloader(urlstr, '', token);
     EventEmitter.call(self);
-    token = '';
+
     opts = opts || {};
     // self.video = document.querySelector(selector);
 
@@ -121,9 +122,10 @@ PearDownloader.prototype._getNodes = function (token, cb) {
     })(postData);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", 'https://api.webrtc.win:6601/v1/customer/pear/nodes'+postData);
+    // xhr.open("GET", 'https://api.webrtc.win:6601/v1/customer/pear/nodes'+postData);
+    xhr.open("GET", 'https://api.webrtc.win:6601/v1/customer/nodes'+postData);
     xhr.timeout = 2000;
-    // xhr.setRequestHeader('X-Pear-Token', self.token);
+    xhr.setRequestHeader('X-Pear-Token', self.token);
     xhr.ontimeout = function() {
         // self._fallBack();
         cb(null);
@@ -500,7 +502,9 @@ function Dispatcher(config) {
 
     var self = this;
 
-    if (!(config.initialDownloaders && config.fileSize)) throw new Error('config is not completed');
+    // if (!(config.initialDownloaders && config.fileSize)) throw new Error('config is not completed');
+    if (!config.initialDownloaders) throw new Error('initialDownloaders is required');
+    if (!config.fileSize) throw new Error('fileSize is required');
     self.fileSize = config.fileSize;
     self.initialDownloaders = config.initialDownloaders;
     self.pieceLength = config.chunkSize || 1*1024*1024;
@@ -1245,7 +1249,7 @@ function File (dispatcher, file){
     this._destroyed = false;
 
     this.name = file.name;
-    this.path = '/tmp/dispatcher'+this.name;
+    this.path = '/tmp/downloader'+this.name;
 
     this.length = file.length;
     this.offset = file.offset;
