@@ -453,6 +453,10 @@ PearDownloader.prototype._startPlaying = function (nodes) {
 
         self.emit('buffersources', bufferSources);
     });
+    d.on('sourcemap', function (sourceType, index) {       //s: server   n: node  d: data channel  b: browser
+
+        self.emit('sourcemap', sourceType, index);
+    });
     d.on('traffic', function (mac, downloaded, type) {
 
         self.emit('traffic', mac, downloaded, type);
@@ -845,13 +849,14 @@ Dispatcher.prototype._setupHttp = function (hd) {
             }
             self._checkDone();
             if (self.useMonitor) {
-                self.downloaded += self.pieceLength;
+                var size = end - start + 1;
+                self.downloaded += size;
                 self.emit('downloaded', self.downloaded/self.fileSize);
-                hd.downloaded += self.pieceLength;
-                self.emit('traffic', hd.mac, hd.downloaded, 'HTTP');
+                hd.downloaded += size;
+                self.emit('traffic', hd.mac, size, 'HTTP');
                 console.log('ondata hd.type:' + hd.type +' index:' + index);
                 if (hd.type === 'node' || hd.type === 'browser') {
-                    self.fogDownloaded += self.pieceLength;
+                    self.fogDownloaded += size;
                     self.emit('fograte', self.fogDownloaded/self.downloaded);
                     self.emit('fogspeed', self.downloaders.getMeanSpeed(['node', 'datachannel']));
                     hd.type === 'node' ? self.bufferSources[index] = 'n' : self.bufferSources[index] = 'b';
@@ -862,6 +867,7 @@ Dispatcher.prototype._setupHttp = function (hd) {
                     // self.bufferSources[index] = index
                 }
                 self.emit('buffersources', self.bufferSources);
+                self.emit('sourcemap', hd.type === 'node' ? 'n' : 's', index);
             }
             // console.log('bufferSources:'+self.bufferSources);
         } else {
@@ -901,16 +907,18 @@ Dispatcher.prototype._setupDC = function (jd) {
             }
             self._checkDone();
             if (self.useMonitor) {
-                self.downloaded += self.pieceLength;
-                self.fogDownloaded += self.pieceLength;
+                var size = end - start +1;
+                self.downloaded += size;
+                self.fogDownloaded += size;
                 console.log('downloaded:'+self.downloaded+' fogDownloaded:'+self.fogDownloaded);
                 self.emit('downloaded', self.downloaded/self.fileSize);
                 self.emit('fograte', self.fogDownloaded/self.downloaded);
                 self.emit('fogspeed', self.downloaders.getMeanSpeed(['node','browser','datachannel']));
                 self.bufferSources[index] = 'd';
                 self.emit('buffersources', self.bufferSources);
-                jd.downloaded += self.pieceLength;
-                self.emit('traffic', jd.mac, jd.downloaded, 'WebRTC');
+                self.emit('sourcemap', 'd', index);
+                jd.downloaded += size;
+                self.emit('traffic', jd.mac, size, 'WebRTC');
             }
         } else {
             console.log('重复下载');
@@ -975,7 +983,8 @@ Dispatcher.prototype.addTorrent = function (torrent) {
             self.emit('fogspeed', self.downloaders.getMeanSpeed(['node', 'datachannel']) + torrent.downloadSpeed/1024);
             self.bufferSources[index] = 'b';
             self.emit('buffersources', self.bufferSources);
-            self.emit('traffic', 'Webtorrent', torrent.pear_downloaded, 'Browser');
+            self.emit('sourcemap', 'b', index);
+            self.emit('traffic', 'Webtorrent', self.pieceLength, 'Browser');
         }
     });
 

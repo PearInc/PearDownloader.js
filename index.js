@@ -452,6 +452,10 @@ PearDownloader.prototype._startPlaying = function (nodes) {
 
         self.emit('buffersources', bufferSources);
     });
+    d.on('sourcemap', function (sourceType, index) {       //s: server   n: node  d: data channel  b: browser
+
+        self.emit('sourcemap', sourceType, index);
+    });
     d.on('traffic', function (mac, downloaded, type) {
 
         self.emit('traffic', mac, downloaded, type);

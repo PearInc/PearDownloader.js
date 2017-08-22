@@ -146,6 +146,7 @@
             })
         });　　　　　　　　           //结束下载时触发
 //        downloader.on('traffic', onTraffic);                  //节点流量统计
+        downloader.on('sourcemap', onSourceMap);          //记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
 
     };
 
@@ -174,6 +175,10 @@
 
     function onBufferSources(bufferSources) {            //s: server   n: node  d: data channel  b: browser
         console.log('Current Buffer Sources:' + bufferSources);
+    }
+
+    function onSourceMap(sourceType, index) {
+        console.log('Received source type:' + sourceType + ' index:' + index);
     }
     
 </script>
