@@ -67,7 +67,7 @@ var downloader = new PearDownloader('/tv/pear001.mp4', opts);
 + [Tencent Cloud](https://qcloud.com)
 + [Tencent X5/TBS](https://x5.tencent.com/tbs/)
 
-### Pear Player 文档
+### PearDownloader文档
 - **[阅读get-started文档](docs/get-started.md)**
 - **[阅读API文档](docs/api.md)**
 
