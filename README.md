@@ -38,7 +38,6 @@ Demo演示地址：https://qq.webrtc.win/download
 
 ## 使用方法
 
-### 导入js文件并绑定video标签
 首先通过script标签导入pear-downloader.min.js：
 ```html
 <script src="./dist/pear-downloader.min.js"></script>
