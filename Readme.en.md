@@ -13,7 +13,7 @@
 
 ![multisources](fig/fogvdn_multisources.png)
 
-`pear-downloader.min.js`can be imported by the html label`<script>`, refer to[code example](#使用方法), also[`/examples/download.html`](/examples/download.html)can help you.
+`pear-downloader.min.js` can be imported by the html label`<script>`, refer to  [code example](#使用方法), also [`/examples/download.html`](/examples/download.html) can help you.
 
 To know more information [API document](docs/get-started.md).<br/>
 
