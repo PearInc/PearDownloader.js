@@ -19,15 +19,15 @@ To know more information [API document](docs/get-started.md).<br/>
 
 ### Feature
 
-- P2P based on **WebRTC**，no plug in
-- **Speed up**，reliable
-- Multi-protocol(HTTP、HTTPS、WebRTC), multi-source
+- P2P based on **WebRTC**,no plug in
+- **Speed up**,reliable
+- Multi-protocol(HTTP,HTTPS,WebRTC), multi-source
 - No parameter
 - Save the data usage
-- Run well in Chrome、Firefox、Opera、Safari11
+- Run well in Chrome,Firefox,Opera,Safari11
 - Support  [Pear FogVDN](https://github.com/PearInc/FogVDN)
-- Encode by TLS/DTLS，no DPI feature,Pear Fog dynamic port mapping
-- Use easily like `<video>` label ，can integrate
+- Encode by TLS/DTLS, no DPI feature,Pear Fog dynamic port mapping
+- Use easily like `<video>` label, can integrate
 <br>
 Demo: https://qq.webrtc.win/download
 
@@ -89,4 +89,4 @@ Congratulations! You can use the PearDownloader now!
 MIT. Copyright (c) [Pear Limited](https://pear.hk) and [snowinszu](https://github.com/snowinszu).
 
 ### Service
-E-mail: <service@pear.hk>；QQ group：`373594967`；[Business](https://github.com/PearInc/FogVDN)
+E-mail: <service@pear.hk>; QQ group：`373594967`; [Business](https://github.com/PearInc/FogVDN)
