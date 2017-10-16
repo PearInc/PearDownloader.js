@@ -29,7 +29,7 @@ To know more information [API document](docs/get-started.md).<br/>
 - Encode by TLS/DTLS, no DPI feature,Pear Fog dynamic port mapping
 - Use easily like `<video>` label, can integrate
 <br>
-Demo: https://qq.webrtc.win/download
+Demo: https://demo.webrtc.win/peardownloader/
 
 
 ## Quick Start
