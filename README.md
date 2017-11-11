@@ -14,7 +14,7 @@
 基于高效的调度算法将来自多个节点的数据进行拼接形成完整的文件，
 PearDownloader能在保证下载速度前提下最大化P2P率。
 
-![multisources](fig/fogvdn_multisources.png)
+![multisources](fig/player-arch.jpg)
 
 只需将`pear-downloader.min.js`通过`<script>`标签导入到HTML就可以使用。 
 参考以下[代码示例](#使用方法)，也可以查看[`/examples/downloader-test.html`](/examples/downloader-test.html)来了解使用方法。
