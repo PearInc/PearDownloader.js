@@ -38,7 +38,6 @@ var PearDownloader = require('PearDownloader');
   scheduler: 'WebRTCFirst',      //节点调度算法,默认WebRTCFirst
   auto: true,                    //是否全部下载,默认true
   interval: 5000,                //滑动窗口的时间间隔,单位毫秒,默认10s
-  slideInterval: 20,             //当前播放时间与已缓冲时间小于这个数值时触发窗口滑动,单位秒,默认20s
   useDataChannel: true,          //是否开启data channel,默认true
   dataChannels: 20,              //创建data channel的最大数量,默认10
   useTorrent: false,             //是否开启Browser P2P(基于Webtorrent)，默认true
