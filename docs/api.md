@@ -27,7 +27,7 @@ var PearDownloader = require('PearDownloader');
 
 # PearDownloader API
 
-## `var downloader = new PearDownloader(url, opts)`
+## `var downloader = new PearDownloader(url, token, opts)`
 
 创建一个新的PearDownloader实例，url是待下载文件的url，token是登陆pear服务器获取的授权，有效期7个小时。
 
@@ -35,16 +35,17 @@ var PearDownloader = require('PearDownloader');
 
 ```js
 {
-  algorithm: 'firstaid',      //核心算法,默认firstaid
-  interval: 5000,             //滑动窗口的时间间隔,单位毫秒,默认10s
-  auto: false,                //true为连续下载buffer,false则是只有当前播放时间与已缓冲时间小于slideInterval时下载buffer,默认false
-  slideInterval: 15,          //当前播放时间与已缓冲时间小于这个数值时触发窗口滑动,单位秒,默认20s
-  useDataChannel: true,       //是否开启data channel,默认true
-  dataChannels: 4,            //创建data channel的最大数量,默认2
-  useTorrent: true,           //是否开启Browser P2P(基于Webtorrent)，默认true
-  magnetURI: 'magnet:example...',       //可手动传入magnetURI，需先将useTorrent设为true
+  scheduler: 'WebRTCFirst',      //节点调度算法,默认WebRTCFirst
+  auto: true,                    //是否全部下载,默认true
+  interval: 5000,                //滑动窗口的时间间隔,单位毫秒,默认10s
+  slideInterval: 20,             //当前播放时间与已缓冲时间小于这个数值时触发窗口滑动,单位秒,默认20s
+  useDataChannel: true,          //是否开启data channel,默认true
+  dataChannels: 20,              //创建data channel的最大数量,默认10
+  useTorrent: false,             //是否开启Browser P2P(基于Webtorrent)，默认true
+  magnetURI: magnetURI,          //可手动传入magnetURI，需先将useTorrent设为true
   trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true
-  useMonitor: true            //是否开启monitor,会稍微影响性能,默认false，只有开启useMonitor才能监听事件
+  sources: ['http://example.com/a'],    //指定下载源，增加这个字段后pearplayer不会再向后台请求节点，建议下载源多于5个以保证流畅播放
+  useMonitor: true,              //是否开启monitor,会稍微影响性能,默认false
 }
 ```
 

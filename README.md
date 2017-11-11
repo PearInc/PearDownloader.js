@@ -17,7 +17,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 ![multisources](fig/fogvdn_multisources.png)
 
 只需将`pear-downloader.min.js`通过`<script>`标签导入到HTML就可以使用。 
-参考以下[代码示例](#使用方法)，也可以查看[`/examples/download.html`](/examples/download.html)来了解使用方法。
+参考以下[代码示例](#使用方法)，也可以查看[`/examples/downloader-test.html`](/examples/downloader-test.html)来了解使用方法。
 
 信令部分以及WebRTC部分使用了精心设计的协议，实现此部分可以参考[API文档](docs/get-started.md)。<br/>
 
@@ -28,7 +28,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 - 多协议(HTTP、HTTPS、WebRTC)、多源
 - 自行研发的调度算法，在保证下载速度的前提下最大化P2P率
 - 默认无需填参数（内部根据文件属性作自适应），高级使用模式可自行调整算法和参数
-- 支持Chrome、Firefox、Opera、Safari11等主流浏览器，不久将支持腾讯微信、X5/TBS
+- 支持Chrome、Firefox、Opera等主流浏览器，不久将支持腾讯微信、X5/TBS、Safari11
 - 可选接入低成本、高可用性的Pear [FogVDN](https://github.com/PearInc/FogVDN)
 - 协议默认通过TLS/DTLS全加密，无DPI特征；并可通过Pear Fog组件的动态端口映射进一步消除统计学特征
 - 目前已实现Browser P2P能力（基于WebTorrent）

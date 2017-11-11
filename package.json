@@ -1,5 +1,5 @@
 {
-  "name": "pear",
+  "name": "peardownloader",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -22,11 +22,11 @@
     "del": "^2.0.2"
   },
   "scripts": {
-    "test": "",
     "build-downloader": "browserify index.downloader.js -s PearDownloader > pear-downloader.js",
     "build-player": "browserify index.player.js -s PearPlayer > pear-player.js",
     "uglify-downloader": "browserify -s PearDownloader -e  ./index.downloader.js | babili > ./dist/pear-downloader.min.js",
-    "uglify-player": "browserify -s PearPlayer -e  ./index.player.js | babili > ./dist/pear-player.min.js"
+    "uglify-player": "browserify -s PearPlayer -e  ./index.player.js | babili > ./dist/pear-player.min.js",
+    "push-to-github": "git add . && git commit -m 'update' && git push"
   },
   "author": "Xie Ting Pear Limited",
   "license": "MIT",
@@ -36,6 +36,7 @@
     "video",
     "downloader",
     "p2p",
+    "p2p-CDN",
     "peer-to-peer",
     "peers",
     "streaming",
