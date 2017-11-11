@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/pear-downloader.min.js" afterPath="$PROJECT_DIR$/dist/pear-downloader.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/api.md" afterPath="$PROJECT_DIR$/docs/api.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/http-downloader.js" afterPath="$PROJECT_DIR$/lib/http-downloader.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/worker.js" afterPath="$PROJECT_DIR$/lib/worker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-    </list>
+    <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -356,6 +348,16 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="false" name="push-to-github" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="push-to-github" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="ApexTest" factoryName="Apex Test">
       <method />
     </configuration>
@@ -425,16 +427,18 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <list size="3">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="npm.build" />
       <item index="1" class="java.lang.String" itemvalue="npm.uglify" />
       <item index="2" class="java.lang.String" itemvalue="npm.uglify-downloader" />
+      <item index="3" class="java.lang.String" itemvalue="npm.push-to-github" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="npm.uglify-downloader" />
-        <item index="1" class="java.lang.String" itemvalue="npm.build" />
-        <item index="2" class="java.lang.String" itemvalue="npm.uglify" />
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="npm.push-to-github" />
+        <item index="1" class="java.lang.String" itemvalue="npm.uglify-downloader" />
+        <item index="2" class="java.lang.String" itemvalue="npm.build" />
+        <item index="3" class="java.lang.String" itemvalue="npm.uglify" />
       </list>
     </recent_temporary>
   </component>
@@ -484,12 +488,12 @@
       <workItem from="1510039620338" duration="527000" />
       <workItem from="1510371256199" duration="53000" />
       <workItem from="1510371319874" duration="874000" />
-      <workItem from="1510372240391" duration="1619000" />
+      <workItem from="1510372240391" duration="1677000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="92628000" />
+    <option name="totallyTimeSpent" value="92686000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="91" y="23" width="1920" height="976" extended-state="0" />
