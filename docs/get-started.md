@@ -31,7 +31,7 @@ var PearDownloader = require('PearDownloader');
 var downloader = new PearDownloader(url);
 ```
 
-There is a complete example in [examples/download.html](../examples/download.html)。
+There is a complete example in [examples/downloader-test.html](../examples/downloader-test.html)。
 
 ### Listen to PearDownloader events
 
@@ -43,7 +43,7 @@ var downloader = new PearDownloader(url, {      //第一个参数为url
 downloader.on('exception', onException);
 downloader.on('begin', onBegin);
 downloader.on('progress', onProgress);
-downloader.on('buffersources', onBufferSources);               //s: server   n: node  d: data channel  b: browser
+downloader.on('sourcemap', onSourceMap);        
 downloader.on('done', onDone);
                 
 function onBegin(fileLength, chunks) {
@@ -66,9 +66,9 @@ function onException(exception) {
             break
     }
 }
-function onBufferSources(bufferSources) {    //s: server   n: node  d: data channel  b: browser
-    console.log('Current Buffer Sources:' + bufferSources);
-}
+function onSourceMap(sourceType, index) {
+        console.log('Received source type:' + sourceType + ' index:' + index);
+    }
 ```
 
 ## Build
@@ -86,11 +86,11 @@ npm install
 ```
 To get a normal size bundle,use:
 ```bash
-npm run build
+npm run build-downloader
 ```
 To get a compressed bundle,use:
 ```bash
-npm run uglify
+npm run uglify-downloader
 ```
 
 ## More Documentation

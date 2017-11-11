@@ -26,7 +26,8 @@
     "build-player": "browserify index.player.js -s PearPlayer > pear-player.js",
     "uglify-downloader": "browserify -s PearDownloader -e  ./index.downloader.js | babili > ./dist/pear-downloader.min.js",
     "uglify-player": "browserify -s PearPlayer -e  ./index.player.js | babili > ./dist/pear-player.min.js",
-    "push-to-github": "git add . && git commit -m 'update' && git push"
+    "push-to-github": "git add . && git commit -m 'update' && git push",
+    "npm-publish": "npm publish"
   },
   "author": "Xie Ting Pear Limited",
   "license": "MIT",

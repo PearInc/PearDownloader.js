@@ -9,7 +9,7 @@
 <h4 align="center">一个支持多协议、多源、混合P2P-CDN的下载器</h4>
 <br>
 
-**PearDownloader（梨享下载器）** 是完全用JavaScript写的开源文件下载器，
+**PearDownloader（梨享下载器）**是[PearPlayer](https://github.com/PearInc/PearPlayer.js)的底层下载模块，
 实现了融合HTTP（包含HTTPS、HTTP2）、WebRTC的多协议、多源、低延迟、高带宽利用率的无插件Web端下载加速能力。
 基于高效的调度算法将来自多个节点的数据进行拼接形成完整的文件，
 PearDownloader能在保证下载速度前提下最大化P2P率。
