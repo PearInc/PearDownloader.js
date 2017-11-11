@@ -1,6 +1,6 @@
 {
-  "name": "peardownloader",
-  "version": "0.0.3",
+  "name": "pear",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -23,16 +23,18 @@
   },
   "scripts": {
     "test": "",
-    "build": "browserify index.js -s PearDownloader > pear-downloader.js",
-    "uglify": "browserify -s PearDownloader -e ./ | babili > ./dist/pear-downloader.min.js"
+    "build-downloader": "browserify index.downloader.js -s PearDownloader > pear-downloader.js",
+    "build-player": "browserify index.player.js -s PearPlayer > pear-player.js",
+    "uglify-downloader": "browserify -s PearDownloader -e  ./index.downloader.js | babili > ./dist/pear-downloader.min.js",
+    "uglify-player": "browserify -s PearPlayer -e  ./index.player.js | babili > ./dist/pear-player.min.js"
   },
   "author": "Xie Ting Pear Limited",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://pear.hk",
   "keywords": [
     "WebRTC",
     "video",
-    "player",
+    "downloader",
     "p2p",
     "peer-to-peer",
     "peers",
