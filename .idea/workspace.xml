@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="" />
+    <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pear-downloader.js" afterPath="$PROJECT_DIR$/pear-downloader.js" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -60,15 +64,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="196">
-                <caret line="11" column="79" lean-forward="false" selection-start-line="11" selection-start-column="79" selection-end-line="11" selection-end-column="79" />
+              <first_editor relative-caret-position="367">
+                <caret line="21" column="45" lean-forward="false" selection-start-line="21" selection-start-column="45" selection-end-line="21" selection-end-column="45" />
                 <folding>
-                  <marker date="1510378548000" expanded="true" signature="1380:1492" ph="..." />
-                  <marker date="1510378548000" expanded="true" signature="1382:1421" ph="/** 第一个参数为文件的url ...*/" />
+                  <marker date="1510378797000" expanded="true" signature="1364:1476" ph="..." />
+                  <marker date="1510378797000" expanded="true" signature="1366:1405" ph="/** 第一个参数为文件的url ...*/" />
                 </folding>
               </first_editor>
               <second_editor />
@@ -118,11 +122,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="downloader-test.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="downloader-test.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/examples/downloader-test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="314">
-              <caret line="102" column="4" lean-forward="true" selection-start-line="102" selection-start-column="4" selection-end-line="104" selection-end-column="5" />
+            <state relative-caret-position="93">
+              <caret line="18" column="45" lean-forward="true" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -213,6 +217,7 @@
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/docs/get-started.md" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/examples/downloader-test.html" />
       </list>
     </option>
   </component>
@@ -368,6 +373,16 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="false" name="build-downloader" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build-downloader" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="ApexTest" factoryName="Apex Test">
       <method />
     </configuration>
@@ -437,18 +452,20 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="npm.build" />
       <item index="1" class="java.lang.String" itemvalue="npm.uglify" />
       <item index="2" class="java.lang.String" itemvalue="npm.uglify-downloader" />
       <item index="3" class="java.lang.String" itemvalue="npm.push-to-github" />
+      <item index="4" class="java.lang.String" itemvalue="npm.build-downloader" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="npm.push-to-github" />
-        <item index="1" class="java.lang.String" itemvalue="npm.uglify-downloader" />
-        <item index="2" class="java.lang.String" itemvalue="npm.build" />
-        <item index="3" class="java.lang.String" itemvalue="npm.uglify" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="npm.build-downloader" />
+        <item index="1" class="java.lang.String" itemvalue="npm.push-to-github" />
+        <item index="2" class="java.lang.String" itemvalue="npm.uglify-downloader" />
+        <item index="3" class="java.lang.String" itemvalue="npm.build" />
+        <item index="4" class="java.lang.String" itemvalue="npm.uglify" />
       </list>
     </recent_temporary>
   </component>
@@ -498,20 +515,21 @@
       <workItem from="1510039620338" duration="527000" />
       <workItem from="1510371256199" duration="53000" />
       <workItem from="1510371319874" duration="874000" />
-      <workItem from="1510372240391" duration="2995000" />
+      <workItem from="1510372240391" duration="3408000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="94004000" />
+    <option name="totallyTimeSpent" value="94417000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="91" y="23" width="1920" height="976" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32700893" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32700893" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18229167" sideWeight="0.36484244" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -846,14 +864,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/downloader-test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="102" column="4" lean-forward="true" selection-start-line="102" selection-start-column="4" selection-end-line="104" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docs/get-started.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -903,14 +913,22 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="196">
-            <caret line="11" column="79" lean-forward="false" selection-start-line="11" selection-start-column="79" selection-end-line="11" selection-end-column="79" />
+          <first_editor relative-caret-position="367">
+            <caret line="21" column="45" lean-forward="false" selection-start-line="21" selection-start-column="45" selection-end-line="21" selection-end-column="45" />
             <folding>
-              <marker date="1510378548000" expanded="true" signature="1380:1492" ph="..." />
-              <marker date="1510378548000" expanded="true" signature="1382:1421" ph="/** 第一个参数为文件的url ...*/" />
+              <marker date="1510378797000" expanded="true" signature="1364:1476" ph="..." />
+              <marker date="1510378797000" expanded="true" signature="1366:1405" ph="/** 第一个参数为文件的url ...*/" />
             </folding>
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/downloader-test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="18" column="45" lean-forward="true" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
+          <folding />
         </state>
       </provider>
     </entry>

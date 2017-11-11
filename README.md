@@ -19,7 +19,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 只需将`pear-downloader.min.js`通过`<script>`标签导入到HTML就可以使用。 
 参考以下[代码示例](#使用方法)，也可以查看[`/examples/downloader-test.html`](/examples/downloader-test.html)来了解使用方法。
 
-信令部分以及WebRTC部分使用了精心设计的协议，实现此部分可以参考[API文档](docs/get-started.md)。<br/>
+参考[get-started](docs/get-started.md)来了解基本使用方法。<br/>
 
 ### 特性
 

@@ -1023,7 +1023,6 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
     var range = "bytes="+begin+"-"+end;
     // console.log('request range: ' + range);
     xhr.setRequestHeader("Range", range);
-    xhr.setRequestHeader("Connection", 'keep-alive');
     xhr.onload = function (event) {
         if (this.status >= 200 || this.status < 300) {
             self.downloading = false;
@@ -5106,8 +5105,8 @@ var Set = require('./set');
 var WebTorrent = require('./pear-torrent');
 var Scheduler = require('./node-scheduler');
 
-var WEBSOCKET_ADDR = 'ws://signal.webrtc.win:9600/ws';
-// var WEBSOCKET_ADDR = 'wss://signal.webrtc.win:7601/wss';
+// var WEBSOCKET_ADDR = 'ws://signal.webrtc.win:9600/ws';             //test
+var WEBSOCKET_ADDR = 'wss://signal.webrtc.win:7601/wss';
 var GETNODES_ADDR = 'https://api.webrtc.win:6601/v1/customer/nodes';
 var BLOCK_LENGTH = 32 * 1024;
 
