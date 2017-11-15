@@ -11,6 +11,7 @@
 <p align="center">
  <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/badge/build-passing-green.svg" alt="npm"></a>
   <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/badge/npm-1.0.0-green.svg" alt="npm"></a>
+[![](https://data.jsdelivr.com/v1/package/npm/peardownloader/badge)](https://www.jsdelivr.com/package/npm/peardownloader)
 </p>
 <br>
 
