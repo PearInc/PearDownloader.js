@@ -8,8 +8,8 @@
 </h1>
 
 <h4 align="center">一个支持多协议、多源、混合P2P-CDN的下载器</h4>
-
 <p align="center">
+ <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/travis/USER/REPO.svg" alt="npm"></a>
   <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/badge/npm-1.0.0-green.svg" alt="npm"></a>
 </p>
 <br>
