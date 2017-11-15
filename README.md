@@ -12,6 +12,7 @@
  <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/badge/build-passing-green.svg" alt="npm"></a>
   <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/badge/npm-v1.0.0-blue.svg" alt="npm"></a>
    <a href="https://www.jsdelivr.com/package/npm/peardownloader"><img src="https://data.jsdelivr.com/v1/package/npm/peardownloader/badge" alt="jsdelivr"></a>
+ <a href="https://www.jsdelivr.com/package/npm/peardownloader"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
 </p>
 <br>
 
