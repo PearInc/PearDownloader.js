@@ -1,3 +1,4 @@
+
 <h1 align="center">
   <img src="fig/pear.png" height="220"></img>
   <br>
@@ -7,6 +8,10 @@
 </h1>
 
 <h4 align="center">一个支持多协议、多源、混合P2P-CDN的下载器</h4>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/badge/npm-1.0.0-green.svg" alt="npm"></a>
+</p>
 <br>
 
 **PearDownloader（梨享下载器）** 是[PearPlayer](https://github.com/PearInc/PearPlayer.js)的底层下载模块，
