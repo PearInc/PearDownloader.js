@@ -9,9 +9,12 @@
 <h4 align="center">一个支持多协议、多源、混合P2P-CDN的下载器</h4>
 <br>
 
+PearPlayer发布后，引起各方关注，但是有较强开发能力的CP集成起来困难，因为已经有的开发数年的H5播放器了。为此，
+我们将多源传输部分抽离出来，形成PearDownloader。这样各家CP可以根据需要集成到产品/项目中，
+例如，视频厂商可以将PearDownloader集成到已有播放器中，采用我们的算法或自己设计算法，将从多源多协议取得的数据喂给播放器。
 **PearDownloader（梨享下载器）** 是[PearPlayer](https://github.com/PearInc/PearPlayer.js)的底层下载模块，
 实现了融合HTTP（包含HTTPS、HTTP2）、WebRTC的多协议、多源、低延迟、高带宽利用率的无插件Web端下载加速能力。
-基于高效的调度算法将来自多个节点的数据进行拼接形成完整的文件，
+基于高效的调度算法将来自多个节点的数据进行拼接形成完整的文件或将有序的数据/媒体流喂给上层的应用，例如音视频播放器，
 PearDownloader能在保证下载速度前提下最大化P2P率。
 
 ![multisources](fig/player-arch.jpg)

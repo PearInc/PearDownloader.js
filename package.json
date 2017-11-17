@@ -1,6 +1,6 @@
 {
   "name": "peardownloader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -46,5 +46,6 @@
     "web torrent",
     "webrtc data channel",
     "webtorrent"
-  ]
+  ],
+  "false": {}
 }

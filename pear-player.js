@@ -243,7 +243,7 @@ Dispatcher.prototype.deselect = function (start, end, priority) {
 
     priority = Number(priority) || 0;
     console.log('deselect %s-%s (priority %s)', start, end, priority);
-
+    // self._clearAllQueues();
     for (var i = 0; i < self._selections.length; ++i) {
         var s = self._selections[i];
         if (s.from === start && s.to === end && s.priority === priority) {
@@ -714,6 +714,7 @@ Dispatcher.prototype.autoSlide = function () {
 
 Dispatcher.prototype._clearAllQueues = function () {
 
+    console.log('clearAllQueues');
     for (var k=0;k<this.downloaders.length;++k) {
         this.downloaders[k].clearQueue();
     }
@@ -1097,7 +1098,6 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
     var range = "bytes="+begin+"-"+end;
     // console.log('request range: ' + range);
     xhr.setRequestHeader("Range", range);
-    xhr.setRequestHeader("Connection", 'keep-alive');
     xhr.onload = function (event) {
         if (this.status >= 200 || this.status < 300) {
             self.downloading = false;
@@ -4950,13 +4950,13 @@ function RTCDownloader(config) {
 
 };
 
-RTCDownloader.prototype.messageFromDC = function (message) {          //由服务器传来的data channel的offer、peer_id、offer_id等信息
+RTCDownloader.prototype.offerFromWS = function (offer) {          //由服务器传来的data channel的offer、peer_id、offer_id等信息
     var self = this;
 
-    self.message = message;
-    console.log('[webrtc] messageFromDC:' + JSON.stringify(message));
-    self.dc_id = message.peer_id;
-    self.simpleRTC.signal(message.sdp);
+    self.message = offer;
+    console.log('[webrtc] messageFromDC:' + JSON.stringify(offer));
+    self.dc_id = offer.peer_id;
+    self.simpleRTC.signal(offer.sdp);
 };
 
 RTCDownloader.prototype.candidatesFromWS = function (candidates) {
@@ -5180,8 +5180,8 @@ var Set = require('./set');
 var WebTorrent = require('./pear-torrent');
 var Scheduler = require('./node-scheduler');
 
-var WEBSOCKET_ADDR = 'ws://signal.webrtc.win:9600/ws';
-// var WEBSOCKET_ADDR = 'wss://signal.webrtc.win:7601/wss';
+// var WEBSOCKET_ADDR = 'ws://signal.webrtc.win:9600/ws';             //test
+var WEBSOCKET_ADDR = 'wss://signal.webrtc.win:7601/wss';
 var GETNODES_ADDR = 'https://api.webrtc.win:6601/v1/customer/nodes';
 var BLOCK_LENGTH = 32 * 1024;
 
@@ -5485,16 +5485,16 @@ Worker.prototype._pearSignalHandshake = function () {
             self._debugInfo.totalDCs = nodes.length;
 
             for (var i=0;i<nodes.length;++i) {
-                var node = nodes[i];
-                if (!node.errorcode) {
+                var offer = nodes[i];
+                if (!offer.errorcode) {
                     if (dcCount === self.dataChannels) break;
-                    console.log('dc message:'+JSON.stringify(node))
-                    if (!self.JDMap[node.peer_id]) {
-                        self.candidateMap[node.peer_id] = makeCandidateArr(node.sdp.sdp);
+                    console.log('dc message:'+JSON.stringify(offer))
+                    if (!self.JDMap[offer.peer_id]) {
+                        self.candidateMap[offer.peer_id] = makeCandidateArr(offer.sdp.sdp);
 
-                        node.sdp.sdp = node.sdp.sdp.split('a=candidate')[0];
-                        console.log('initDC:'+JSON.stringify(node));
-                        self.JDMap[node.peer_id] = self.initDC(node);
+                        offer.sdp.sdp = offer.sdp.sdp.split('a=candidate')[0];
+                        console.log('initDC:'+JSON.stringify(offer));
+                        self.JDMap[offer.peer_id] = self.initDC(offer);
 
                         //test
                         // console.log('self.candidateMap[node.peer_id]:'+JSON.stringify(self.candidateMap[node.peer_id]));
@@ -5515,7 +5515,7 @@ Worker.prototype._pearSignalHandshake = function () {
     // }
 };
 
-Worker.prototype.initDC = function (message) {
+Worker.prototype.initDC = function (offer) {
     var self = this;
 
     var dc_config = {
@@ -5527,7 +5527,7 @@ Worker.prototype.initDC = function (message) {
     };
 
     var jd = new RTCDownloader(dc_config);
-    jd.messageFromDC(message)
+    jd.offerFromWS(offer)
     jd.on('signal',function (message) {
         console.log('[jd] signal:' + JSON.stringify(message));
         self.websocket.send(JSON.stringify(message));

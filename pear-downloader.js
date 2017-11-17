@@ -82,6 +82,8 @@ function Dispatcher(config) {
     self.bufferingCount = 0;                   //视频卡的次数
     self.noMoreNodes = false;                   //是否已没有新的节点可获取
 
+    self.startTime = (new Date()).getTime();      //用于计算平均速度
+
     //firstaid参数自适应
     self._windowLength = self.initialDownloaders.length <= 8 ? self.initialDownloaders.length : 8;
     // self._windowLength = 15;
@@ -133,6 +135,15 @@ Dispatcher.prototype._init = function () {
         self.bufferSources[k] = null;
     }
 
+    //计算平均速度
+    setInterval(function () {
+        if (!self.done) {
+            var endTime = (new Date()).getTime();
+            var meanSpeed = self.downloaded/(endTime-self.startTime);        //单位: KB/s
+            self.emit('meanspeed', meanSpeed);
+        }
+    }, 2000);
+
     self.ready = true;
     self.emit('ready', self.chunks);
 };
@@ -169,7 +180,7 @@ Dispatcher.prototype.deselect = function (start, end, priority) {
 
     priority = Number(priority) || 0;
     console.log('deselect %s-%s (priority %s)', start, end, priority);
-
+    // self._clearAllQueues();
     for (var i = 0; i < self._selections.length; ++i) {
         var s = self._selections[i];
         if (s.from === start && s.to === end && s.priority === priority) {
@@ -640,6 +651,7 @@ Dispatcher.prototype.autoSlide = function () {
 
 Dispatcher.prototype._clearAllQueues = function () {
 
+    console.log('clearAllQueues');
     for (var k=0;k<this.downloaders.length;++k) {
         this.downloaders[k].clearQueue();
     }
@@ -4875,13 +4887,13 @@ function RTCDownloader(config) {
 
 };
 
-RTCDownloader.prototype.messageFromDC = function (message) {          //由服务器传来的data channel的offer、peer_id、offer_id等信息
+RTCDownloader.prototype.offerFromWS = function (offer) {          //由服务器传来的data channel的offer、peer_id、offer_id等信息
     var self = this;
 
-    self.message = message;
-    console.log('[webrtc] messageFromDC:' + JSON.stringify(message));
-    self.dc_id = message.peer_id;
-    self.simpleRTC.signal(message.sdp);
+    self.message = offer;
+    console.log('[webrtc] messageFromDC:' + JSON.stringify(offer));
+    self.dc_id = offer.peer_id;
+    self.simpleRTC.signal(offer.sdp);
 };
 
 RTCDownloader.prototype.candidatesFromWS = function (candidates) {
@@ -5150,6 +5162,7 @@ function Worker(urlStr, token, opts) {
     self.dispatcher = null;
     self.JDMap = {};                           //根据dc的peer_id来获取jd的map
     self.nodeSet = new Set();                  //保存node的set
+    self.fileName = self.urlObj.path;
     self.file = null;
     self.dispatcherConfig = {
 
@@ -5180,7 +5193,7 @@ function Worker(urlStr, token, opts) {
         windowOffset: 0,
         windowLength: 0,
         signalServerConnected: false
-    }
+    };
 
     self._start();
 
@@ -5410,16 +5423,16 @@ Worker.prototype._pearSignalHandshake = function () {
             self._debugInfo.totalDCs = nodes.length;
 
             for (var i=0;i<nodes.length;++i) {
-                var node = nodes[i];
-                if (!node.errorcode) {
+                var offer = nodes[i];
+                if (!offer.errorcode) {
                     if (dcCount === self.dataChannels) break;
-                    console.log('dc message:'+JSON.stringify(node))
-                    if (!self.JDMap[node.peer_id]) {
-                        self.candidateMap[node.peer_id] = makeCandidateArr(node.sdp.sdp);
+                    console.log('dc message:'+JSON.stringify(offer))
+                    if (!self.JDMap[offer.peer_id]) {
+                        self.candidateMap[offer.peer_id] = makeCandidateArr(offer.sdp.sdp);
 
-                        node.sdp.sdp = node.sdp.sdp.split('a=candidate')[0];
-                        console.log('initDC:'+JSON.stringify(node));
-                        self.JDMap[node.peer_id] = self.initDC(node);
+                        offer.sdp.sdp = offer.sdp.sdp.split('a=candidate')[0];
+                        console.log('initDC:'+JSON.stringify(offer));
+                        self.JDMap[offer.peer_id] = self.initDC(offer);
 
                         //test
                         // console.log('self.candidateMap[node.peer_id]:'+JSON.stringify(self.candidateMap[node.peer_id]));
@@ -5440,7 +5453,7 @@ Worker.prototype._pearSignalHandshake = function () {
     // }
 };
 
-Worker.prototype.initDC = function (message) {
+Worker.prototype.initDC = function (offer) {
     var self = this;
 
     var dc_config = {
@@ -5452,7 +5465,7 @@ Worker.prototype.initDC = function (message) {
     };
 
     var jd = new RTCDownloader(dc_config);
-    jd.messageFromDC(message)
+    jd.offerFromWS(offer)
     jd.on('signal',function (message) {
         console.log('[jd] signal:' + JSON.stringify(message));
         self.websocket.send(JSON.stringify(message));
@@ -5628,6 +5641,10 @@ Worker.prototype._startPlaying = function (nodes) {
 
         var progress = downloaded > 1.0 ? 1.0 : downloaded;
         self.emit('progress', progress);
+    });
+    d.on('meanspeed', function (meanSpeed) {
+
+        self.emit('meanspeed', meanSpeed);
     });
     d.on('fograte', function (fogRate) {
 
