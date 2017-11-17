@@ -9,16 +9,13 @@
 
 <!--<script src="https://cdn.jsdelivr.net/npm/pearplayer@latest/dist/pear-player.min.js"></script>-->
 <script src="../pear-downloader.js"></script>
-<!--<script src="../dist/pear-player.min.js"></script>-->
 <script>
-
-//    var player = new PearPlayer();
 
     //第一个参数为video标签的id或class
     var url = 'https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4';
     var downloader = new PearDownloader(url, {
         scheduler: 'WebRTCFirst',      //节点调度算法,默认WebRTCFirst
-        auto: true,             //是否全部下载,默认true
+        auto: true,                   //是否全部下载,默认true
         interval: 5000,             //滑动窗口的时间间隔,单位毫秒,默认5s
         useDataChannel: true,       //是否开启data channel,默认true
         dataChannels: 20,            //创建data channel的最大数量,默认10
