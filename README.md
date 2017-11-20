@@ -61,14 +61,14 @@ Demo演示地址：https://demo.webrtc.win/peardownloader/
 ```html
 <script src="https://cdn.jsdelivr.net/npm/peardownloader@latest/dist/pear-downloader.min.js"></script>
 ```
-假设要下载https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4
+假设要下载https://example.com/file.zip
 ```html
 <script>
 /**
  * 第一个参数为文件的url
- * opts是可选的参数配置
+ * opts是可选的参数配置，可省略
  */
-var downloader = new PearDownloader('https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4', opts);
+var downloader = new PearDownloader('https://example.com/file.zip', opts);
 </script>
 ```
 恭喜您，您的下载器已经具备P2P能力了，而且无须任何插件！
