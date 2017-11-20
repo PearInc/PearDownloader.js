@@ -5,7 +5,7 @@
 module.exports = PearDownloader;
 
 var inherits = require('inherits');
-var Worker = require('./lib/worker');
+var Worker = require('./worker');
 
 inherits(PearDownloader, Worker);
 
@@ -15,5 +15,4 @@ function PearDownloader(urlStr, token, opts) {
     // if (!(self instanceof PearPlayer)) return new PearPlayer(selector, opts);
     if (typeof token === 'object') return PearDownloader(urlStr, '', token);
     Worker.call(self, urlStr, token, opts);
-
 }

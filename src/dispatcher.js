@@ -1,6 +1,6 @@
 
 /*
- 用于调度HttpDownloader和RTCDownloader
+ 该模块用于调度HttpDownloader和RTCDownloader
 
  config:{
 

@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="" />
+    <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/index.downloader.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/dispatcher.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/file-stream.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/file.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/http-downloader.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/lib/file-stream.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/lib/file.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/lib/peer.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/lib/rarity-map.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/lib/server.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/lib/tcp-pool.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/lib/torrent.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/lib/webconn.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/node-filter.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/node-scheduler.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/package.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/pear-torrent.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/peerid-generator.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/set.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/simple-RTC.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/webrtc-downloader-bin.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/worker.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/pear-downloader.min.js" afterPath="$PROJECT_DIR$/dist/pear-downloader.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.player.js" afterPath="$PROJECT_DIR$/index.player.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pear-downloader.js" afterPath="$PROJECT_DIR$/pear-downloader.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pear-player.js" afterPath="$PROJECT_DIR$/pear-player.js" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -39,22 +67,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="node-scheduler.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/node-scheduler.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="44">
-              <caret line="4" column="2" lean-forward="true" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="FIRST">
-              <first_editor relative-caret-position="330">
-                <caret line="24" column="33" lean-forward="true" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+            <state split_layout="SECOND">
+              <first_editor relative-caret-position="22">
+                <caret line="10" column="18" lean-forward="false" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
                 <folding>
                   <marker date="1511162875000" expanded="true" signature="2189:2347" ph="..." />
                   <marker date="1511162875000" expanded="true" signature="2191:2230" ph="/** 第一个参数为文件的url ...*/" />
@@ -65,12 +83,52 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="dispatcher.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dispatcher.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="44">
+              <caret line="2" column="4" lean-forward="false" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="file.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/file.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.downloader.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/index.downloader.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="16" column="43" lean-forward="false" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="115">
+              <caret line="17" column="28" lean-forward="false" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="api.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/api.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="324">
-                <caret line="48" column="3" lean-forward="true" selection-start-line="48" selection-start-column="3" selection-end-line="48" selection-end-column="3" />
+                <caret line="48" column="3" lean-forward="false" selection-start-line="48" selection-start-column="3" selection-end-line="48" selection-end-column="3" />
                 <folding>
                   <marker date="1511162242000" expanded="true" signature="780:1485" ph="{...}" />
                   <marker date="1511162242000" expanded="true" signature="2828:3048" ph="{...}" />
@@ -83,21 +141,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="worker.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/worker.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="47" column="51" lean-forward="true" selection-start-line="47" selection-start-column="51" selection-end-line="47" selection-end-column="51" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="index.player.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.player.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="91" column="17" lean-forward="true" selection-start-line="91" selection-start-column="17" selection-end-line="91" selection-end-column="17" />
+            <state relative-caret-position="176">
+              <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -107,7 +155,7 @@
         <entry file="file://$PROJECT_DIR$/examples/player-test.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="62">
-              <caret line="29" column="39" lean-forward="true" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="93" />
+              <caret line="29" column="39" lean-forward="false" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="93" />
               <folding />
             </state>
           </provider>
@@ -117,7 +165,7 @@
         <entry file="file://$PROJECT_DIR$/examples/downloader-test.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="239">
-              <caret line="20" column="65" lean-forward="true" selection-start-line="20" selection-start-column="65" selection-end-line="20" selection-end-column="65" />
+              <caret line="20" column="65" lean-forward="false" selection-start-line="20" selection-start-column="65" selection-end-line="20" selection-end-column="65" />
               <folding />
             </state>
           </provider>
@@ -186,15 +234,17 @@
         <option value="$PROJECT_DIR$/lib/webrtc-downloader-bin.js" />
         <option value="$PROJECT_DIR$/examples/player-audio-test.js" />
         <option value="$PROJECT_DIR$/examples/player-audio-test.html" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/lib/worker.js" />
         <option value="$PROJECT_DIR$/lib/dispatcher.js" />
-        <option value="$PROJECT_DIR$/index.player.js" />
         <option value="$PROJECT_DIR$/lib/node-scheduler.js" />
         <option value="$PROJECT_DIR$/examples/downloader-test.html" />
         <option value="$PROJECT_DIR$/examples/player-test.html" />
         <option value="$PROJECT_DIR$/docs/api.md" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/index.player.js" />
+        <option value="$PROJECT_DIR$/src/dispatcher.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/index.downloader.js" />
       </list>
     </option>
   </component>
@@ -210,7 +260,7 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+    <option name="y" value="24" />
     <option name="width" value="2047" />
     <option name="height" value="1030" />
   </component>
@@ -252,7 +302,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -363,11 +413,11 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="uglify-player" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="copy-to-player-project" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="uglify-player" />
+        <script value="copy-to-player-project" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -447,15 +497,15 @@
       <item index="1" class="java.lang.String" itemvalue="npm.push-to-github" />
       <item index="2" class="java.lang.String" itemvalue="npm.build-downloader" />
       <item index="3" class="java.lang.String" itemvalue="npm.build-player" />
-      <item index="4" class="java.lang.String" itemvalue="npm.uglify-player" />
+      <item index="4" class="java.lang.String" itemvalue="npm.copy-to-player-project" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="npm.push-to-github" />
-        <item index="1" class="java.lang.String" itemvalue="npm.uglify-player" />
+        <item index="0" class="java.lang.String" itemvalue="npm.copy-to-player-project" />
+        <item index="1" class="java.lang.String" itemvalue="npm.uglify-downloader" />
         <item index="2" class="java.lang.String" itemvalue="npm.build-player" />
         <item index="3" class="java.lang.String" itemvalue="npm.build-downloader" />
-        <item index="4" class="java.lang.String" itemvalue="npm.uglify-downloader" />
+        <item index="4" class="java.lang.String" itemvalue="npm.push-to-github" />
       </list>
     </recent_temporary>
   </component>
@@ -511,15 +561,15 @@
       <workItem from="1510625843371" duration="6370000" />
       <workItem from="1510817031248" duration="5113000" />
       <workItem from="1510927691962" duration="3125000" />
-      <workItem from="1511144455165" duration="7398000" />
+      <workItem from="1511144455165" duration="8690000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="124482000" />
+    <option name="totallyTimeSpent" value="125774000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="2047" height="1030" extended-state="0" />
+    <frame x="0" y="24" width="2047" height="1030" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -555,27 +605,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/docs/get-started.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="2662">
-            <caret line="121" column="97" lean-forward="false" selection-start-line="121" selection-start-column="97" selection-end-line="121" selection-end-column="97" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="946">
-            <caret line="43" column="53" lean-forward="false" selection-start-line="43" selection-start-column="53" selection-end-line="43" selection-end-column="53" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.js" />
     <entry file="file://$PROJECT_DIR$/lib/file.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="440">
@@ -744,9 +773,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1276">
           <caret line="58" column="64" lean-forward="false" selection-start-line="58" selection-start-column="64" selection-end-line="58" selection-end-column="64" />
-          <folding>
-            <marker date="1510649511000" expanded="true" signature="401:471" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -759,14 +786,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/player-audio-test.js" />
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="526">
-          <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/player-audio-test.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="827">
@@ -787,14 +806,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
           <caret line="427" column="73" lean-forward="true" selection-start-line="427" selection-start-column="73" selection-end-line="427" selection-end-column="73" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.player.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="91" column="17" lean-forward="true" selection-start-line="91" selection-start-column="17" selection-end-line="91" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -828,27 +839,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/downloader-test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="20" column="65" lean-forward="true" selection-start-line="20" selection-start-column="65" selection-end-line="20" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/player-test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="29" column="39" lean-forward="true" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="93" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docs/api.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="324">
-            <caret line="48" column="3" lean-forward="true" selection-start-line="48" selection-start-column="3" selection-end-line="48" selection-end-column="3" />
+            <caret line="48" column="3" lean-forward="false" selection-start-line="48" selection-start-column="3" selection-end-line="48" selection-end-column="3" />
             <folding>
               <marker date="1511162242000" expanded="true" signature="780:1485" ph="{...}" />
               <marker date="1511162242000" expanded="true" signature="2828:3048" ph="{...}" />
@@ -880,15 +875,71 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="330">
-            <caret line="24" column="33" lean-forward="true" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+        <state split_layout="SECOND">
+          <first_editor relative-caret-position="22">
+            <caret line="10" column="18" lean-forward="false" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
             <folding>
               <marker date="1511162875000" expanded="true" signature="2189:2347" ph="..." />
               <marker date="1511162875000" expanded="true" signature="2191:2230" ph="/** 第一个参数为文件的url ...*/" />
             </folding>
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/file.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.player.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/downloader-test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="20" column="65" lean-forward="false" selection-start-line="20" selection-start-column="65" selection-end-line="20" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/player-test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="29" column="39" lean-forward="false" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="93" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dispatcher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" column="4" lean-forward="false" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="17" column="28" lean-forward="false" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/index.downloader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="16" column="43" lean-forward="false" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
+          <folding />
         </state>
       </provider>
     </entry>
