@@ -64,14 +64,9 @@ Demo演示地址：https://demo.webrtc.win/peardownloader/
 假设要下载https://example.com/file.zip
 ```html
 <script>
-/**
- * 第一个参数为文件的url
- * opts是可选的参数配置，可省略
- */
-var downloader = new PearDownloader('https://example.com/file.zip', opts);
+var downloader = new PearDownloader('https://example.com/file.zip');
 </script>
 ```
-恭喜您，您的下载器已经具备P2P能力了，而且无须任何插件！
 
 ### 谁在用我们的产品？
 
