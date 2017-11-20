@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/pear-downloader.min.js" afterPath="$PROJECT_DIR$/dist/pear-downloader.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/pear-player.min.js" afterPath="$PROJECT_DIR$/dist/pear-player.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/api.md" afterPath="$PROJECT_DIR$/docs/api.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/downloader-test.html" afterPath="$PROJECT_DIR$/examples/downloader-test.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/player-test.html" afterPath="$PROJECT_DIR$/examples/player-test.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.player.js" afterPath="$PROJECT_DIR$/index.player.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/dispatcher.js" afterPath="$PROJECT_DIR$/lib/dispatcher.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/node-scheduler.js" afterPath="$PROJECT_DIR$/lib/node-scheduler.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/worker.js" afterPath="$PROJECT_DIR$/lib/worker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pear-downloader.js" afterPath="$PROJECT_DIR$/pear-downloader.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pear-player.js" afterPath="$PROJECT_DIR$/pear-player.js" />
-    </list>
+    <list default="true" id="c1cae126-6ccb-4970-a9e4-1e7678b43757" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -29,16 +16,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="index.downloader.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.downloader.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="13" column="90" lean-forward="true" selection-start-line="13" selection-start-column="90" selection-end-line="13" selection-end-column="90" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="get-started.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/get-started.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
@@ -65,10 +42,24 @@
       <file leaf-file-name="node-scheduler.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/node-scheduler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443">
-              <caret line="58" column="14" lean-forward="false" selection-start-line="58" selection-start-column="4" selection-end-line="58" selection-end-column="14" />
+            <state relative-caret-position="44">
+              <caret line="4" column="2" lean-forward="true" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pear.png" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fig/pear.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="player-arch.jpg" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fig/player-arch.jpg">
+          <provider selected="true" editor-type-id="images">
+            <state />
           </provider>
         </entry>
       </file>
@@ -88,12 +79,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="api.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="api.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/api.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="170">
-                <caret line="41" column="58" lean-forward="false" selection-start-line="41" selection-start-column="58" selection-end-line="41" selection-end-column="58" />
+              <first_editor relative-caret-position="324">
+                <caret line="48" column="3" lean-forward="true" selection-start-line="48" selection-start-column="3" selection-end-line="48" selection-end-column="3" />
                 <folding>
                   <marker date="1511162242000" expanded="true" signature="780:1485" ph="{...}" />
                   <marker date="1511162242000" expanded="true" signature="2828:3048" ph="{...}" />
@@ -141,16 +132,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="239">
               <caret line="20" column="65" lean-forward="true" selection-start-line="20" selection-start-column="65" selection-end-line="20" selection-end-column="65" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dispatcher.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/dispatcher.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="427" column="73" lean-forward="true" selection-start-line="427" selection-start-column="73" selection-end-line="427" selection-end-column="73" />
               <folding />
             </state>
           </provider>
@@ -484,11 +465,11 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="npm.uglify-player" />
-        <item index="1" class="java.lang.String" itemvalue="npm.build-player" />
-        <item index="2" class="java.lang.String" itemvalue="npm.build-downloader" />
-        <item index="3" class="java.lang.String" itemvalue="npm.uglify-downloader" />
-        <item index="4" class="java.lang.String" itemvalue="npm.push-to-github" />
+        <item index="0" class="java.lang.String" itemvalue="npm.push-to-github" />
+        <item index="1" class="java.lang.String" itemvalue="npm.uglify-player" />
+        <item index="2" class="java.lang.String" itemvalue="npm.build-player" />
+        <item index="3" class="java.lang.String" itemvalue="npm.build-downloader" />
+        <item index="4" class="java.lang.String" itemvalue="npm.uglify-downloader" />
       </list>
     </recent_temporary>
   </component>
@@ -544,15 +525,15 @@
       <workItem from="1510625843371" duration="6370000" />
       <workItem from="1510817031248" duration="5113000" />
       <workItem from="1510927691962" duration="3125000" />
-      <workItem from="1511144455165" duration="6534000" />
+      <workItem from="1511144455165" duration="6995000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="123618000" />
+    <option name="totallyTimeSpent" value="124079000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="2047" height="1030" extended-state="0" />
+    <frame x="0" y="23" width="2047" height="1030" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -588,23 +569,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="26" column="11" lean-forward="false" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/api.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="308">
-            <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docs/get-started.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -870,14 +834,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/node-scheduler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="58" column="14" lean-forward="false" selection-start-line="58" selection-start-column="4" selection-end-line="58" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/worker.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
@@ -919,8 +875,8 @@
     <entry file="file://$PROJECT_DIR$/docs/api.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="170">
-            <caret line="41" column="58" lean-forward="false" selection-start-line="41" selection-start-column="58" selection-end-line="41" selection-end-column="58" />
+          <first_editor relative-caret-position="324">
+            <caret line="48" column="3" lean-forward="true" selection-start-line="48" selection-start-column="3" selection-end-line="48" selection-end-column="3" />
             <folding>
               <marker date="1511162242000" expanded="true" signature="780:1485" ph="{...}" />
               <marker date="1511162242000" expanded="true" signature="2828:3048" ph="{...}" />
@@ -930,6 +886,24 @@
           </first_editor>
           <second_editor />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/node-scheduler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="4" column="2" lean-forward="true" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig/pear.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig/player-arch.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
   </component>
