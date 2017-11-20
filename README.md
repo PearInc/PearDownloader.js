@@ -19,7 +19,7 @@
 PearPlayer 发布后，吸引了大家持续的关注，同时我们也收集到了大家许多宝贵的建议。
 一方面我们将持续维护更新PearPlayer，使其支持更多的拓展功能；
 另一方面我们将更底层、更基础的且适用范围更广的相关组件重新整理，专注于节点的选择以及数据的调度，将多源传输部分剥离出来，形成PearDownloader。
-PearDownloader的发布，可以弥补PearPlayer对于已有成熟播放器集成的不足，内容提供商可以按需将其集成到自有产品中，使用PearFog服务。
+PearDownloader的发布，可以降低已有成熟播放器的内容提供商的迁移成本，内容提供商可以按需将其集成到自有产品中，使用PearFog服务。
 PearDownloader支持更多样化的文件类型，更灵活的调度算法、调度策略的选择，满足更广阔、灵活、多变的业务场景与业务需求。
 
 **PearDownloader（梨享下载器）** 是[PearPlayer](https://github.com/PearInc/PearPlayer.js)的底层下载模块，
