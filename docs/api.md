@@ -35,11 +35,11 @@ var PearDownloader = require('PearDownloader');
 
 ```js
 {
-  scheduler: 'WebRTCFirst',      //节点调度算法,默认WebRTCFirst
+  scheduler: 'WebRTCFirst',      //节点调度算法，默认IdleFirst，其它内置调度算法有“WebRTCFirst“和”CloudFirst”
   auto: true,                    //是否全部下载,默认true
   interval: 5000,                //滑动窗口的时间间隔,单位毫秒,默认10s
   useDataChannel: true,          //是否开启data channel,默认true
-  dataChannels: 20,              //创建data channel的最大数量,默认10
+  dataChannels: 20,              //创建data channel的最大数量,默认20
   useTorrent: false,             //是否开启Browser P2P(基于Webtorrent)，默认true
   magnetURI: magnetURI,          //可手动传入magnetURI，需先将useTorrent设为true
   trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true

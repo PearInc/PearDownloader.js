@@ -27,11 +27,11 @@
     //第一个参数为video标签的id或class
     var player = new PearPlayer('#pearvideo', {
         src: 'https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4',
-        scheduler: 'WebRTCFirst',      //节点调度算法,默认WebRTCFirst
+        scheduler: 'IdleFirst',      //节点调度算法，默认IdleFirst，其它内置调度算法有“WebRTCFirst“和”CloudFirst”
         autoplay: true,             //是否自动播发视频,默认true
         interval: 5000,             //滑动窗口的时间间隔,单位毫秒,默认10s
         useDataChannel: true,       //是否开启data channel,默认true
-        dataChannels: 20,           //创建data channel的最大数量,默认10
+        dataChannels: 20,           //创建data channel的最大数量,默认20
         useTorrent: true,           //是否开启Browser P2P(基于Webtorrent)，默认true
 //      magnetURI: 'magnet:?xt=...',       //可手动传入magnetURI，需先将useTorrent设为true
 //      trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true
@@ -43,8 +43,8 @@
     player.on('exception', onException);               //播放器出现异常时的回调函数
     player.on('begin', onBegin);　　　　　　　　　　　　　 //开始下载时触发
     player.on('progress', onProgress);                 //回调目前的下载进度
-    player.on('cloudspeed', onCloudSpeed);             //来自server的HTTP的平均下载速度
-    player.on('fogspeed', onFogSpeed);                 //来自fog的节点（包括HTTP和WebRTC）的平均下载速度
+    player.on('cloudspeed', onCloudSpeed);             //来自cloud节点的HTTP的瞬时下载速度
+    player.on('fogspeed', onFogSpeed);                 //来自fog的节点（包括HTTP和WebRTC）的瞬时下载速度
     player.on('fograte', onWebRTCRate);　　　　　　　　　 //fog节点的下载比率（下载的字节数除以总的字节数）
     player.on('buffersources', onBufferSources);       //buffer map，记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
     player.on('done', onDone);　　　　　　　　           //结束下载时触发

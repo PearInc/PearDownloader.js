@@ -3755,7 +3755,7 @@ module.exports = {
 
     IdleFirst: function (nodesProvider, info) {
 
-        var idles = nodesProvider.filter(function (item) {         //空闲节点
+        var idles = nodesProvider.filter(function (item) {                         //空闲节点
             return item.downloading === false;
         })
 
@@ -5144,7 +5144,7 @@ function Worker(urlStr, token, opts) {
 
     self.src = urlStr;
     self.urlObj = url.parse(self.src);
-    self.scheduler = opts.scheduler || 'WebRTCFirst';
+    self.scheduler = opts.scheduler || 'IdleFirst';
     self.token = token;
     self.useDataChannel = (opts.useDataChannel === false)? false : true;
     self.useMonitor = (opts.useMonitor === true)? true : false;
@@ -5162,6 +5162,7 @@ function Worker(urlStr, token, opts) {
     self.dispatcher = null;
     self.JDMap = {};                           //根据dc的peer_id来获取jd的map
     self.nodeSet = new Set();                  //保存node的set
+    self.tempDCQueue = [];                     //暂时保存data channel的队列
     self.fileName = self.urlObj.path;
     self.file = null;
     self.dispatcherConfig = {
@@ -5475,10 +5476,11 @@ Worker.prototype.initDC = function (offer) {
         self._debugInfo.connectedDCs ++;
         self._debugInfo.usefulDCs ++;
 
-        self.dispatcher.addDataChannel(jd);
-        // if (self.websocket) {
-        //     self.websocket.close();
-        // }
+        if (self.dispatcher) {
+            self.dispatcher.addDataChannel(jd);
+        } else {
+            self.tempDCQueue.push(jd);
+        }
     });
 
     return jd;
@@ -5505,11 +5507,10 @@ Worker.prototype._startPlaying = function (nodes) {
     var d = new Dispatcher(self.dispatcherConfig);
     self.dispatcher = d;
 
-    // if (self.useDataChannel) {
-    //     self._pearSignalHandshake();
-    // }
-
-
+    while (self.tempDCQueue.length) {
+        var jd = self.tempDCQueue.shift();
+        self.dispatcher.addDataChannel(jd);
+    }
 
     //{errCode: 1, errMsg: 'This browser do not support WebRTC communication'}
     d.once('ready', function (chunks) {
@@ -5564,6 +5565,7 @@ Worker.prototype._startPlaying = function (nodes) {
         // if (self.useDataChannel) {
         //     self._pearSignalHandshake();
         // }
+        console.info('log');
         self.emit('metadata', metadata);
 
         if (self.useTorrent && self.magnetURI) {

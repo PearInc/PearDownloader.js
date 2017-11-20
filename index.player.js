@@ -68,6 +68,30 @@ PearPlayer.prototype.setupListeners = function () {
         // // self._colddown = 5/self._slideInterval*self._interval2BufPos + 5;                        //窗口滑动的冷却时间
         // // self._colddown = self._windowLength*2;
         // self._colddown = 5;
-        // self.emit('loadedmetadata', {'bitrate': self.bitrate, 'duration': self.video.duration});
+        // self.emit('metadata', {'bitrate': self.bitrate, 'duration': self.video.duration});
+
+        // if (self.useTorrent && self.magnetURI) {
+        //     var client = new WebTorrent();
+        //     // client.on('error', function () {
+        //     //
+        //     // });
+        //     console.log('magnetURI:'+self.magnetURI);
+        //     client.add(self.magnetURI, {
+        //             announce: self.trackers || [
+        //                 "wss://tracker.openwebtorrent.com",
+        //                 "wss://tracker.btorrent.xyz"
+        //             ],
+        //             store: d.store,
+        //             bitfield: d.bitfield
+        //         },
+        //         function (torrent) {
+        //             console.log('Torrent:', torrent);
+        //
+        //             d.addTorrent(torrent);
+        //         }
+        //     );
+        // }
+
     });
+
 }

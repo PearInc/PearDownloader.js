@@ -90,8 +90,32 @@ PearPlayer.prototype.setupListeners = function () {
         // // self._colddown = 5/self._slideInterval*self._interval2BufPos + 5;                        //窗口滑动的冷却时间
         // // self._colddown = self._windowLength*2;
         // self._colddown = 5;
-        // self.emit('loadedmetadata', {'bitrate': self.bitrate, 'duration': self.video.duration});
+        // self.emit('metadata', {'bitrate': self.bitrate, 'duration': self.video.duration});
+
+        // if (self.useTorrent && self.magnetURI) {
+        //     var client = new WebTorrent();
+        //     // client.on('error', function () {
+        //     //
+        //     // });
+        //     console.log('magnetURI:'+self.magnetURI);
+        //     client.add(self.magnetURI, {
+        //             announce: self.trackers || [
+        //                 "wss://tracker.openwebtorrent.com",
+        //                 "wss://tracker.btorrent.xyz"
+        //             ],
+        //             store: d.store,
+        //             bitfield: d.bitfield
+        //         },
+        //         function (torrent) {
+        //             console.log('Torrent:', torrent);
+        //
+        //             d.addTorrent(torrent);
+        //         }
+        //     );
+        // }
+
     });
+
 }
 },{"./index.downloader":1,"inherits":51,"render-media":87,"webtorrent":116}],3:[function(require,module,exports){
 (function (process){
@@ -156,6 +180,8 @@ function Dispatcher(config) {
     self.bufferingCount = 0;                   //视频卡的次数
     self.noMoreNodes = false;                   //是否已没有新的节点可获取
 
+    self.startTime = (new Date()).getTime();      //用于计算平均速度
+
     //firstaid参数自适应
     self._windowLength = self.initialDownloaders.length <= 8 ? self.initialDownloaders.length : 8;
     // self._windowLength = 15;
@@ -206,6 +232,15 @@ Dispatcher.prototype._init = function () {
     for (var k=0;k<self.bufferSources;++k) {
         self.bufferSources[k] = null;
     }
+
+    //计算平均速度
+    setInterval(function () {
+        if (!self.done) {
+            var endTime = (new Date()).getTime();
+            var meanSpeed = self.downloaded/(endTime-self.startTime);        //单位: KB/s
+            self.emit('meanspeed', meanSpeed);
+        }
+    }, 2000);
 
     self.ready = true;
     self.emit('ready', self.chunks);
@@ -504,10 +539,10 @@ Dispatcher.prototype._setupHttp = function (hd) {
                 if (hd.type === 1) {          //node
                     self.fogDownloaded += self.pieceLength;
                     self.emit('fograte', self.fogDownloaded/self.downloaded);
-                    self.emit('fogspeed', self.downloaders.getMeanSpeed([1, 2]));
+                    self.emit('fogspeed', self.downloaders.getCurrentSpeed([1, 2]));
                     hd.type === 1 ? self.bufferSources[index] = 'n' : self.bufferSources[index] = 'b';
                 } else {
-                    self.emit('cloudspeed', self.downloaders.getMeanSpeed([0]));
+                    self.emit('cloudspeed', self.downloaders.getCurrentSpeed([0]));
                     self.bufferSources[index] = 's'
                 }
                 self.emit('buffersources', self.bufferSources);
@@ -548,7 +583,7 @@ Dispatcher.prototype._setupDC = function (jd) {
                 console.log('downloaded:'+self.downloaded+' fogDownloaded:'+self.fogDownloaded);
                 self.emit('downloaded', self.downloaded/self.fileSize);
                 self.emit('fograte', self.fogDownloaded/self.downloaded);
-                self.emit('fogspeed', self.downloaders.getMeanSpeed([1,2]));
+                self.emit('fogspeed', self.downloaders.getCurrentSpeed([1,2]));
                 self.bufferSources[index] = 'd';
                 self.emit('buffersources', self.bufferSources);
                 self.emit('sourcemap', 'd', index);
@@ -612,7 +647,7 @@ Dispatcher.prototype.addTorrent = function (torrent) {
             self.emit('downloaded', self.downloaded/self.fileSize);
             self.emit('fograte', self.fogDownloaded/self.downloaded);
             // console.log('torrent.downloadSpeed:'+torrent.downloadSpeed/1024);
-            self.emit('fogspeed', self.downloaders.getMeanSpeed([1, 2]) + torrent.downloadSpeed/1024);
+            self.emit('fogspeed', self.downloaders.getCurrentSpeed([1, 2]) + torrent.downloadSpeed/1024);
             self.bufferSources[index] = 'b';
             self.emit('buffersources', self.bufferSources);
             self.emit('sourcemap', 'b', index);
@@ -758,6 +793,23 @@ Array.prototype.getMeanSpeed = function (typeArr) {              //根据传输�
         }
     }
     return Math.floor(sum/length);
+};
+
+Array.prototype.getCurrentSpeed = function (typeArr) {              //根据传输的类型(不传则计算所有节点)来计算瞬时速度
+    var sum = 0;
+    var length = 0;
+    if (typeArr) {
+        for (var i = 0; i < this.length; i++) {
+            if (typeArr.indexOf(this[i].type) >= 0) {
+                sum+=this[i].meanSpeed;
+            }
+        }
+    } else {
+        for (var i = 0; i < this.length; i++) {
+            sum+=this[i].meanSpeed;
+        }
+    }
+    return Math.floor(sum);
 };
 
 
@@ -3818,7 +3870,7 @@ module.exports = {
 
     IdleFirst: function (nodesProvider, info) {
 
-        var idles = nodesProvider.filter(function (item) {         //空闲节点
+        var idles = nodesProvider.filter(function (item) {                         //空闲节点
             return item.downloading === false;
         })
 
@@ -5207,7 +5259,7 @@ function Worker(urlStr, token, opts) {
 
     self.src = urlStr;
     self.urlObj = url.parse(self.src);
-    self.scheduler = opts.scheduler || 'WebRTCFirst';
+    self.scheduler = opts.scheduler || 'IdleFirst';
     self.token = token;
     self.useDataChannel = (opts.useDataChannel === false)? false : true;
     self.useMonitor = (opts.useMonitor === true)? true : false;
@@ -5225,6 +5277,8 @@ function Worker(urlStr, token, opts) {
     self.dispatcher = null;
     self.JDMap = {};                           //根据dc的peer_id来获取jd的map
     self.nodeSet = new Set();                  //保存node的set
+    self.tempDCQueue = [];                     //暂时保存data channel的队列
+    self.fileName = self.urlObj.path;
     self.file = null;
     self.dispatcherConfig = {
 
@@ -5255,7 +5309,7 @@ function Worker(urlStr, token, opts) {
         windowOffset: 0,
         windowLength: 0,
         signalServerConnected: false
-    }
+    };
 
     self._start();
 
@@ -5537,10 +5591,11 @@ Worker.prototype.initDC = function (offer) {
         self._debugInfo.connectedDCs ++;
         self._debugInfo.usefulDCs ++;
 
-        self.dispatcher.addDataChannel(jd);
-        // if (self.websocket) {
-        //     self.websocket.close();
-        // }
+        if (self.dispatcher) {
+            self.dispatcher.addDataChannel(jd);
+        } else {
+            self.tempDCQueue.push(jd);
+        }
     });
 
     return jd;
@@ -5567,11 +5622,10 @@ Worker.prototype._startPlaying = function (nodes) {
     var d = new Dispatcher(self.dispatcherConfig);
     self.dispatcher = d;
 
-    // if (self.useDataChannel) {
-    //     self._pearSignalHandshake();
-    // }
-
-
+    while (self.tempDCQueue.length) {
+        var jd = self.tempDCQueue.shift();
+        self.dispatcher.addDataChannel(jd);
+    }
 
     //{errCode: 1, errMsg: 'This browser do not support WebRTC communication'}
     d.once('ready', function (chunks) {
@@ -5619,36 +5673,6 @@ Worker.prototype._startPlaying = function (nodes) {
         // var hd = new HttpDownloader(self.src, 'server');
         // // d.addNodes([{uri: self.src, type: 'server'}]);
         // d.addNode(hd);
-    });
-
-    d.on('loadedmetadata', function (metadata) {
-
-        // if (self.useDataChannel) {
-        //     self._pearSignalHandshake();
-        // }
-        self.emit('metadata', metadata);
-
-        if (self.useTorrent && self.magnetURI) {
-            var client = new WebTorrent();
-            // client.on('error', function () {
-            //
-            // });
-            console.log('magnetURI:'+self.magnetURI);
-            client.add(self.magnetURI, {
-                    announce: self.trackers || [
-                        "wss://tracker.openwebtorrent.com",
-                        "wss://tracker.btorrent.xyz"
-                    ],
-                    store: d.store,
-                    bitfield: d.bitfield
-                },
-                function (torrent) {
-                    console.log('Torrent:', torrent);
-
-                    d.addTorrent(torrent);
-                }
-            );
-        }
     });
 
     d.on('needmorenodes', function () {
@@ -5703,6 +5727,10 @@ Worker.prototype._startPlaying = function (nodes) {
 
         var progress = downloaded > 1.0 ? 1.0 : downloaded;
         self.emit('progress', progress);
+    });
+    d.on('meanspeed', function (meanSpeed) {
+
+        self.emit('meanspeed', meanSpeed);
     });
     d.on('fograte', function (fogRate) {
 
