@@ -52,12 +52,12 @@
       <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SECOND">
-              <first_editor relative-caret-position="198">
-                <caret line="9" column="4" lean-forward="false" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+            <state split_layout="FIRST">
+              <first_editor relative-caret-position="359">
+                <caret line="24" column="33" lean-forward="true" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
                 <folding>
-                  <marker date="1510932100000" expanded="true" signature="2189:2347" ph="..." />
-                  <marker date="1510932100000" expanded="true" signature="2191:2230" ph="/** 第一个参数为文件的url ...*/" />
+                  <marker date="1511162875000" expanded="true" signature="2189:2347" ph="..." />
+                  <marker date="1511162875000" expanded="true" signature="2191:2230" ph="/** 第一个参数为文件的url ...*/" />
                 </folding>
               </first_editor>
               <second_editor />
@@ -183,7 +183,6 @@
         <option value="$PROJECT_DIR$/lib/file.js" />
         <option value="$PROJECT_DIR$/lib/http-downloader.js" />
         <option value="$PROJECT_DIR$/docs/get-started.md" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/lib/webrtc-downloader-bin.js" />
         <option value="$PROJECT_DIR$/examples/player-audio-test.js" />
         <option value="$PROJECT_DIR$/examples/player-audio-test.html" />
@@ -195,6 +194,7 @@
         <option value="$PROJECT_DIR$/examples/downloader-test.html" />
         <option value="$PROJECT_DIR$/examples/player-test.html" />
         <option value="$PROJECT_DIR$/docs/api.md" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -511,12 +511,12 @@
       <workItem from="1510625843371" duration="6370000" />
       <workItem from="1510817031248" duration="5113000" />
       <workItem from="1510927691962" duration="3125000" />
-      <workItem from="1511144455165" duration="7081000" />
+      <workItem from="1511144455165" duration="7184000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="124165000" />
+    <option name="totallyTimeSpent" value="124268000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="2047" height="1030" extended-state="0" />
@@ -879,12 +879,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SECOND">
-          <first_editor relative-caret-position="198">
-            <caret line="9" column="4" lean-forward="false" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="359">
+            <caret line="24" column="33" lean-forward="true" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
             <folding>
-              <marker date="1510932100000" expanded="true" signature="2189:2347" ph="..." />
-              <marker date="1510932100000" expanded="true" signature="2191:2230" ph="/** 第一个参数为文件的url ...*/" />
+              <marker date="1511162875000" expanded="true" signature="2189:2347" ph="..." />
+              <marker date="1511162875000" expanded="true" signature="2191:2230" ph="/** 第一个参数为文件的url ...*/" />
             </folding>
           </first_editor>
           <second_editor />
