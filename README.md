@@ -58,7 +58,7 @@ Demo演示地址：https://demo.webrtc.win/peardownloader/
 ```
 或者使用CDN：
 ```html
-<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest/dist/pear-downloader.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest"></script>
 ```
 假设要下载https://example.com/file.zip
 ```html
