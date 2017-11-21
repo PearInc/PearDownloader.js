@@ -25,7 +25,7 @@
     "build-downloader": "browserify ./src/index.downloader.js -s PearDownloader > ./dist/pear-downloader.js",
     "uglify-downloader": "browserify -s PearDownloader -e  ./src/index.downloader.js | babili > ./dist/pear-downloader.min.js",
     "pull-from-github": "git pull",
-    "push-to-github": "git add . && git commit -m 'update' && git push",
+    "push-to-github": "git add . && git commit -m 'add .npmignore' && git push",
     "npm-publish": "npm publish",
     "copy-to-player-project": "cp -r ./src/* ../PearPlayer.js/src"
   },
