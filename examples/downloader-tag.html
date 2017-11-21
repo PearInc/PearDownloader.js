@@ -9,12 +9,16 @@
     <pr-downloader id="downloader"
                    data-src="https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4"
                    data-use-monitor="true">
-        downloader tag
+        <a href="#">downloader tag</a>
     </pr-downloader>
 </body>
 <script>
     var PRDownloader = document.getElementById('downloader');
-    PRDownloader.downloader.on('sourcemap', onSourceMap);
+    PRDownloader.attachedCallback = function () {
+        console.warn('66666666666');
+        PRDownloader.downloader.on('sourcemap', onSourceMap);
+    };
+
     function onSourceMap(sourceType, index) {
         console.warn('Received source type:' + sourceType + ' index:' + index);
     }

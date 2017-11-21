@@ -27,9 +27,16 @@ module.exports = {
         });
 
         var ret = idles.concat(busys);
-        for (var i=0;i<ret.length;++i) {
-            console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+
+        if (ret.length > info.windowLength) {
+            ret = ret.filter(function (item) {
+                return item.type !== 0
+            })
         }
+
+        // for (var i=0;i<ret.length;++i) {
+        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // }
 
         return ret;
     },
@@ -49,8 +56,13 @@ module.exports = {
         });
 
         var ret = idles.concat(busys);
-        for (var i=0;i<ret.length;++i) {
-            console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // for (var i=0;i<ret.length;++i) {
+        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // }
+        if (ret.length > info.windowLength) {
+            ret = ret.filter(function (item) {
+                return item.type !== 0
+            })
         }
 
         return ret;
@@ -71,8 +83,13 @@ module.exports = {
         });
 
         var ret = idles.concat(busys);
-        for (var i=0;i<ret.length;++i) {
-            console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // for (var i=0;i<ret.length;++i) {
+        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // }
+        if (ret.length > info.windowLength) {
+            ret = ret.filter(function (item) {
+                return item.type !== 0
+            })
         }
 
         return ret;

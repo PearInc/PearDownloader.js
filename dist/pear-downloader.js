@@ -13444,11 +13444,8 @@ function PearDownloader(urlStr, token, opts) {
 
 var PRDownloaderProto = Object.create(HTMLElement.prototype);
 PRDownloaderProto.createdCallback = function() {
-    console.log('XTreehouseProto created');
-}
-PRDownloaderProto.attachedCallback = function() {
-    console.log('XTreehouseProto attached:'+this.dataset.useMonitor);
-    console.log(this.dataset.src)
+    console.warn('PRDownloaderProto created');
+
     var downloader = new PearDownloader(this.dataset.src, {
         scheduler: this.dataset.scheduler,
         auto: this.dataset.auto,
@@ -13462,8 +13459,14 @@ PRDownloaderProto.attachedCallback = function() {
         useMonitor: this.dataset.useMonitor,
     });
     PRDownloaderProto.downloader = downloader;
-    // downloader.call(this);
+
 }
+// PRDownloaderProto.attachedCallback = function() {
+//     console.warn('XTreehouseProto attached:'+this.dataset.useMonitor);
+//     console.log(this.dataset.src)
+//
+//     // downloader.call(this);
+// }
 PRDownloaderProto.detachedCallback = function() {
 
 }
@@ -16149,9 +16152,16 @@ module.exports = {
         });
 
         var ret = idles.concat(busys);
-        for (var i=0;i<ret.length;++i) {
-            console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+
+        if (ret.length > info.windowLength) {
+            ret = ret.filter(function (item) {
+                return item.type !== 0
+            })
         }
+
+        // for (var i=0;i<ret.length;++i) {
+        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // }
 
         return ret;
     },
@@ -16171,8 +16181,13 @@ module.exports = {
         });
 
         var ret = idles.concat(busys);
-        for (var i=0;i<ret.length;++i) {
-            console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // for (var i=0;i<ret.length;++i) {
+        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // }
+        if (ret.length > info.windowLength) {
+            ret = ret.filter(function (item) {
+                return item.type !== 0
+            })
         }
 
         return ret;
@@ -16193,8 +16208,13 @@ module.exports = {
         });
 
         var ret = idles.concat(busys);
-        for (var i=0;i<ret.length;++i) {
-            console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // for (var i=0;i<ret.length;++i) {
+        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        // }
+        if (ret.length > info.windowLength) {
+            ret = ret.filter(function (item) {
+                return item.type !== 0
+            })
         }
 
         return ret;
@@ -17423,7 +17443,8 @@ function Worker(urlStr, token, opts) {
     self.JDMap = {};                           //根据dc的peer_id来获取jd的map
     self.nodeSet = new Set();                  //保存node的set
     self.tempDCQueue = [];                     //暂时保存data channel的队列
-    self.fileName = self.urlObj.path;
+    self.fileName = self.urlObj.path.split('/').pop();
+    console.warn(self.fileName)
     self.file = null;
     self.dispatcherConfig = {
 

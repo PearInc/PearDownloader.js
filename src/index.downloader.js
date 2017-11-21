@@ -21,11 +21,8 @@ function PearDownloader(urlStr, token, opts) {
 
 var PRDownloaderProto = Object.create(HTMLElement.prototype);
 PRDownloaderProto.createdCallback = function() {
-    console.log('XTreehouseProto created');
-}
-PRDownloaderProto.attachedCallback = function() {
-    console.log('XTreehouseProto attached:'+this.dataset.useMonitor);
-    console.log(this.dataset.src)
+    console.warn('PRDownloaderProto created');
+
     var downloader = new PearDownloader(this.dataset.src, {
         scheduler: this.dataset.scheduler,
         auto: this.dataset.auto,
@@ -39,8 +36,14 @@ PRDownloaderProto.attachedCallback = function() {
         useMonitor: this.dataset.useMonitor,
     });
     PRDownloaderProto.downloader = downloader;
-    // downloader.call(this);
+
 }
+// PRDownloaderProto.attachedCallback = function() {
+//     console.warn('XTreehouseProto attached:'+this.dataset.useMonitor);
+//     console.log(this.dataset.src)
+//
+//     // downloader.call(this);
+// }
 PRDownloaderProto.detachedCallback = function() {
 
 }
