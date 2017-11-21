@@ -13444,21 +13444,11 @@ function PearDownloader(urlStr, token, opts) {
 
 var PRDownloaderProto = Object.create(HTMLElement.prototype);
 PRDownloaderProto.createdCallback = function() {
-    console.warn('PRDownloaderProto created');
 
     var downloader = new PearDownloader(this.dataset.src, {
-        scheduler: this.dataset.scheduler,
-        auto: this.dataset.auto,
-        interval: this.dataset.interval,
-        useDataChannel: this.dataset.useDataChannel,
-        dataChannels: this.dataset.dataChannels,
-        useTorrent: this.dataset.useTorrent,
-        magnetURI: this.dataset.magnetURI,
-        // trackers:["wss://tracker.openwebtorrent.com"],
-        // sources: [],
-        useMonitor: this.dataset.useMonitor,
+        useMonitor: true
     });
-    PRDownloaderProto.downloader = downloader;
+    PRDownloaderProto.instance = downloader;
 
 }
 // PRDownloaderProto.attachedCallback = function() {
@@ -17444,7 +17434,6 @@ function Worker(urlStr, token, opts) {
     self.nodeSet = new Set();                  //保存node的set
     self.tempDCQueue = [];                     //暂时保存data channel的队列
     self.fileName = self.urlObj.path.split('/').pop();
-    console.warn(self.fileName)
     self.file = null;
     self.dispatcherConfig = {
 
@@ -17478,7 +17467,6 @@ function Worker(urlStr, token, opts) {
     };
 
     self._start();
-
 }
 
 Object.defineProperty(Worker.prototype, 'debugInfo', {

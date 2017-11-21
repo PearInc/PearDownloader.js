@@ -65,7 +65,6 @@ function Worker(urlStr, token, opts) {
     self.nodeSet = new Set();                  //保存node的set
     self.tempDCQueue = [];                     //暂时保存data channel的队列
     self.fileName = self.urlObj.path.split('/').pop();
-    console.warn(self.fileName)
     self.file = null;
     self.dispatcherConfig = {
 
@@ -99,7 +98,6 @@ function Worker(urlStr, token, opts) {
     };
 
     self._start();
-
 }
 
 Object.defineProperty(Worker.prototype, 'debugInfo', {

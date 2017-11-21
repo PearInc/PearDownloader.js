@@ -21,21 +21,11 @@ function PearDownloader(urlStr, token, opts) {
 
 var PRDownloaderProto = Object.create(HTMLElement.prototype);
 PRDownloaderProto.createdCallback = function() {
-    console.warn('PRDownloaderProto created');
 
     var downloader = new PearDownloader(this.dataset.src, {
-        scheduler: this.dataset.scheduler,
-        auto: this.dataset.auto,
-        interval: this.dataset.interval,
-        useDataChannel: this.dataset.useDataChannel,
-        dataChannels: this.dataset.dataChannels,
-        useTorrent: this.dataset.useTorrent,
-        magnetURI: this.dataset.magnetURI,
-        // trackers:["wss://tracker.openwebtorrent.com"],
-        // sources: [],
-        useMonitor: this.dataset.useMonitor,
+        useMonitor: true
     });
-    PRDownloaderProto.downloader = downloader;
+    PRDownloaderProto.instance = downloader;
 
 }
 // PRDownloaderProto.attachedCallback = function() {

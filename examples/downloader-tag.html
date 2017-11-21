@@ -7,18 +7,20 @@
 <script src="../dist/pear-downloader.js"></script>
 <body>
     <pr-downloader id="downloader"
-                   data-src="https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4"
-                   data-use-monitor="true">
-        <a href="#">downloader tag</a>
+                   data-src="https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4">
     </pr-downloader>
 </body>
 <script>
     var PRDownloader = document.getElementById('downloader');
-    PRDownloader.attachedCallback = function () {
-        console.warn('66666666666');
-        PRDownloader.downloader.on('sourcemap', onSourceMap);
-    };
 
+    PRDownloader.instance.on('begin', function () {
+        console.warn('6666666666');
+        console.warn(PRDownloader.instance);
+    });
+    PRDownloader.instance.on('done', function () {
+        console.warn('finished downloading buffer by first aid');
+    });
+    PRDownloader.instance.on('sourcemap', onSourceMap);
     function onSourceMap(sourceType, index) {
         console.warn('Received source type:' + sourceType + ' index:' + index);
     }
