@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="../dist/pear-downloader.js"></script>
+<body>
+    <pr-downloader id="downloader"
+                   data-src="https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4"
+                   data-use-monitor="true">
+        downloader tag
+    </pr-downloader>
+</body>
+<script>
+    var PRDownloader = document.getElementById('downloader');
+    PRDownloader.downloader.on('sourcemap', onSourceMap);
+    function onSourceMap(sourceType, index) {
+        console.warn('Received source type:' + sourceType + ' index:' + index);
+    }
+</script>
+</html>
