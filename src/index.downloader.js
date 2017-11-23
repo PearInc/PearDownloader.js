@@ -7,7 +7,7 @@ module.exports = PearDownloader;
 var debug = require('debug');
 var inherits = require('inherits');
 var Worker = require('./worker');
-var version = '1.1.4';
+var version = require('../package.json').version;
 
 inherits(PearDownloader, Worker);
 
@@ -23,7 +23,7 @@ function PearDownloader(urlStr, token, opts) {
         debug.disable();
     }
     self.version = version;
-    console.info('downloader version:'+version);
+    console.info('pear version:'+version);
 
     Worker.call(self, urlStr, token, opts);
 }

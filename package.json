@@ -1,6 +1,6 @@
 {
   "name": "peardownloader",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "",
   "main": "./dist/pear-downloader.js",
   "dependencies": {
@@ -26,7 +26,7 @@
     "build-downloader": "browserify ./src/index.downloader.js -s PearDownloader > ./dist/pear-downloader.js",
     "uglify-downloader": "browserify -s PearDownloader -e  ./src/index.downloader.js | babili > ./dist/pear-downloader.min.js",
     "pull-from-github": "git pull",
-    "push-to-github": "git add . && git commit -m 'add customized HTML Tag' && git push",
+    "push-to-github": "git add . && git commit -m 'fix bug' && git push",
     "npm-publish": "npm publish",
     "copy-to-player-project": "cp -r ./src/* ../PearPlayer.js/src"
   },
