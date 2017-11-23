@@ -4831,12 +4831,17 @@ exports.storage = 'undefined' != typeof chrome
  */
 
 exports.colors = [
-  'lightseagreen',
-  'forestgreen',
-  'goldenrod',
-  'dodgerblue',
-  'darkorchid',
-  'crimson'
+  '#0000CC', '#0000FF', '#0033CC', '#0033FF', '#0066CC', '#0066FF', '#0099CC',
+  '#0099FF', '#00CC00', '#00CC33', '#00CC66', '#00CC99', '#00CCCC', '#00CCFF',
+  '#3300CC', '#3300FF', '#3333CC', '#3333FF', '#3366CC', '#3366FF', '#3399CC',
+  '#3399FF', '#33CC00', '#33CC33', '#33CC66', '#33CC99', '#33CCCC', '#33CCFF',
+  '#6600CC', '#6600FF', '#6633CC', '#6633FF', '#66CC00', '#66CC33', '#9900CC',
+  '#9900FF', '#9933CC', '#9933FF', '#99CC00', '#99CC33', '#CC0000', '#CC0033',
+  '#CC0066', '#CC0099', '#CC00CC', '#CC00FF', '#CC3300', '#CC3333', '#CC3366',
+  '#CC3399', '#CC33CC', '#CC33FF', '#CC6600', '#CC6633', '#CC9900', '#CC9933',
+  '#CCCC00', '#CCCC33', '#FF0000', '#FF0033', '#FF0066', '#FF0099', '#FF00CC',
+  '#FF00FF', '#FF3300', '#FF3333', '#FF3366', '#FF3399', '#FF33CC', '#FF33FF',
+  '#FF6600', '#FF6633', '#FF9900', '#FF9933', '#FFCC00', '#FFCC33'
 ];
 
 /**
@@ -4853,6 +4858,11 @@ function useColors() {
   // explicitly
   if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
     return true;
+  }
+
+  // Internet Explorer and Edge do not support colors.
+  if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
+    return false;
   }
 
   // is webkit? http://stackoverflow.com/a/16459606/376773
@@ -5013,6 +5023,11 @@ exports.enabled = enabled;
 exports.humanize = require('ms');
 
 /**
+ * Active `debug` instances.
+ */
+exports.instances = [];
+
+/**
  * The currently active debug mode names, and names to skip.
  */
 
@@ -5026,12 +5041,6 @@ exports.skips = [];
  */
 
 exports.formatters = {};
-
-/**
- * Previous log timestamp.
- */
-
-var prevTime;
 
 /**
  * Select a color.
@@ -5060,6 +5069,8 @@ function selectColor(namespace) {
  */
 
 function createDebug(namespace) {
+
+  var prevTime;
 
   function debug() {
     // disabled?
@@ -5117,13 +5128,26 @@ function createDebug(namespace) {
   debug.enabled = exports.enabled(namespace);
   debug.useColors = exports.useColors();
   debug.color = selectColor(namespace);
+  debug.destroy = destroy;
 
   // env-specific initialization logic for debug instances
   if ('function' === typeof exports.init) {
     exports.init(debug);
   }
 
+  exports.instances.push(debug);
+
   return debug;
+}
+
+function destroy () {
+  var index = exports.instances.indexOf(this);
+  if (index !== -1) {
+    exports.instances.splice(index, 1);
+    return true;
+  } else {
+    return false;
+  }
 }
 
 /**
@@ -5140,10 +5164,11 @@ function enable(namespaces) {
   exports.names = [];
   exports.skips = [];
 
+  var i;
   var split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
   var len = split.length;
 
-  for (var i = 0; i < len; i++) {
+  for (i = 0; i < len; i++) {
     if (!split[i]) continue; // ignore empty strings
     namespaces = split[i].replace(/\*/g, '.*?');
     if (namespaces[0] === '-') {
@@ -5151,6 +5176,11 @@ function enable(namespaces) {
     } else {
       exports.names.push(new RegExp('^' + namespaces + '$'));
     }
+  }
+
+  for (i = 0; i < exports.instances.length; i++) {
+    var instance = exports.instances[i];
+    instance.enabled = exports.enabled(instance.namespace);
   }
 }
 
@@ -5173,6 +5203,9 @@ function disable() {
  */
 
 function enabled(name) {
+  if (name[name.length - 1] === '*') {
+    return true;
+  }
   var i, len;
   for (i = 0, len = exports.skips.length; i < len; i++) {
     if (exports.skips[i].test(name)) {
@@ -12354,6 +12387,7 @@ module.exports = function zeroFill (width, number, pad) {
  */
 module.exports = Dispatcher;
 
+var debug = require('debug')('pear:dispatcher');
 var BitField = require('bitfield');
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
@@ -12395,13 +12429,12 @@ function Dispatcher(config) {
 
     self.bufferSources = new Array(self.chunks);    //记录每个buffer下载的方式
     self.slide = null;
-    self.bufferingCount = 0;                   //视频卡的次数
     self.noMoreNodes = false;                   //是否已没有新的节点可获取
 
     self.startTime = (new Date()).getTime();      //用于计算平均速度
 
     //firstaid参数自适应
-    self._windowLength = self.initialDownloaders.length <= 8 ? self.initialDownloaders.length : 8;
+    self._windowLength = self.initialDownloaders.length <= 5 ? self.initialDownloaders.length : 5;
     // self._windowLength = 15;
     // self._colddown = self._windowLength;                        //窗口滑动的冷却时间
     self._colddown = 5;                        //窗口滑动的冷却时间
@@ -12409,9 +12442,6 @@ function Dispatcher(config) {
 
     //webtorrent
     self.torrent = null;
-
-    //webrtc
-    // self.usefulDCs = 0;                                         //可用的data channel节点数量
 
     //scheduler
     self.scheduler = config.scheduler;
@@ -12432,7 +12462,7 @@ Dispatcher.prototype._init = function () {
             length: self.fileSize
         })
     );
-    console.log('self.path:'+self.path);
+    // debug('self.path:'+self.path);
     self.bitfield = new BitField(self.chunks);       //记录哪个块已经下好
 
     self.queue = [];                     //初始化下载队列
@@ -12473,7 +12503,7 @@ Dispatcher.prototype.select = function (start, end, priority, notify) {
     }
     priority = Number(priority) || 0;
 
-    console.log('select %s-%s (priority %s)', start, end, priority);
+    debug('select %s-%s (priority %s)', start, end, priority);
 
     self._selections.push({
         from: start,
@@ -12495,7 +12525,7 @@ Dispatcher.prototype.deselect = function (start, end, priority) {
     if (self.destroyed) throw new Error('dispatcher is destroyed');
 
     priority = Number(priority) || 0;
-    console.log('deselect %s-%s (priority %s)', start, end, priority);
+    debug('deselect %s-%s (priority %s)', start, end, priority);
     // self._clearAllQueues();
     for (var i = 0; i < self._selections.length; ++i) {
         var s = self._selections[i];
@@ -12512,7 +12542,7 @@ Dispatcher.prototype._slide = function () {
     var self = this;
 
     if (self.done) return;
-    console.log('[dispatcher] slide window downloader length:'+self.downloaders.length);
+    debug('[dispatcher] slide window downloader length:'+self.downloaders.length);
     self._fillWindow();
 };
 
@@ -12526,7 +12556,7 @@ Dispatcher.prototype._updateSelections = function () {
     process.nextTick(function () {
         self._gcSelections()
     });
-    console.log('Dispatcher _updateSelections');
+    // debug('Dispatcher _updateSelections');
     //此处开始下载
     self._update();
 };
@@ -12580,7 +12610,7 @@ Dispatcher.prototype._gcSelections = function () {
     // }
 
     // self._windowOffset = s.from + s.offset;
-    // console.log('current _windowOffset:' + self._windowOffset);
+    // debug('current _windowOffset:' + self._windowOffset);
 
     if (!self._selections.length) self.emit('idle')
 };
@@ -12588,18 +12618,18 @@ Dispatcher.prototype._gcSelections = function () {
 Dispatcher.prototype._update = function () {
     var self = this;
     if (self.destroyed) return;
-    console.log('Dispatcher _update');
+    // debug('Dispatcher _update');
     var length = self._selections.length;
-    console.log('_selections.length:'+self._selections.length);
-    if ( length > 0) {
+    // debug('_selections.length:'+self._selections.length);
+    if (length > 0) {
 
-        // console.log('_update self._selections:'+JSON.stringify(self._selections));
+        // debug('_update self._selections:'+JSON.stringify(self._selections));
         // var s = self._selections[length-1];
         var s = self._selections[0];
         var start = s.from + s.offset;
         var end = s.to;
         // self._windowOffset = start;
-        console.log('current _windowOffset:' + self._windowOffset);
+        debug('current _windowOffset:' + self._windowOffset);
         self._slide();
         // self.slide();
         // self._throttle(self.slide,self);
@@ -12613,7 +12643,7 @@ Dispatcher.prototype._checkDone = function () {
     // is the torrent done? (if all current selections are satisfied, or there are
     // no selections, then torrent is done)
     var done = true;
-    // console.log('_selections.length:'+self._selections.length);
+    // debug('_selections.length:'+self._selections.length);
     // for (var i = 0; i < self._selections.length; i++) {
     //     var selection = self._selections[i];
     //     for (var piece = selection.from; piece <= selection.to; piece++) {
@@ -12631,13 +12661,19 @@ Dispatcher.prototype._checkDone = function () {
             break
         }
     }
-    console.log('_checkDone self.done:'+self.done+' done:'+done);
+    // debug('_checkDone self.done:'+self.done+' done:'+done);
     if (!self.done && done) {
         self.done = true;
-        // console.log('dispatcher done');
+        // debug('dispatcher done');
         self.emit('done');
         if (self.useMonitor) {
             self.emit('downloaded', 1.0);
+        }
+        for (var k=0;k<self.downloaders.length;++k) {
+            if (self.downloaders[k].type === 2) {               //datachannel
+                self.downloaders[k].simpleRTC.dataChannel.close();                //关闭所有dataChannel
+            }
+
         }
     }
     self._gcSelections();
@@ -12682,17 +12718,14 @@ Dispatcher.prototype._fillWindow = function () {
     if (sortedNodes.length === 0) return;
 
     var count = 0;
-    console.log('_fillWindow _windowOffset:' + self._windowOffset + ' downloaders:'+self.downloaders.length);
     var index = self._windowOffset;                       //TODO:修复auto下为零
-    console.log('sortedNodes length:'+sortedNodes.length);
     self.emit('fillwindow', self._windowOffset, self._windowLength);
     while (count !== self._windowLength){
-        console.log('_fillWindow _windowLength:'+self._windowLength + ' downloadersLength:' + self.downloaders.length);
+        debug('_fillWindow _windowLength:'+self._windowLength + ' downloadersLength:' + self.downloaders.length);
         if (index >= self.chunks){
-            // console.warn('index >= self.chunks');
             break;
         }
-        console.log('index:'+index);
+        // debug('index:'+index);
         // if (count >= sortedNodes.length) break;
 
         if (!self.bitfield.get(index)) {
@@ -12702,7 +12735,6 @@ Dispatcher.prototype._fillWindow = function () {
             // node.select(pair[0],pair[1]);
             var node = sortedNodes[count % sortedNodes.length];
             // var node = sortedNodes[count];
-            console.log('_fillWindow node downloading:'+node.downloading+' type:'+node.type+' queue:'+node.queue.length);
             node.select(pair[0],pair[1]);
             count ++;
         } else {
@@ -12721,23 +12753,23 @@ Dispatcher.prototype._setupHttp = function (hd) {
     });
     hd.once('done',function () {
 
-        // console.log('httpDownloader ondone');
+        // debug('httpDownloader ondone');
 
     });
     hd.once('error', function (error) {
 
-        console.warn('hd error!');
+        console.warn('http' + hd.uri + 'error!');
 
         if (self.downloaders.length > self._windowLength) {
             self.downloaders.removeObj(hd);
-            if (self._windowLength > self._windowLength) self._windowLength --;
+            if (self._windowLength > 3) self._windowLength --;
         }
         self.checkoutDownloaders();
     });
     hd.on('data',function (buffer, start, end, speed) {
 
         var index = self._calIndex(start);
-        console.log('httpDownloader' + hd.uri +' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+hd.meanSpeed);
+        debug('httpDownloader' + hd.uri +' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+hd.meanSpeed);
         var size = end - start + 1;
         if (!self.bitfield.get(index)){
             self.bitfield.set(index,true);
@@ -12753,7 +12785,7 @@ Dispatcher.prototype._setupHttp = function (hd) {
                 self.emit('downloaded', self.downloaded/self.fileSize);
                 // hd.downloaded += size;
                 self.emit('traffic', hd.mac, size, hd.type === 1 ? 'HTTP_Node' : 'HTTP_Server');
-                console.log('ondata hd.type:' + hd.type +' index:' + index);
+                debug('ondata hd.type:' + hd.type +' index:' + index);
                 if (hd.type === 1) {          //node
                     self.fogDownloaded += self.pieceLength;
                     self.emit('fograte', self.fogDownloaded/self.downloaded);
@@ -12766,9 +12798,9 @@ Dispatcher.prototype._setupHttp = function (hd) {
                 self.emit('buffersources', self.bufferSources);
                 self.emit('sourcemap', hd.type === 1 ? 'n' : 's', index);
             }
-            // console.log('bufferSources:'+self.bufferSources);
+            // debug('bufferSources:'+self.bufferSources);
         } else {
-            console.log('重复下载');
+            debug('重复下载');
 
         }
     });
@@ -12780,13 +12812,13 @@ Dispatcher.prototype._setupDC = function (jd) {
     var self = this;
 
     jd.once('start',function () {
-        // console.log('DC start downloading');
+        // debug('DC start downloading');
     });
 
     jd.on('data',function (buffer, start, end, speed) {
 
         var index = self._calIndex(start);
-        console.log('pear_webrtc '+jd.dc_id+' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+jd.meanSpeed);
+        debug('pear_webrtc '+jd.dc_id+' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+jd.meanSpeed);
         var size = end - start + 1;
         if (!self.bitfield.get(index)){
             self.bitfield.set(index,true);
@@ -12798,7 +12830,7 @@ Dispatcher.prototype._setupDC = function (jd) {
             if (self.useMonitor) {
                 self.downloaded += size;
                 self.fogDownloaded += size;
-                console.log('downloaded:'+self.downloaded+' fogDownloaded:'+self.fogDownloaded);
+                debug('downloaded:'+self.downloaded+' fogDownloaded:'+self.fogDownloaded);
                 self.emit('downloaded', self.downloaded/self.fileSize);
                 self.emit('fograte', self.fogDownloaded/self.downloaded);
                 self.emit('fogspeed', self.downloaders.getCurrentSpeed([1,2]));
@@ -12809,7 +12841,7 @@ Dispatcher.prototype._setupDC = function (jd) {
                 self.emit('traffic', jd.mac, size, 'WebRTC_Node');
             }
         } else {
-            console.log('重复下载');
+            debug('重复下载');
             for (var k=0;k<self.downloaders.length;++k) {
                 if (self.downloaders[k].type === 2) {               //datachannel
                     self.downloaders[k].clearQueue();                //如果dc下载跟不上http,则清空下载队列
@@ -12821,11 +12853,10 @@ Dispatcher.prototype._setupDC = function (jd) {
     });
 
     jd.once('error', function () {
-        console.warn('jd error '+ jd.mac);
+        console.warn('webrtc error mac:'+ jd.mac);
         jd.close();
         self.downloaders.removeObj(jd);
-        // self.usefulDCs --;
-        if (self._windowLength > 3) {
+        if (self.downloaders.length < self._windowLength) {
             self._windowLength --;
         }
         self.checkoutDownloaders();
@@ -12846,25 +12877,24 @@ Dispatcher.prototype.checkoutDownloaders = function () {            //TODO:防�
 
 Dispatcher.prototype.addTorrent = function (torrent) {
     var self = this;
-    // console.log('torrent.pieces.length:'+torrent.pieces.length+' chunks:'+this.chunks);
+    // debug('torrent.pieces.length:'+torrent.pieces.length+' chunks:'+this.chunks);
     if (torrent.pieces.length !== this.chunks) return;
     this.torrent = torrent;
     torrent.pear_downloaded = 0;
-    console.log('addTorrent _windowOffset:' + self._windowOffset);
+    debug('addTorrent _windowOffset:' + self._windowOffset);
     if (self._windowOffset + self._windowLength < torrent.pieces.length-1) {
         torrent.critical(self._windowOffset+self._windowLength, torrent.pieces.length-1);
     }
     torrent.on('piecefromtorrent', function (index) {
 
-        console.log('piecefromtorrent:'+index);
+        debug('piecefromtorrent:'+index);
         if (self.useMonitor) {
             self.downloaded += self.pieceLength;
             self.fogDownloaded += self.pieceLength;
             torrent.pear_downloaded += self.pieceLength;
-            // console.log('downloaded:'+self.downloaded+' fogDownloaded:'+self.fogDownloaded);
             self.emit('downloaded', self.downloaded/self.fileSize);
             self.emit('fograte', self.fogDownloaded/self.downloaded);
-            // console.log('torrent.downloadSpeed:'+torrent.downloadSpeed/1024);
+            // debug('torrent.downloadSpeed:'+torrent.downloadSpeed/1024);
             self.emit('fogspeed', self.downloaders.getCurrentSpeed([1, 2]) + torrent.downloadSpeed/1024);
             self.bufferSources[index] = 'b';
             self.emit('buffersources', self.bufferSources);
@@ -12874,7 +12904,7 @@ Dispatcher.prototype.addTorrent = function (torrent) {
     });
 
     torrent.on('done', function () {
-        console.log('torrent done');
+        debug('torrent done');
     });
 };
 
@@ -12882,23 +12912,17 @@ Dispatcher.prototype.addDataChannel = function (dc) {
 
     // this.downloaders.push(dc);
     this.downloaders.splice(this._windowLength-1,0,dc);
-    if (this._windowLength < 10 && this.downloaders.length > this._windowLength) {
+    if (this._windowLength < 8 && this.downloaders.length > this._windowLength) {
         this._windowLength ++;
     }
-    // console.log('addDataChannel _windowLength:' + this._windowLength);
     this._setupDC(dc);
-    // console.log('addDataChannel now:'+this.downloaders.length);
-    // for (var i=0;i<this.downloaders.length;++i) {
-    //     console.log('downloader type:'+this.downloaders[i].type);
-    // }
-    // this.usefulDCs ++;
 };
 
 Dispatcher.prototype.addNode = function (node) {     //node是httpdownloader对象
 
     this._setupHttp(node);
     this.downloaders.push(node);
-    console.log('dispatcher add node: '+node.uri);
+    debug('dispatcher add node: '+node.uri);
 
 };
 
@@ -12936,7 +12960,7 @@ Dispatcher.prototype.destroy = function () {
 
     self.store = null;
 
-    console.info('Dispatcher destroyed');
+    debug('Dispatcher destroyed');
 };
 
 Dispatcher.prototype._throttle = function (method, context) {
@@ -12956,7 +12980,6 @@ Dispatcher.prototype.autoSlide = function () {
     var self = this;
 
     setTimeout(function () {
-        // console.log('[dispatcher] auto slide');
         self._slide();
         self._checkDone();
         if (!self.done && !self.destroyed){
@@ -12967,7 +12990,7 @@ Dispatcher.prototype.autoSlide = function () {
 
 Dispatcher.prototype._clearAllQueues = function () {
 
-    console.log('clearAllQueues');
+    debug('clearAllQueues');
     for (var k=0;k<this.downloaders.length;++k) {
         this.downloaders[k].clearQueue();
     }
@@ -13032,9 +13055,10 @@ Array.prototype.getCurrentSpeed = function (typeArr) {              //根据传�
 
 
 }).call(this,require('_process'))
-},{"_process":117,"bitfield":6,"events":109,"fs-chunk-store":35,"immediate-chunk-store":28,"inherits":29}],84:[function(require,module,exports){
+},{"_process":117,"bitfield":6,"debug":20,"events":109,"fs-chunk-store":35,"immediate-chunk-store":28,"inherits":29}],84:[function(require,module,exports){
 module.exports = FileStream;
 
+var debug = require('debug')('pear:file-stream');
 var inherits = require('inherits');
 var stream = require('readable-stream');
 
@@ -13071,10 +13095,10 @@ function FileStream (file, opts) {
     this._notifying = false;
     this._criticalLength = Math.min((1024 * 1024 / pieceLength) | 0, 2);
 
-    // console.log('FileStream _startPiece:'+this._startPiece);
-    // console.log('FileStream _endPiece:'+this._endPiece);
-    // console.log('FileStream _offset:'+this._offset);
-    // console.log('FileStream _missing:'+this._missing);
+    // debug('FileStream _startPiece:'+this._startPiece);
+    // debug('FileStream _endPiece:'+this._endPiece);
+    // debug('FileStream _offset:'+this._offset);
+    // debug('FileStream _missing:'+this._missing);
 }
 
 FileStream.prototype._read = function () {
@@ -13099,13 +13123,13 @@ FileStream.prototype._notify = function () {
     self._notifying = true;
 
     var p = self._piece;
-    console.log('FileStream get piece:' + p);
+    debug('FileStream get piece:' + p);
     self._dispatcher.store.get(p, function (err, buffer) {
         self._notifying = false;
         if (self.destroyed) return;
         if (err) return self._destroy(err);
         // debug('read %s (length %s) (err %s)', p, buffer.length, err && err.message)
-        // console.log('read '+p+' length:'+buffer.length);
+        // debug('read '+p+' length:'+buffer.length);
         if (self._offset) {
             buffer = buffer.slice(self._offset);
             self._offset = 0;
@@ -13116,7 +13140,7 @@ FileStream.prototype._notify = function () {
         }
         self._missing -= buffer.length;
 
-        // console.log('pushing buffer of length:'+buffer.length);
+        // debug('pushing buffer of length:'+buffer.length);
         self._reading = false;
         self.push(buffer);
         // if (p === self._dispatcher._windowLength/2) {
@@ -13138,7 +13162,7 @@ FileStream.prototype._destroy = function (err, onclose) {
     if (!this._dispatcher.destroyed) {
         this._dispatcher.deselect(this._startPiece, this._endPiece, true);
     }
-    console.log('FileStream destroy');
+    debug('FileStream destroy');
     if (err) this.emit('error', err);
     this.emit('close');
     if (onclose) onclose();
@@ -13147,7 +13171,7 @@ FileStream.prototype._destroy = function (err, onclose) {
 // FileStream.prototype._ifCanPlay = function () {                   //缓存足够的buffer后才播放
 //     if (this._dispatcher.enoughInitBuffer) return;
 //     var bitfield = this._dispatcher.bitfield;
-//     console.log('this._dispatcher.normalWindowLength:'+this._dispatcher.normalWindowLength);
+//     debug('this._dispatcher.normalWindowLength:'+this._dispatcher.normalWindowLength);
 //     for (var i=this._startPiece;i<this._startPiece+this._dispatcher.normalWindowLength;i++) {
 //         if (!bitfield.get(i)) {
 //             return;
@@ -13160,11 +13184,12 @@ FileStream.prototype._destroy = function (err, onclose) {
 // };
 
 function noop () {}
-},{"inherits":29,"readable-stream":54}],85:[function(require,module,exports){
+},{"debug":20,"inherits":29,"readable-stream":54}],85:[function(require,module,exports){
 (function (process){
 
 module.exports = File;
 
+var debug = require('debug')('pear:file');
 var eos = require('end-of-stream');
 var EventEmitter = require('events').EventEmitter;
 var path = require('path');
@@ -13198,7 +13223,7 @@ function File (dispatcher, file){
 
     this._startPiece = start / this._dispatcher.pieceLength | 0;
     this._endPiece = end / this._dispatcher.pieceLength | 0;
-    // console.log('file _startPiece'+this._startPiece+' _endPiece:'+this._endPiece);
+    // debug('file _startPiece'+this._startPiece+' _endPiece:'+this._endPiece);
 
     if (this.length === 0) {
         this.done = true;
@@ -13214,8 +13239,8 @@ function File (dispatcher, file){
 File.prototype.createReadStream = function (opts) {
     var self = this;
     // opts = opts || {};
-    // console.log('createReadStream');
-    // console.log(opts.start?opts.start:0);
+    // debug('createReadStream');
+    // debug(opts.start?opts.start:0);
 
     // if (!opts) return;
 
@@ -13277,10 +13302,11 @@ File.prototype._destroy = function () {
 
 
 }).call(this,require('_process'))
-},{"./file-stream":84,"_process":117,"end-of-stream":23,"events":109,"inherits":29,"path":115,"readable-stream":54,"render-media/lib/mime.json":55,"stream-to-blob-url":66,"stream-with-known-length-to-buffer":68}],86:[function(require,module,exports){
+},{"./file-stream":84,"_process":117,"debug":20,"end-of-stream":23,"events":109,"inherits":29,"path":115,"readable-stream":54,"render-media/lib/mime.json":55,"stream-to-blob-url":66,"stream-with-known-length-to-buffer":68}],86:[function(require,module,exports){
 
 module.exports = HttpDownloader;
 
+var debug = require('debug')('pear:http-downloader');
 var Buffer = require('buffer/').Buffer;
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
@@ -13308,7 +13334,7 @@ function HttpDownloader(uri, type, opts) {
     //节点流量统计
     this.downloaded = 0;
     this.mac = this.uri.split('.')[0].split('//')[1];
-    console.log('HttpDownloader mac:'+this.mac);
+    debug('HttpDownloader mac:'+this.mac);
 };
 
 HttpDownloader.prototype.select = function (start, end) {
@@ -13316,7 +13342,7 @@ HttpDownloader.prototype.select = function (start, end) {
     // if (end < start) throw new Error('end must larger than start');
     // this.emit('start',start,end);
     var index = Math.floor(start/(1024*1024));
-    console.log('HttpDownloader ' + this.uri + ' select:' + start + '-' + end + ' at ' + index + ' weight:' + this.weight);
+    debug('HttpDownloader ' + this.uri + ' select:' + start + '-' + end + ' at ' + index + ' weight:' + this.weight);
     if (this.isAsync) {                               //并行
         this._getChunk(start, end);
     } else {　　　　　　　　　　　　　　　　　　　　　　　　  //串行
@@ -13337,10 +13363,10 @@ HttpDownloader.prototype.select = function (start, end) {
 
 HttpDownloader.prototype.abort = function () {
     var self = this;
-    // console.log('[HttpDownloader] readyState:'+self._xhr.readyState);
+    // debug('[HttpDownloader] readyState:'+self._xhr.readyState);
     if (self._xhr && (self._xhr.readyState == 2 || self._xhr.readyState == 3)) {  //如果正在下载,则停止
         self._xhr.abort();
-        console.log('HttpDownloader ' + self.uri +' aborted!');
+        debug('HttpDownloader ' + self.uri +' aborted!');
     }
     self.downloading = false;
 };
@@ -13349,14 +13375,14 @@ HttpDownloader.prototype.clearQueue = function () {              //清空下载�
 
     // this.downloading = false;
     if (this.queue.length > 0) {
-        // console.log('[HttpDownloader] clear queue!');
+        // debug('[HttpDownloader] clear queue!');
         this.queue = [];
     }
 };
 
 HttpDownloader.prototype._getChunk = function (begin,end) {
     var self = this;
-    console.log('HttpDownloader _getChunk');
+    debug('HttpDownloader _getChunk');
     self.downloading = true;
     var xhr = new XMLHttpRequest();
     self._xhr = xhr;
@@ -13364,9 +13390,9 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
     xhr.responseType = "arraybuffer";
     // xhr.timeout = 3000;
     self.startTime=(new Date()).getTime();
-    // console.log('get_file_index: start:'+begin+' end:'+end);
+    // debug('get_file_index: start:'+begin+' end:'+end);
     var range = "bytes="+begin+"-"+end;
-    // console.log('request range: ' + range);
+    // debug('request range: ' + range);
     xhr.setRequestHeader("Range", range);
     xhr.onload = function (event) {
         if (this.status >= 200 || this.status < 300) {
@@ -13375,9 +13401,9 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
             self.endTime = (new Date()).getTime();
             // self.speed = Math.floor((event.total * 1000) / ((self.endTime - self.startTime) * 1024));  //单位: KB/s
             self.speed = Math.floor(event.total / (self.endTime - self.startTime));  //单位: KB/s
-            // console.log('http speed:' + self.speed + 'KB/s');
+            debug('http speed:' + self.speed + 'KB/s');
             self.meanSpeed = (self.meanSpeed*self.counter + self.speed)/(++self.counter);
-            console.log('http '+self.uri+' meanSpeed:' + self.meanSpeed + 'KB/s');
+            debug('http '+self.uri+' meanSpeed:' + self.meanSpeed + 'KB/s');
             if (!self.isAsync) {
                 if (self.queue.length > 0){             //如果下载队列不为空
                     var pair = self.queue.shift();
@@ -13385,7 +13411,7 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
                 }
             }
             var range = this.getResponseHeader("Content-Range").split(" ",2)[1].split('/',1)[0];
-            // console.log('xhr.onload range:'+range);
+            // debug('xhr.onload range:'+range);
             // self.emit('done');
             self._handleChunk(range,this.response);
         } else {
@@ -13397,7 +13423,7 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
         self.emit('error');
     };
     // xhr.ontimeout = function (_) {
-    //     console.log('HttpDownloader ' + self.uri + ' timeout');
+    //     debug('HttpDownloader ' + self.uri + ' timeout');
     //     self.emit('error');
     //     // self.weight -= 0.2;
     //     // if (self.weight < 0.1) {
@@ -13420,15 +13446,17 @@ HttpDownloader.prototype._handleChunk = function (range,data) {
 
 
 
-},{"buffer/":15,"events":109,"inherits":29}],87:[function(require,module,exports){
+},{"buffer/":15,"debug":20,"events":109,"inherits":29}],87:[function(require,module,exports){
 /**
  * Created by XieTing on 17-6-6.
  */
 
 module.exports = PearDownloader;
 
+var debug = require('debug');
 var inherits = require('inherits');
 var Worker = require('./worker');
+var version = '1.1.4';
 
 inherits(PearDownloader, Worker);
 
@@ -13437,33 +13465,101 @@ function PearDownloader(urlStr, token, opts) {
     if (!(self instanceof PearDownloader)) return new PearDownloader(urlStr, token, opts);
     // if (!(self instanceof PearPlayer)) return new PearPlayer(selector, opts);
     if (typeof token === 'object') return PearDownloader(urlStr, '', token);
+
+    if (opts.debug) {
+        debug.enable('pear:*');
+    } else {
+        debug.disable();
+    }
+    self.version = version;
+    console.info('downloader version:'+version);
+
     Worker.call(self, urlStr, token, opts);
-
-
 }
 
-var PRDownloaderProto = Object.create(HTMLElement.prototype);
-PRDownloaderProto.createdCallback = function() {
+class  PearDownloaderTag extends HTMLElement {
+    constructor() {
+        super();
+        this.progress = 0;
+        this.status = 'ready';
+        this.speed = 0;
+        this.fileName = 'unknown';
+        this.p2pRatio = 0;
 
-    var downloader = new PearDownloader(this.dataset.src, {
-        useMonitor: true
+        this.addEventListener('click', e => {
+            if (this.disabled) {
+            return;
+        }
+        this.downloader = this.createDownloader();
+        this.downloaderLifeCycle();
     });
-    PRDownloaderProto.instance = downloader;
+    }
 
-}
-// PRDownloaderProto.attachedCallback = function() {
-//     console.warn('XTreehouseProto attached:'+this.dataset.useMonitor);
-//     console.log(this.dataset.src)
-//
-//     // downloader.call(this);
-// }
-PRDownloaderProto.detachedCallback = function() {
+    connectedCallback() {
+        // this.textContent = "卧槽！！！ - ";
+    }
 
+    createDownloader() {
+        if (!this.hasAttributes('data-src')) {
+            console.error('Must set data-src attribuite!');
+            return false;
+        }
+        let token = '';
+        if (this.hasAttributes('data-token')) {
+            token = this.dataset.token;
+        }
+
+        let downloader = new PearDownloader(this.dataset.src, token, {
+            useMonitor: true,             //是否开启monitor,会稍微影响性能,默认false
+        });
+        return downloader;
+    }
+
+    downloaderLifeCycle() {
+        this.downloader.on('begin', () => {
+            this.status = 'ready';
+            this.fileName = this.downloader.fileName;
+
+            let ev = new CustomEvent("progress");
+            this.dispatchEvent(ev);
+        });
+
+        this.downloader.on("progress", (prog) => {
+            // let percent = (prog * 100).toFixed(1) + '%';
+            this.progress = prog;
+            this.status = prog < 1.0 ? 'downloading' : 'done';
+
+            let ev = new CustomEvent("progress");
+            this.dispatchEvent(ev);
+        });
+
+        this.downloader.on('meanspeed', (speed) => {
+            this.speed = speed;
+        });
+
+        this.downloader.on('done', () => {
+            let aTag = document.createElement('a');
+            aTag.download = this.fileName;
+            this.downloader.file.getBlobURL(function (error, url) {
+                aTag.href = url;
+                aTag.click();
+            })
+
+        });
+        this.downloader.on('fograte', (p2pRatio) => {
+
+            this.p2pRatio = p2pRatio;
+        });
+
+    }
 }
-PRDownloaderProto.attributeChangedCallback = function(attrName, oldValue, newValue) {}
-var PRDownloader = document.registerElement('pr-downloader', { prototype: PRDownloaderProto });
-// PRDownloader.call(PearDownloader);
-},{"./worker":102,"inherits":29}],88:[function(require,module,exports){
+
+if (!window.customElements.get('pear-downloader')) {
+    window.customElements.define('pear-downloader', PearDownloaderTag);
+}
+
+
+},{"./worker":102,"debug":20,"inherits":29}],88:[function(require,module,exports){
 module.exports = FileStream
 
 var debug = require('debug')('webtorrent:file-stream')
@@ -16039,6 +16135,8 @@ module.exports = NodeFilter;
     range: {start: number end: number}
  */
 
+var debug = require('debug')('pear:node-filter');
+
 function NodeFilter(nodesArray, cb, range) {
 
     // var ipArray = array.unique();
@@ -16059,7 +16157,7 @@ function NodeFilter(nodesArray, cb, range) {
         try {
             connectTest(nodesArray[i]);
         } catch (e) {
-            console.log(nodesArray[i].uri + ':' + JSON.stringify(e))
+            // debug(nodesArray[i].uri + ':' + JSON.stringify(e))
         }
     }
 
@@ -16078,7 +16176,7 @@ function NodeFilter(nodesArray, cb, range) {
         };
         xhr.ontimeout = function() {
             doneCount ++;
-            console.log(node.uri + ' timeout');
+            debug(node.uri + ' timeout');
             chenkDone();
         };
         xhr.onerror = function() {
@@ -16112,7 +16210,7 @@ function NodeFilter(nodesArray, cb, range) {
 //     }
 //     return n;
 // };
-},{}],95:[function(require,module,exports){
+},{"debug":20}],95:[function(require,module,exports){
 /**
  * 节点调度算法的默认实现
  */
@@ -16126,6 +16224,7 @@ function NodeFilter(nodesArray, cb, range) {
     slideInterval: number                                //当前播放点距离缓冲前沿多少秒时滑动窗口
  }
  */
+var debug = require('debug')('pear:node-scheduler');
 
 module.exports = {
 
@@ -16133,12 +16232,28 @@ module.exports = {
 
         var idles = nodesProvider.filter(function (item) {                         //空闲节点
             return item.downloading === false;
-        })
+        });
+
+        // for (var i=0;i<idles.length;++i) {
+        //     console.warn('index:'+i+' type:'+idles[i].type+' queue:'+idles[i].queue.length+' speed:'+idles[i].speed);
+        // }
+
+        idles.sort(function (a, b) {          //速度从大到小排序
+            return b.speed - a.speed;
+        });
+
+        // for (var i=0;i<idles.length;++i) {
+        //     console.warn('sorted index:'+i+' type:'+idles[i].type+' queue:'+idles[i].queue.length+' speed:'+idles[i].speed);
+        // }
 
         var busys = nodesProvider.filter(function (item) {                         //忙碌节点
             return item.downloading === true && item.queue.length <= 1;
         }).sort(function (a, b) {
             return a.queue.length - b.queue.length;
+        });
+
+        busys.sort(function (a, b) {          //速度从大到小排序
+            return b.speed - a.speed;
         });
 
         var ret = idles.concat(busys);
@@ -16149,9 +16264,7 @@ module.exports = {
             })
         }
 
-        // for (var i=0;i<ret.length;++i) {
-        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
-        // }
+
 
         return ret;
     },
@@ -16172,7 +16285,7 @@ module.exports = {
 
         var ret = idles.concat(busys);
         // for (var i=0;i<ret.length;++i) {
-        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        //     debug('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
         // }
         if (ret.length > info.windowLength) {
             ret = ret.filter(function (item) {
@@ -16199,7 +16312,7 @@ module.exports = {
 
         var ret = idles.concat(busys);
         // for (var i=0;i<ret.length;++i) {
-        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        //     debug('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
         // }
         if (ret.length > info.windowLength) {
             ret = ret.filter(function (item) {
@@ -16212,7 +16325,7 @@ module.exports = {
 
 };
 
-},{}],96:[function(require,module,exports){
+},{"debug":20}],96:[function(require,module,exports){
 module.exports={
   "version": "0.98.19"
 }
@@ -16829,6 +16942,8 @@ Set.prototype = {
  */
 
 module.exports = SimpleRTC;
+
+var debug = require('debug')('pear:simple-RTC');
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
 
@@ -16837,7 +16952,7 @@ inherits(SimpleRTC, EventEmitter);
 function SimpleRTC(config) {
     EventEmitter.call(this);
 
-    console.log('start simpleRTC');
+    debug('start simpleRTC');
     var self = this;
     self.config = config || {};
 
@@ -16862,8 +16977,8 @@ function SimpleRTC(config) {
 
 SimpleRTC.prototype.signal = function (event) {
 
-    console.log('[pear_webrtc] event.type' + event.type);
-    console.log('event JSON: ' + JSON.stringify(event));
+    debug('[pear_webrtc] event.type' + event.type);
+    debug('event JSON: ' + JSON.stringify(event));
     if (event.type === 'offer') {
         this.receiveOffer(event);
     } else if (event.type === 'answer') {
@@ -16874,7 +16989,7 @@ SimpleRTC.prototype.signal = function (event) {
     // }
     else {
         this.receiveIceCandidate(event);
-        // console.log('err event.type: ' + JSON.stringify(event));
+        // debug('err event.type: ' + JSON.stringify(event));
     }
 };
 
@@ -16883,9 +16998,9 @@ SimpleRTC.prototype.createPeerConnect = function () {
 
     try {
         this.peerConnection = new RTCPeerConnection(this.pc_config);
-        // console.log('[simpleRTC] PeerConnection created!');
+        // debug('[simpleRTC] PeerConnection created!');
         if (this.config.initiator && this.config.initiator == true){
-            console.log('[pear_webrtc]  sendOffer');
+            debug('[pear_webrtc]  sendOffer');
             this.sendOffer();
 
         }else {
@@ -16893,42 +17008,42 @@ SimpleRTC.prototype.createPeerConnect = function () {
         }
     }
     catch (e) {
-        console.log("pc established error："+e.message);
+        debug("pc established error："+e.message);
         this.emit('error', e.message);
     }
 
     this.peerConnection.onopen = function() {
-        console.log("PeerConnection established");
+        debug("PeerConnection established");
 
     };
 
     this.peerConnection.onicecandidate = function (event) {
-        // console.log('[pear_webrtc] onicecandidate: ' + JSON.stringify(event));
+        // debug('[pear_webrtc] onicecandidate: ' + JSON.stringify(event));
         if (event.candidate == null) {
             if (self.sdp == "") {
-                console.log("sdp error");
+                debug("sdp error");
                 self.emit('error', "sdp error");
                 return;
             }
             return;
         } else {
             // socketSend(event.candidate);
-            // console.log('[pear_webrtc] sendCandidate');
+            // debug('[pear_webrtc] sendCandidate');
             self.emit('signal',event.candidate);
             if (!self.config.initiator || self.config.initiator == false){
                 // createDatachannel();
             }
         }
-        // console.log("iceGatheringState: "+ self.peerConnection.iceGatheringState);
+        // debug("iceGatheringState: "+ self.peerConnection.iceGatheringState);
     };
 
     this.peerConnection.oniceconnectionstatechange = function (evt) {
 
-        console.log("connectionState: "+ self.peerConnection.connectionState);
-        console.log("signalingstate:"+ self.peerConnection.signalingState);
+        debug("connectionState: "+ self.peerConnection.connectionState);
+        debug("signalingstate:"+ self.peerConnection.signalingState);
         if (self.peerConnection.signalingState=="stable" && !self.isDataChannelCreating)
         {
-            console.log('[pear_webrtc] oniceconnectionstatechange stable');
+            debug('[pear_webrtc] oniceconnectionstatechange stable');
             self.createDatachannel();
             self.isDataChannelCreating = true;
         }
@@ -16938,7 +17053,7 @@ SimpleRTC.prototype.createPeerConnect = function () {
 
     this.peerConnection.ondatachannel = function (evt) {
         self.dataChannel = evt.channel;
-        console.log(this.dataChannel.label+"dc state: "+ self.dataChannel.readyState);
+        debug(this.dataChannel.label+"dc state: "+ self.dataChannel.readyState);
         self.dataChannelEvents(this.dataChannel);
     };
 
@@ -16955,11 +17070,11 @@ SimpleRTC.prototype.createDatachannel = function () {
 
     try {
         this.dataChannel = this.peerConnection.createDataChannel('dataChannel', {reliable: true});
-        console.log("Channel [ " + this.dataChannel.label + " ] creating!");
-        console.log(this.dataChannel.label+" Datachannel state: "+ this.dataChannel.readyState);
+        debug("Channel [ " + this.dataChannel.label + " ] creating!");
+        debug(this.dataChannel.label+" Datachannel state: "+ this.dataChannel.readyState);
     }
     catch (dce) {
-        console.log("dc established error: "+dce.message);
+        debug("dc established error: "+dce.message);
         this.emit('error', dce.message);
     }
 
@@ -16970,8 +17085,8 @@ SimpleRTC.prototype.dataChannelEvents = function (channel) {
     var self = this;
 
     channel.onopen = function () {
-        console.log("Datachannel opened, current stateis :\n" + self.dataChannel.readyState);
-        console.log(channel);
+        debug("Datachannel opened, current stateis :\n" + self.dataChannel.readyState);
+        debug(channel);
         self.emit('connect', self.dataChannel.readyState);
     };
 
@@ -16995,7 +17110,9 @@ SimpleRTC.prototype.dataChannelEvents = function (channel) {
     };
 
     channel.onclose = function () {
-        console.log("DataChannel is closed");
+        debug("DataChannel is closed");
+        clearInterval(self.timer);
+        self.timer = null;
     }
 };
 
@@ -17003,16 +17120,16 @@ SimpleRTC.prototype.receiveOffer = function (evt) {
     var self = this;
 
     this.peerConnection.setRemoteDescription(new RTCSessionDescription(evt));
-    console.log("Received Offer, and set as Remote Desc:\n"+ evt.sdp);
+    // debug("Received Offer, and set as Remote Desc:\n"+ evt.sdp);
     this.peerConnection.createAnswer(function(desc) {
         self.peerConnection.setLocalDescription(desc);
         self.currentoffer = desc;
         self.sdp = desc.sdp;
-        console.log("Create Answer, and set as Local Desc:\n"+JSON.stringify(desc));
+        // debug("Create Answer, and set as Local Desc:\n"+JSON.stringify(desc));
         // socketSend(desc);
         self.emit('signal',desc);
     },function (err) {
-        console.log(err);
+        debug(err);
     });
 };
 
@@ -17020,29 +17137,29 @@ SimpleRTC.prototype.sendOffer = function () {
 
     this.peerConnection.createOffer(function (desc) {
         this.currentoffer = desc;
-        console.log("Create an offer : \n"+JSON.stringify(desc));
+        debug("Create an offer : \n"+JSON.stringify(desc));
         this.peerConnection.setLocalDescription(desc);
-        console.log("Offer Set as Local Desc");
+        debug("Offer Set as Local Desc");
         // socketSend(desc);
         this.emit('signal', desc);
         this.sdp = desc.sdp;
-        console.log("Send offer:\n"+JSON.stringify(this.sdp));
+        debug("Send offer:\n"+JSON.stringify(this.sdp));
     },function(error) {
-        console.log(error);
+        debug(error);
     });
 };
 
 SimpleRTC.prototype.receiveAnswer = function (answer) {
 
-    console.log("Received remote Answer: \n"+JSON.stringify(answer));
+    debug("Received remote Answer: \n"+JSON.stringify(answer));
     this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-    console.log("already set remote desc, current ice gather state: "+ this.peerConnection.iceGatheringState);
+    debug("already set remote desc, current ice gather state: "+ this.peerConnection.iceGatheringState);
 };
 
 SimpleRTC.prototype.receiveIceCandidate = function (evt) {
 
     if (evt) {
-        console.log("Received and add candidate:\n"+JSON.stringify(evt));
+        debug("Received and add candidate:\n"+JSON.stringify(evt));
         this.peerConnection.addIceCandidate(new RTCIceCandidate(evt));
     } else{
         return;
@@ -17058,9 +17175,9 @@ SimpleRTC.prototype.send = function (data) {
 
     try {
         this.dataChannel.send(data);
-        console.log("[pear_webrtc] send data：" + data);
+        debug("[pear_webrtc] send data：" + data);
     } catch (e){
-        console.log("dataChannel send error："+e.message);
+        debug("dataChannel send error："+e.message);
     }
 };
 
@@ -17079,7 +17196,7 @@ SimpleRTC.prototype.startHeartbeat = function () {
     };
 
     this.timer = setInterval(function () {
-        console.log(JSON.stringify(heartbeat));
+        debug(JSON.stringify(heartbeat));
         self.send(JSON.stringify(heartbeat));
 
     }, 90*1000);
@@ -17102,7 +17219,7 @@ function getBrowserRTC () {
 
 
 
-},{"events":109,"inherits":29}],101:[function(require,module,exports){
+},{"debug":20,"events":109,"inherits":29}],101:[function(require,module,exports){
 
 /*
  config:{
@@ -17117,6 +17234,7 @@ function getBrowserRTC () {
 
 module.exports = RTCDownloader;
 
+var debug = require('debug')('pear:webrtc-downloader-bin');
 var Buffer = require('buffer/').Buffer;
 var SimpleRTC = require('./simple-RTC');
 var EventEmitter = require('events').EventEmitter;
@@ -17161,7 +17279,7 @@ RTCDownloader.prototype.offerFromWS = function (offer) {          //由服务器
     var self = this;
 
     self.message = offer;
-    console.log('[webrtc] messageFromDC:' + JSON.stringify(offer));
+    debug('[webrtc] messageFromDC:' + JSON.stringify(offer));
     self.dc_id = offer.peer_id;
     self.simpleRTC.signal(offer.sdp);
 };
@@ -17169,19 +17287,18 @@ RTCDownloader.prototype.offerFromWS = function (offer) {          //由服务器
 RTCDownloader.prototype.candidatesFromWS = function (candidates) {
 
     for (var i=0; i<candidates.length; ++i) {
-        console.log('receiveIceCandidate:'+candidates[i]);
         this.simpleRTC.receiveIceCandidate(candidates[i]);
     }
 };
 
 RTCDownloader.prototype.select = function (start, end) {
     var self = this;
-    console.log('pear_webrtc'+self.dc_id+'select:'+start+'-'+end);
+    debug('pear_webrtc'+self.dc_id+'select:'+start+'-'+end);
     if (self.downloading){
-        // console.log('pear_webrtc queue.push:'+start+'-'+end);
+        // debug('pear_webrtc queue.push:'+start+'-'+end);
         self.queue.push([start,end]);
     } else {
-        // console.log('pear_webrtc startDownloading:'+start+'-'+end);
+        // debug('pear_webrtc startDownloading:'+start+'-'+end);
         self.startDownloading(start,end);
     }
     // if (self.queue.length >= 3) {
@@ -17206,7 +17323,7 @@ RTCDownloader.prototype.startDownloading = function (start, end) {
         "end":end
         // "end":10*1024*1024
     };
-    console.log("pear_send_file : " + JSON.stringify(str));
+    debug("pear_send_file : " + JSON.stringify(str));
     self.startTime=(new Date()).getTime();
     self.expectedLength = end - start + 1;
     self.simpleRTC.send(JSON.stringify(str));
@@ -17214,23 +17331,23 @@ RTCDownloader.prototype.startDownloading = function (start, end) {
 
 RTCDownloader.prototype._receive = function (chunk) {
     var self = this;
-    // console.log('[simpleRTC] chunk type:'+typeof chunk);
+    // debug('[simpleRTC] chunk type:'+typeof chunk);
 
     var uint8 = new Uint8Array(chunk);
-    // console.log('uint8.length:'+uint8.length);
+    // debug('uint8.length:'+uint8.length);
     // if (!uint8) {
     //     self.emit('error');
     //     return;
     // }
 
     var headerInfo = self._getHeaderInfo(uint8);
-    // console.log('headerInfo:'+JSON.stringify(headerInfo));
+    // debug('headerInfo:'+JSON.stringify(headerInfo));
 
     if (headerInfo) {
 
         if (headerInfo.value){
 
-            // console.log(self.mac+' headerInfo.start:'+headerInfo.start);
+            // debug(self.mac+' headerInfo.start:'+headerInfo.start);
             // if (headerInfo.start === self.lastChunkEnd + 1){
             //
             //     // self.chunkStore.push(uint8);
@@ -17242,12 +17359,12 @@ RTCDownloader.prototype._receive = function (chunk) {
 
             self.chunkStore.push(uint8);
         } else if (headerInfo.begin) {
-            // console.log(self.mac+' headerInfo.begin:'+self.downloading);
+            // debug(self.mac+' headerInfo.begin:'+self.downloading);
             self.emit('start');
             self.chunkStore = [];
         } else if (headerInfo.done) {
-            // console.log(self.mac+' headerInfo.done:'+self.downloading);
-            // console.log('self.chunkStore done');
+            // debug(self.mac+' headerInfo.done:'+self.downloading);
+            // debug('self.chunkStore done');
             var finalArray = [], length = self.chunkStore.length;
             // self.downloading = false;
             self.end = headerInfo.end;
@@ -17260,18 +17377,18 @@ RTCDownloader.prototype._receive = function (chunk) {
             self.endTime = (new Date()).getTime();
             // self.speed = Math.floor(((self.end - self.start) * 1000) / ((self.endTime - self.startTime) * 1024));  //单位: KB/s
             self.speed = Math.floor((self.end - self.start + 1) / (self.endTime - self.startTime));  //单位: KB/s
-            console.info('pear_webrtc speed:' + self.speed + 'KB/s');
+            debug('pear_webrtc speed:' + self.speed + 'KB/s');
             self.meanSpeed = (self.meanSpeed*self.counter + self.speed)/(++self.counter);
-            console.log('datachannel '+self.dc_id+' meanSpeed:' + self.meanSpeed + 'KB/s');
+            debug('datachannel '+self.dc_id+' meanSpeed:' + self.meanSpeed + 'KB/s');
 
             for (var i = 0; i < length; i++) {
                 if (!!self.chunkStore[i]) {
                     var value = self.chunkStore[i].subarray(256);
-                    // console.log('value.length:'+value.length);
+                    // debug('value.length:'+value.length);
                     finalArray.push(Buffer.from(value));
                 }
             }
-            // console.log('RTCDownloader' +self.mac+ ' emit data start:' + self.start + ' end:' + self.end);
+            // debug('RTCDownloader' +self.mac+ ' emit data start:' + self.start + ' end:' + self.end);
             var retBuf = Buffer.concat(finalArray);
             if (retBuf.length === self.expectedLength) self.emit('data', retBuf, self.start, self.end, self.speed);
             self.downloading = false;
@@ -17282,7 +17399,7 @@ RTCDownloader.prototype._receive = function (chunk) {
         } else if (headerInfo.action) {
             //心跳信息
         } else {
-            console.log('RTC error msg:'+JSON.stringify(headerInfo));
+            debug('RTC error msg:'+JSON.stringify(headerInfo));
             self.emit('error');
         }
     } else {
@@ -17313,10 +17430,10 @@ RTCDownloader.prototype.clearQueue = function () {              //清空下载�
 };
 
 RTCDownloader.prototype._getHeaderInfo = function (uint8arr) {
-    // console.log('_getHeaderInfo mac:'+this.mac);
+    // debug('_getHeaderInfo mac:'+this.mac);
     var sub = uint8arr.subarray(0, 256);
     var headerString =  String.fromCharCode.apply(String, sub);
-    // console.log('headerString:'+headerString)
+    // debug('headerString:'+headerString)
     return JSON.parse(headerString.split('}')[0]+'}');
 };
 
@@ -17329,11 +17446,11 @@ RTCDownloader.prototype._setupSimpleRTC = function (simpleRTC) {
     });
     simpleRTC.on('error', function (err)
     {
-        console.log('[simpleRTC] error', err);
+        debug('[simpleRTC] error', err);
         self.emit('error');
     });
     simpleRTC.on('signal', function (data) {
-        // console.log('[simpleRTC] SIGNAL', JSON.stringify(data));
+        // debug('[simpleRTC] SIGNAL', JSON.stringify(data));
 
         var message = {
             "peer_id":self.peer_id,
@@ -17341,13 +17458,13 @@ RTCDownloader.prototype._setupSimpleRTC = function (simpleRTC) {
             "offer_id":self.message.offer_id
         };
         self.mac = self.message.peer_id.replace(/:/g, '');
-        // console.log('webrtc mac:'+self.mac);
+        // debug('webrtc mac:'+self.mac);
         if (data.type == 'answer'){
             message.action = 'answer';
             message.sdps = data;
         } else if(data.candidate){
             message.action = 'candidate';
-            console.log('signal candidate:'+JSON.stringify(data));
+            debug('signal candidate:'+JSON.stringify(data));
             message.candidates = data;
         }
 
@@ -17355,7 +17472,7 @@ RTCDownloader.prototype._setupSimpleRTC = function (simpleRTC) {
         self.emit('signal',message);
     });
     simpleRTC.on('connect', function (state) {
-        console.info('[datachannel] '+self.dc_id+' CONNECT');
+        debug('[datachannel] '+self.dc_id+' CONNECT');
         // simpleRTC.send('[simpleRTC] PEER CONNECTED!');
         simpleRTC.startHeartbeat();                          //开始周期性发送心跳信息
         if (!self.connectFlag){
@@ -17366,13 +17483,14 @@ RTCDownloader.prototype._setupSimpleRTC = function (simpleRTC) {
     });
 };
 
-},{"./simple-RTC":100,"buffer/":15,"events":109,"inherits":29}],102:[function(require,module,exports){
+},{"./simple-RTC":100,"buffer/":15,"debug":20,"events":109,"inherits":29}],102:[function(require,module,exports){
 /**
  * Created by xieting on 2017/11/9.
  */
 
 module.exports = Worker;
 
+var debug = require('debug')('pear:worker');
 var md5 = require('blueimp-md5');
 var Dispatcher = require('./dispatcher');
 var HttpDownloader = require('./http-downloader');
@@ -17467,6 +17585,7 @@ function Worker(urlStr, token, opts) {
     };
 
     self._start();
+
 }
 
 Object.defineProperty(Worker.prototype, 'debugInfo', {
@@ -17493,11 +17612,11 @@ Worker.prototype._start = function () {
         nodeFilter(self.sources, function (nodes, fileLength) {            //筛选出可用的节点,以及回调文件大小
 
             var length = nodes.length;
-            console.log('nodes:'+JSON.stringify(nodes));
+            debug('nodes:'+JSON.stringify(nodes));
 
             if (length) {
                 // self.fileLength = fileLength;
-                console.log('nodeFilter fileLength:'+fileLength);
+                debug('nodeFilter fileLength:'+fileLength);
 
                 self._startPlaying(nodes);
             } else {
@@ -17508,7 +17627,7 @@ Worker.prototype._start = function () {
     } else {
 
         self._getNodes(self.token, function (nodes) {
-            console.log('_getNodes:'+JSON.stringify(nodes));
+            debug('debug _getNodes: %j', nodes);
             if (nodes) {
                 self._startPlaying(nodes);
                 // if (self.useDataChannel) {
@@ -17523,7 +17642,7 @@ Worker.prototype._start = function () {
 
 Worker.prototype._fallBack = function () {
 
-    console.log('PearDownloader _fallBack');
+    debug('PearDownloader _fallBack');
 }
 
 Worker.prototype._getNodes = function (token, cb) {
@@ -17557,10 +17676,10 @@ Worker.prototype._getNodes = function (token, cb) {
     xhr.onload = function () {
         if (this.status >= 200 && this.status < 300 || this.status == 304) {
 
-            console.log(this.response);
+            debug(this.response);
 
             var res = JSON.parse(this.response);
-            // console.log(res.nodes);
+            // debug(res.nodes);
             if (res.size) {                         //如果filesize大于0
                 // self.fileLength = res.size;           //test
 
@@ -17583,7 +17702,7 @@ Worker.prototype._getNodes = function (token, cb) {
                         if (protocol === 'webtorrent') {
                             if (!self.magnetURI) {                     //如果用户没有指定magnetURI
                                 self.magnetURI = nodes[i].magnet_uri;
-                                console.log('_getNodes magnetURI:'+nodes[i].magnet_uri);
+                                debug('_getNodes magnetURI:'+nodes[i].magnet_uri);
                             }
                         } else {
                             protocol === 'https' ? httpsCount++ : httpCount++;
@@ -17603,19 +17722,19 @@ Worker.prototype._getNodes = function (token, cb) {
                     self._debugInfo.totalHTTPS = httpsCount;
                     self._debugInfo.totalHTTP = httpCount;
 
-                    console.log('allNodes:'+JSON.stringify(allNodes));
+                    debug('allNodes:'+JSON.stringify(allNodes));
                     self.nodes = allNodes;
                     if (allNodes.length === 0) cb([{uri: self.src, type: 'server'}]);
                     nodeFilter(allNodes, function (nodes, fileLength) {            //筛选出可用的节点,以及回调文件大小
                         // nodes = [];                                            //test
                         var length = nodes.length;
-                        console.log('nodes:'+JSON.stringify(nodes));
+                        debug('nodes:'+JSON.stringify(nodes));
 
                         self._debugInfo.usefulHTTPAndHTTPS = length;
 
                         if (length) {
                             self.fileLength = fileLength;
-                            // console.log('nodeFilter fileLength:'+fileLength);
+                            // debug('nodeFilter fileLength:'+fileLength);
                             // self.nodes = nodes;
                             if (length <= 2) {
                                 // fallBack(nodes[0]);
@@ -17648,11 +17767,11 @@ Worker.prototype._getNodes = function (token, cb) {
 Worker.prototype._pearSignalHandshake = function () {
     var self = this;
     var dcCount = 0;                            //目前建立的data channel数量
-    console.log('_pearSignalHandshake');
+    debug('_pearSignalHandshake');
     var websocket = new WebSocket(WEBSOCKET_ADDR);
     self.websocket = websocket;
     websocket.onopen = function() {
-        // console.log('websocket connection opened!');
+        // debug('websocket connection opened!');
         self._debugInfo.signalServerConnected = true;
         var hash = md5(self.urlObj.host + self.urlObj.path);
         websocket.push(JSON.stringify({
@@ -17662,7 +17781,7 @@ Worker.prototype._pearSignalHandshake = function () {
             "uri": self.urlObj.path,
             "md5": hash
         }));
-        // console.log('peer_id:'+self.peerId);
+        // debug('peer_id:'+self.peerId);
     };
     websocket.push = websocket.send;
     websocket.send = function(data) {
@@ -17672,18 +17791,18 @@ Worker.prototype._pearSignalHandshake = function () {
                 websocket.send(data);
             }, 1000);
         }
-        // console.log("send to signal is " + data);
+        // debug("send to signal is " + data);
         websocket.push(data);
     };
     websocket.onmessage = function(e) {
         var message = JSON.parse(e.data);
-        console.log("[simpleRTC] websocket message is: " + JSON.stringify(message));
+        // debug("[simpleRTC] websocket message is: " + JSON.stringify(message));
         // message = message.nodes[1];
         if (message.action === 'candidate' && message.type === 'end') {
 
             for (var peerId in self.candidateMap) {
                 if (message.peer_id === peerId) {
-                    // console.log('self.candidateMap[peerId]:'+self.candidateMap[peerId]);
+                    // debug('self.candidateMap[peerId]:'+self.candidateMap[peerId]);
                     self.JDMap[peerId].candidatesFromWS(self.candidateMap[peerId]);
                 }
             }
@@ -17696,24 +17815,24 @@ Worker.prototype._pearSignalHandshake = function () {
                 var offer = nodes[i];
                 if (!offer.errorcode) {
                     if (dcCount === self.dataChannels) break;
-                    console.log('dc message:'+JSON.stringify(offer))
+                    // debug('dc message:'+JSON.stringify(offer));
                     if (!self.JDMap[offer.peer_id]) {
                         self.candidateMap[offer.peer_id] = makeCandidateArr(offer.sdp.sdp);
 
                         offer.sdp.sdp = offer.sdp.sdp.split('a=candidate')[0];
-                        console.log('initDC:'+JSON.stringify(offer));
+                        // debug('initDC:'+JSON.stringify(offer));
                         self.JDMap[offer.peer_id] = self.initDC(offer);
 
                         //test
-                        // console.log('self.candidateMap[node.peer_id]:'+JSON.stringify(self.candidateMap[node.peer_id]));
+                        // debug('self.candidateMap[node.peer_id]:'+JSON.stringify(self.candidateMap[node.peer_id]));
                         // self.JDMap[node.peer_id].candidatesFromWS(self.candidateMap[node.peer_id]);
 
                         dcCount ++;
                     } else {
-                        console.log('datachannel 重复');
+                        debug('datachannel 重复');
                     }
                 } else {
-                    console.log('dc error message:'+JSON.stringify(message))
+                    debug('dc error message:'+JSON.stringify(message))
                 }
             }
         }
@@ -17737,7 +17856,7 @@ Worker.prototype.initDC = function (offer) {
     var jd = new RTCDownloader(dc_config);
     jd.offerFromWS(offer)
     jd.on('signal',function (message) {
-        console.log('[jd] signal:' + JSON.stringify(message));
+        // debug('[jd] signal:' + JSON.stringify(message));
         self.websocket.send(JSON.stringify(message));
     });
     jd.once('connect',function () {
@@ -17757,7 +17876,7 @@ Worker.prototype.initDC = function (offer) {
 
 Worker.prototype._startPlaying = function (nodes) {
     var self = this;
-    console.log('start playing');
+    debug('start playing');
     self.dispatcherConfig.initialDownloaders = [];
     for (var i=0;i<nodes.length;++i) {
         var node = nodes[i];
@@ -17784,9 +17903,6 @@ Worker.prototype._startPlaying = function (nodes) {
     //{errCode: 1, errMsg: 'This browser do not support WebRTC communication'}
     d.once('ready', function (chunks) {
 
-
-        console.log('---666666666666666666666---');
-
         self.emit('begin', self.fileLength, chunks);
 
         // if (self.useDataChannel) {
@@ -17812,7 +17928,7 @@ Worker.prototype._startPlaying = function (nodes) {
 
     file._dispatcher._init();
 
-    console.log('self.autoPlay:'+self.autoplay);
+    // debug('self.autoPlay:'+self.autoplay);
 
     if (self.render) {
         self.render.render(file, self.selector, {autoplay: self.autoplay});
@@ -17821,7 +17937,7 @@ Worker.prototype._startPlaying = function (nodes) {
     self.isPlaying = true;
 
     d.on('error', function () {
-        console.log('dispatcher error!');
+        debug('dispatcher error!');
         // d.destroy();
         // self._fallBack();
         // var hd = new HttpDownloader(self.src, 'server');
@@ -17830,9 +17946,9 @@ Worker.prototype._startPlaying = function (nodes) {
     });
 
     d.on('needmorenodes', function () {
-        console.log('request more nodes');
+        debug('request more nodes');
         self._getNodes(self.token, function (nodes) {
-            console.log('needmorenodes _getNodes:'+JSON.stringify(nodes));
+            debug('needmorenodes _getNodes:'+JSON.stringify(nodes));
             if (nodes) {
                 // d.addNodes(nodes);
                 for (var i=0;i<nodes.length;++i) {
@@ -17841,7 +17957,7 @@ Worker.prototype._startPlaying = function (nodes) {
                     d.addNode(hd);
                 }
             } else {
-                console.log('noMoreNodes');
+                debug('noMoreNodes');
                 d.noMoreNodes = true;
             }
         });
@@ -17852,7 +17968,7 @@ Worker.prototype._startPlaying = function (nodes) {
         if (!self.nodeSet.has(self.src)) {
             var hd = new HttpDownloader(self.src, 'server');
             d.addNode(hd);
-            console.log('dispatcher add source:'+self.src);
+            debug('dispatcher add source:'+self.src);
             self.nodeSet.add(self.src);
         }
 
@@ -17860,7 +17976,7 @@ Worker.prototype._startPlaying = function (nodes) {
     });
 
     d.on('needmoredatachannels', function () {
-        console.log('request more datachannels');
+        debug('request more datachannels');
         if (self.websocket && self.websocket.readyState === WebSocket.OPEN) {
 
             var hash = md5(self.urlObj.host + self.urlObj.path);
@@ -17963,13 +18079,13 @@ function makeCandidateArr(sdp) {
         }
     }
 
-    console.log('candidateArr:'+JSON.stringify(candidateArr));
+    // debug('candidateArr:'+JSON.stringify(candidateArr));
 
     return candidateArr;
 }
 
 
-},{"./dispatcher":83,"./file":85,"./http-downloader":86,"./node-filter":94,"./node-scheduler":95,"./pear-torrent":97,"./peerid-generator":98,"./set":99,"./webrtc-downloader-bin":101,"blueimp-md5":14,"events":109,"inherits":29,"url":138}],103:[function(require,module,exports){
+},{"./dispatcher":83,"./file":85,"./http-downloader":86,"./node-filter":94,"./node-scheduler":95,"./pear-torrent":97,"./peerid-generator":98,"./set":99,"./webrtc-downloader-bin":101,"blueimp-md5":14,"debug":20,"events":109,"inherits":29,"url":138}],103:[function(require,module,exports){
 
 },{}],104:[function(require,module,exports){
 arguments[4][2][0].apply(exports,arguments)

@@ -11,6 +11,7 @@
     slideInterval: number                                //当前播放点距离缓冲前沿多少秒时滑动窗口
  }
  */
+var debug = require('debug')('pear:node-scheduler');
 
 module.exports = {
 
@@ -18,12 +19,28 @@ module.exports = {
 
         var idles = nodesProvider.filter(function (item) {                         //空闲节点
             return item.downloading === false;
-        })
+        });
+
+        // for (var i=0;i<idles.length;++i) {
+        //     console.warn('index:'+i+' type:'+idles[i].type+' queue:'+idles[i].queue.length+' speed:'+idles[i].speed);
+        // }
+
+        idles.sort(function (a, b) {          //速度从大到小排序
+            return b.speed - a.speed;
+        });
+
+        // for (var i=0;i<idles.length;++i) {
+        //     console.warn('sorted index:'+i+' type:'+idles[i].type+' queue:'+idles[i].queue.length+' speed:'+idles[i].speed);
+        // }
 
         var busys = nodesProvider.filter(function (item) {                         //忙碌节点
             return item.downloading === true && item.queue.length <= 1;
         }).sort(function (a, b) {
             return a.queue.length - b.queue.length;
+        });
+
+        busys.sort(function (a, b) {          //速度从大到小排序
+            return b.speed - a.speed;
         });
 
         var ret = idles.concat(busys);
@@ -34,9 +51,7 @@ module.exports = {
             })
         }
 
-        // for (var i=0;i<ret.length;++i) {
-        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
-        // }
+
 
         return ret;
     },
@@ -57,7 +72,7 @@ module.exports = {
 
         var ret = idles.concat(busys);
         // for (var i=0;i<ret.length;++i) {
-        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        //     debug('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
         // }
         if (ret.length > info.windowLength) {
             ret = ret.filter(function (item) {
@@ -84,7 +99,7 @@ module.exports = {
 
         var ret = idles.concat(busys);
         // for (var i=0;i<ret.length;++i) {
-        //     console.log('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
+        //     debug('index:'+i+' type:'+ret[i].type+' queue:'+ret[i].queue.length);
         // }
         if (ret.length > info.windowLength) {
             ret = ret.filter(function (item) {

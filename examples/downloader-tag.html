@@ -6,23 +6,32 @@
 </head>
 <script src="../dist/pear-downloader.js"></script>
 <body>
-    <pr-downloader id="downloader"
-                   data-src="https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4">
-    </pr-downloader>
-</body>
-<script>
-    var PRDownloader = document.getElementById('downloader');
 
-    PRDownloader.instance.on('begin', function () {
-        console.warn('6666666666');
-        console.warn(PRDownloader.instance);
-    });
-    PRDownloader.instance.on('done', function () {
-        console.warn('finished downloading buffer by first aid');
-    });
-    PRDownloader.instance.on('sourcemap', onSourceMap);
-    function onSourceMap(sourceType, index) {
-        console.warn('Received source type:' + sourceType + ' index:' + index);
+
+<script type="">
+    function downloading(obj) {
+        document.getElementById('filename').innerHTML = obj.fileName;
+        document.getElementById('progress').innerHTML =(obj.progress * 100).toFixed(1) + '%';
+        document.getElementById('status').innerHTML = obj.status;
+        document.getElementById('speed').innerHTML = Math.round(obj.speed) + 'KB/s';
+        document.getElementById('p2pRatio').innerHTML = (obj.p2pRatio * 100).toFixed(1) + '%';
     }
 </script>
+
+
+
+<pear-downloader style="color: red;" onProgress="downloading(this)"  data-token=""
+                 data-src="https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4" >点击下载
+</pear-downloader>
+
+
+
+<br /><br />
+<div> 文件名： <span id="filename"></span></div>
+<div> 状态： <span id="status"></span></div>
+<div> 进度： <span id="progress"></span></div>
+<div> 速度： <span id="speed"></span></div>
+<div> P2P率： <span id="p2pRatio"></span></div>
+
+</body>
 </html>

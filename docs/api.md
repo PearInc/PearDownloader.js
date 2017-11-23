@@ -45,6 +45,7 @@ var PearDownloader = require('PearDownloader');
   trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true
   sources: ['http://example.com/a'],    //指定下载源，增加这个字段后pearplayer不会再向后台请求节点，建议下载源多于5个以保证流畅播放
   useMonitor: true,              //是否开启monitor,会稍微影响性能,默认false
+  debug: false                   //是否开启debug模式，开启后可以在console中查看log，默认false
 }
 ```
 

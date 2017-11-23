@@ -15,6 +15,7 @@
  */
 module.exports = Dispatcher;
 
+var debug = require('debug')('pear:dispatcher');
 var BitField = require('bitfield');
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('inherits');
@@ -56,13 +57,12 @@ function Dispatcher(config) {
 
     self.bufferSources = new Array(self.chunks);    //记录每个buffer下载的方式
     self.slide = null;
-    self.bufferingCount = 0;                   //视频卡的次数
     self.noMoreNodes = false;                   //是否已没有新的节点可获取
 
     self.startTime = (new Date()).getTime();      //用于计算平均速度
 
     //firstaid参数自适应
-    self._windowLength = self.initialDownloaders.length <= 8 ? self.initialDownloaders.length : 8;
+    self._windowLength = self.initialDownloaders.length <= 5 ? self.initialDownloaders.length : 5;
     // self._windowLength = 15;
     // self._colddown = self._windowLength;                        //窗口滑动的冷却时间
     self._colddown = 5;                        //窗口滑动的冷却时间
@@ -70,9 +70,6 @@ function Dispatcher(config) {
 
     //webtorrent
     self.torrent = null;
-
-    //webrtc
-    // self.usefulDCs = 0;                                         //可用的data channel节点数量
 
     //scheduler
     self.scheduler = config.scheduler;
@@ -93,7 +90,7 @@ Dispatcher.prototype._init = function () {
             length: self.fileSize
         })
     );
-    console.log('self.path:'+self.path);
+    // debug('self.path:'+self.path);
     self.bitfield = new BitField(self.chunks);       //记录哪个块已经下好
 
     self.queue = [];                     //初始化下载队列
@@ -134,7 +131,7 @@ Dispatcher.prototype.select = function (start, end, priority, notify) {
     }
     priority = Number(priority) || 0;
 
-    console.log('select %s-%s (priority %s)', start, end, priority);
+    debug('select %s-%s (priority %s)', start, end, priority);
 
     self._selections.push({
         from: start,
@@ -156,7 +153,7 @@ Dispatcher.prototype.deselect = function (start, end, priority) {
     if (self.destroyed) throw new Error('dispatcher is destroyed');
 
     priority = Number(priority) || 0;
-    console.log('deselect %s-%s (priority %s)', start, end, priority);
+    debug('deselect %s-%s (priority %s)', start, end, priority);
     // self._clearAllQueues();
     for (var i = 0; i < self._selections.length; ++i) {
         var s = self._selections[i];
@@ -173,7 +170,7 @@ Dispatcher.prototype._slide = function () {
     var self = this;
 
     if (self.done) return;
-    console.log('[dispatcher] slide window downloader length:'+self.downloaders.length);
+    debug('[dispatcher] slide window downloader length:'+self.downloaders.length);
     self._fillWindow();
 };
 
@@ -187,7 +184,7 @@ Dispatcher.prototype._updateSelections = function () {
     process.nextTick(function () {
         self._gcSelections()
     });
-    console.log('Dispatcher _updateSelections');
+    // debug('Dispatcher _updateSelections');
     //此处开始下载
     self._update();
 };
@@ -241,7 +238,7 @@ Dispatcher.prototype._gcSelections = function () {
     // }
 
     // self._windowOffset = s.from + s.offset;
-    // console.log('current _windowOffset:' + self._windowOffset);
+    // debug('current _windowOffset:' + self._windowOffset);
 
     if (!self._selections.length) self.emit('idle')
 };
@@ -249,18 +246,18 @@ Dispatcher.prototype._gcSelections = function () {
 Dispatcher.prototype._update = function () {
     var self = this;
     if (self.destroyed) return;
-    console.log('Dispatcher _update');
+    // debug('Dispatcher _update');
     var length = self._selections.length;
-    console.log('_selections.length:'+self._selections.length);
-    if ( length > 0) {
+    // debug('_selections.length:'+self._selections.length);
+    if (length > 0) {
 
-        // console.log('_update self._selections:'+JSON.stringify(self._selections));
+        // debug('_update self._selections:'+JSON.stringify(self._selections));
         // var s = self._selections[length-1];
         var s = self._selections[0];
         var start = s.from + s.offset;
         var end = s.to;
         // self._windowOffset = start;
-        console.log('current _windowOffset:' + self._windowOffset);
+        debug('current _windowOffset:' + self._windowOffset);
         self._slide();
         // self.slide();
         // self._throttle(self.slide,self);
@@ -274,7 +271,7 @@ Dispatcher.prototype._checkDone = function () {
     // is the torrent done? (if all current selections are satisfied, or there are
     // no selections, then torrent is done)
     var done = true;
-    // console.log('_selections.length:'+self._selections.length);
+    // debug('_selections.length:'+self._selections.length);
     // for (var i = 0; i < self._selections.length; i++) {
     //     var selection = self._selections[i];
     //     for (var piece = selection.from; piece <= selection.to; piece++) {
@@ -292,13 +289,19 @@ Dispatcher.prototype._checkDone = function () {
             break
         }
     }
-    console.log('_checkDone self.done:'+self.done+' done:'+done);
+    // debug('_checkDone self.done:'+self.done+' done:'+done);
     if (!self.done && done) {
         self.done = true;
-        // console.log('dispatcher done');
+        // debug('dispatcher done');
         self.emit('done');
         if (self.useMonitor) {
             self.emit('downloaded', 1.0);
+        }
+        for (var k=0;k<self.downloaders.length;++k) {
+            if (self.downloaders[k].type === 2) {               //datachannel
+                self.downloaders[k].simpleRTC.dataChannel.close();                //关闭所有dataChannel
+            }
+
         }
     }
     self._gcSelections();
@@ -343,17 +346,14 @@ Dispatcher.prototype._fillWindow = function () {
     if (sortedNodes.length === 0) return;
 
     var count = 0;
-    console.log('_fillWindow _windowOffset:' + self._windowOffset + ' downloaders:'+self.downloaders.length);
     var index = self._windowOffset;                       //TODO:修复auto下为零
-    console.log('sortedNodes length:'+sortedNodes.length);
     self.emit('fillwindow', self._windowOffset, self._windowLength);
     while (count !== self._windowLength){
-        console.log('_fillWindow _windowLength:'+self._windowLength + ' downloadersLength:' + self.downloaders.length);
+        debug('_fillWindow _windowLength:'+self._windowLength + ' downloadersLength:' + self.downloaders.length);
         if (index >= self.chunks){
-            // console.warn('index >= self.chunks');
             break;
         }
-        console.log('index:'+index);
+        // debug('index:'+index);
         // if (count >= sortedNodes.length) break;
 
         if (!self.bitfield.get(index)) {
@@ -363,7 +363,6 @@ Dispatcher.prototype._fillWindow = function () {
             // node.select(pair[0],pair[1]);
             var node = sortedNodes[count % sortedNodes.length];
             // var node = sortedNodes[count];
-            console.log('_fillWindow node downloading:'+node.downloading+' type:'+node.type+' queue:'+node.queue.length);
             node.select(pair[0],pair[1]);
             count ++;
         } else {
@@ -382,23 +381,23 @@ Dispatcher.prototype._setupHttp = function (hd) {
     });
     hd.once('done',function () {
 
-        // console.log('httpDownloader ondone');
+        // debug('httpDownloader ondone');
 
     });
     hd.once('error', function (error) {
 
-        console.warn('hd error!');
+        console.warn('http' + hd.uri + 'error!');
 
         if (self.downloaders.length > self._windowLength) {
             self.downloaders.removeObj(hd);
-            if (self._windowLength > self._windowLength) self._windowLength --;
+            if (self._windowLength > 3) self._windowLength --;
         }
         self.checkoutDownloaders();
     });
     hd.on('data',function (buffer, start, end, speed) {
 
         var index = self._calIndex(start);
-        console.log('httpDownloader' + hd.uri +' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+hd.meanSpeed);
+        debug('httpDownloader' + hd.uri +' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+hd.meanSpeed);
         var size = end - start + 1;
         if (!self.bitfield.get(index)){
             self.bitfield.set(index,true);
@@ -414,7 +413,7 @@ Dispatcher.prototype._setupHttp = function (hd) {
                 self.emit('downloaded', self.downloaded/self.fileSize);
                 // hd.downloaded += size;
                 self.emit('traffic', hd.mac, size, hd.type === 1 ? 'HTTP_Node' : 'HTTP_Server');
-                console.log('ondata hd.type:' + hd.type +' index:' + index);
+                debug('ondata hd.type:' + hd.type +' index:' + index);
                 if (hd.type === 1) {          //node
                     self.fogDownloaded += self.pieceLength;
                     self.emit('fograte', self.fogDownloaded/self.downloaded);
@@ -427,9 +426,9 @@ Dispatcher.prototype._setupHttp = function (hd) {
                 self.emit('buffersources', self.bufferSources);
                 self.emit('sourcemap', hd.type === 1 ? 'n' : 's', index);
             }
-            // console.log('bufferSources:'+self.bufferSources);
+            // debug('bufferSources:'+self.bufferSources);
         } else {
-            console.log('重复下载');
+            debug('重复下载');
 
         }
     });
@@ -441,13 +440,13 @@ Dispatcher.prototype._setupDC = function (jd) {
     var self = this;
 
     jd.once('start',function () {
-        // console.log('DC start downloading');
+        // debug('DC start downloading');
     });
 
     jd.on('data',function (buffer, start, end, speed) {
 
         var index = self._calIndex(start);
-        console.log('pear_webrtc '+jd.dc_id+' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+jd.meanSpeed);
+        debug('pear_webrtc '+jd.dc_id+' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+jd.meanSpeed);
         var size = end - start + 1;
         if (!self.bitfield.get(index)){
             self.bitfield.set(index,true);
@@ -459,7 +458,7 @@ Dispatcher.prototype._setupDC = function (jd) {
             if (self.useMonitor) {
                 self.downloaded += size;
                 self.fogDownloaded += size;
-                console.log('downloaded:'+self.downloaded+' fogDownloaded:'+self.fogDownloaded);
+                debug('downloaded:'+self.downloaded+' fogDownloaded:'+self.fogDownloaded);
                 self.emit('downloaded', self.downloaded/self.fileSize);
                 self.emit('fograte', self.fogDownloaded/self.downloaded);
                 self.emit('fogspeed', self.downloaders.getCurrentSpeed([1,2]));
@@ -470,7 +469,7 @@ Dispatcher.prototype._setupDC = function (jd) {
                 self.emit('traffic', jd.mac, size, 'WebRTC_Node');
             }
         } else {
-            console.log('重复下载');
+            debug('重复下载');
             for (var k=0;k<self.downloaders.length;++k) {
                 if (self.downloaders[k].type === 2) {               //datachannel
                     self.downloaders[k].clearQueue();                //如果dc下载跟不上http,则清空下载队列
@@ -482,11 +481,10 @@ Dispatcher.prototype._setupDC = function (jd) {
     });
 
     jd.once('error', function () {
-        console.warn('jd error '+ jd.mac);
+        console.warn('webrtc error mac:'+ jd.mac);
         jd.close();
         self.downloaders.removeObj(jd);
-        // self.usefulDCs --;
-        if (self._windowLength > 3) {
+        if (self.downloaders.length < self._windowLength) {
             self._windowLength --;
         }
         self.checkoutDownloaders();
@@ -507,25 +505,24 @@ Dispatcher.prototype.checkoutDownloaders = function () {            //TODO:防�
 
 Dispatcher.prototype.addTorrent = function (torrent) {
     var self = this;
-    // console.log('torrent.pieces.length:'+torrent.pieces.length+' chunks:'+this.chunks);
+    // debug('torrent.pieces.length:'+torrent.pieces.length+' chunks:'+this.chunks);
     if (torrent.pieces.length !== this.chunks) return;
     this.torrent = torrent;
     torrent.pear_downloaded = 0;
-    console.log('addTorrent _windowOffset:' + self._windowOffset);
+    debug('addTorrent _windowOffset:' + self._windowOffset);
     if (self._windowOffset + self._windowLength < torrent.pieces.length-1) {
         torrent.critical(self._windowOffset+self._windowLength, torrent.pieces.length-1);
     }
     torrent.on('piecefromtorrent', function (index) {
 
-        console.log('piecefromtorrent:'+index);
+        debug('piecefromtorrent:'+index);
         if (self.useMonitor) {
             self.downloaded += self.pieceLength;
             self.fogDownloaded += self.pieceLength;
             torrent.pear_downloaded += self.pieceLength;
-            // console.log('downloaded:'+self.downloaded+' fogDownloaded:'+self.fogDownloaded);
             self.emit('downloaded', self.downloaded/self.fileSize);
             self.emit('fograte', self.fogDownloaded/self.downloaded);
-            // console.log('torrent.downloadSpeed:'+torrent.downloadSpeed/1024);
+            // debug('torrent.downloadSpeed:'+torrent.downloadSpeed/1024);
             self.emit('fogspeed', self.downloaders.getCurrentSpeed([1, 2]) + torrent.downloadSpeed/1024);
             self.bufferSources[index] = 'b';
             self.emit('buffersources', self.bufferSources);
@@ -535,7 +532,7 @@ Dispatcher.prototype.addTorrent = function (torrent) {
     });
 
     torrent.on('done', function () {
-        console.log('torrent done');
+        debug('torrent done');
     });
 };
 
@@ -543,23 +540,17 @@ Dispatcher.prototype.addDataChannel = function (dc) {
 
     // this.downloaders.push(dc);
     this.downloaders.splice(this._windowLength-1,0,dc);
-    if (this._windowLength < 10 && this.downloaders.length > this._windowLength) {
+    if (this._windowLength < 8 && this.downloaders.length > this._windowLength) {
         this._windowLength ++;
     }
-    // console.log('addDataChannel _windowLength:' + this._windowLength);
     this._setupDC(dc);
-    // console.log('addDataChannel now:'+this.downloaders.length);
-    // for (var i=0;i<this.downloaders.length;++i) {
-    //     console.log('downloader type:'+this.downloaders[i].type);
-    // }
-    // this.usefulDCs ++;
 };
 
 Dispatcher.prototype.addNode = function (node) {     //node是httpdownloader对象
 
     this._setupHttp(node);
     this.downloaders.push(node);
-    console.log('dispatcher add node: '+node.uri);
+    debug('dispatcher add node: '+node.uri);
 
 };
 
@@ -597,7 +588,7 @@ Dispatcher.prototype.destroy = function () {
 
     self.store = null;
 
-    console.info('Dispatcher destroyed');
+    debug('Dispatcher destroyed');
 };
 
 Dispatcher.prototype._throttle = function (method, context) {
@@ -617,7 +608,6 @@ Dispatcher.prototype.autoSlide = function () {
     var self = this;
 
     setTimeout(function () {
-        // console.log('[dispatcher] auto slide');
         self._slide();
         self._checkDone();
         if (!self.done && !self.destroyed){
@@ -628,7 +618,7 @@ Dispatcher.prototype.autoSlide = function () {
 
 Dispatcher.prototype._clearAllQueues = function () {
 
-    console.log('clearAllQueues');
+    debug('clearAllQueues');
     for (var k=0;k<this.downloaders.length;++k) {
         this.downloaders[k].clearQueue();
     }
