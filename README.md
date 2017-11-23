@@ -9,7 +9,7 @@
 
 <h4 align="center">一个支持多协议、多源、混合P2P-CDN的下载器</h4>
 <p align="center">
-  <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/badge/npm-v1.1.2-blue.svg" alt="npm"></a>
+  <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/badge/npm-v1.1.4-blue.svg" alt="npm"></a>
    <a href="https://www.jsdelivr.com/package/npm/peardownloader"><img src="https://data.jsdelivr.com/v1/package/npm/peardownloader/badge" alt="jsdelivr"></a>
  <a href="https://www.jsdelivr.com/package/npm/peardownloader"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
 </p>

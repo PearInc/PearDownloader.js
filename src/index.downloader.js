@@ -36,6 +36,7 @@ class  PearDownloaderTag extends HTMLElement {
         this.speed = 0;
         this.fileName = 'unknown';
         this.p2pRatio = 0;
+        this.autoDownload = false;
 
         this.addEventListener('click', e => {
             if (this.disabled) {
@@ -51,18 +52,25 @@ class  PearDownloaderTag extends HTMLElement {
     }
 
     createDownloader() {
-        if (!this.hasAttributes('data-src')) {
+
+        if (!this.dataset.src) {
             console.error('Must set data-src attribuite!');
             return false;
         }
         let token = '';
-        if (this.hasAttributes('data-token')) {
+        if (this.dataset.token) {
             token = this.dataset.token;
         }
 
         let downloader = new PearDownloader(this.dataset.src, token, {
             useMonitor: true,             //是否开启monitor,会稍微影响性能,默认false
         });
+
+
+        if (this.dataset.autoDownload == 'true') {
+            this.autoDownload = true;
+        }
+
         return downloader;
     }
 
@@ -76,7 +84,7 @@ class  PearDownloaderTag extends HTMLElement {
         });
 
         this.downloader.on("progress", (prog) => {
-            // let percent = (prog * 100).toFixed(1) + '%';
+
             this.progress = prog;
             this.status = prog < 1.0 ? 'downloading' : 'done';
 
@@ -89,12 +97,15 @@ class  PearDownloaderTag extends HTMLElement {
         });
 
         this.downloader.on('done', () => {
-            let aTag = document.createElement('a');
-            aTag.download = this.fileName;
-            this.downloader.file.getBlobURL(function (error, url) {
-                aTag.href = url;
-                aTag.click();
-            })
+            if (this.autoDownload) {
+                let aTag = document.createElement('a');
+                aTag.download = this.fileName;
+                this.downloader.file.getBlobURL(function (error, url) {
+                    aTag.href = url;
+                    aTag.click();
+                })
+            }
+
 
         });
         this.downloader.on('fograte', (p2pRatio) => {

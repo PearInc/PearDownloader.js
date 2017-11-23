@@ -27,7 +27,7 @@
     "uglify-downloader": "browserify -s PearDownloader -e  ./src/index.downloader.js | babili > ./dist/pear-downloader.min.js",
     "pull-from-github": "git pull",
     "push-to-github": "git add . && git commit -m 'add customized HTML Tag' && git push",
-    "npm-publish": "npm run build-downloader && npm run uglify-downloader && npm publish",
+    "npm-publish": "npm publish",
     "copy-to-player-project": "cp -r ./src/* ../PearPlayer.js/src"
   },
   "author": "Xie Ting Pear Limited",
