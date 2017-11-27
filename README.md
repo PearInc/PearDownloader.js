@@ -67,6 +67,11 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 </script>
 ```
 
+## 如何为自己的文件加速？
+示例中的文件是已经分发过的，那么如何为任意文件加速呢？很简单，我们拥有海量的边缘节点（共享CDN），只需在我们的[文件分发系统](https://oss.webrtc.win/)中添加您的文件url，
+即可利用我们海量的节点为您的文件加速！<br>
+具体教程请点击[这里](https://manual.webrtc.win/oss/)(PS:文件的名字需要加上“Pear-Demo”前缀，如：Pear-Demo-file.zip)
+
 ### 谁在用我们的产品？
 
 + [Pear Limited](https://pear.hk)
@@ -90,7 +95,7 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 
 - 2017.08.18  （IT大咖说） - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
 - 2017.07.11 （OSChina开源中国） - [PearPlayer.js —— 混合P2P-CDN的流媒体播放器](https://www.oschina.net/p/PearPlayerjs)
-- 2017.06.24 （腾讯Web前端大会） - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakashuo/new/dakalive/detail/2577)
+- 2017.06.24 （腾讯Web前端大会） - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakalive/detail/2577)
 - 2017.05.17 （南方科技大学） - Edge Computing and Shared Fog Streaming
 - 2017.05.08 （台湾逢甲大学） - A Cooler Fruit Venture: Scaling up a Network from Cloud to Fog with Crowdsourcing
 - 2016.08.17 （香港科技大学） - From Cloud to Fog: Scaling up a Network with Crowdsourcing

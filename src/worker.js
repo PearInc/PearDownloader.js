@@ -245,7 +245,6 @@ Worker.prototype._getNodes = function (token, cb) {
                         debug('nodes:'+JSON.stringify(nodes));
 
                         self._debugInfo.usefulHTTPAndHTTPS = length;
-
                         if (length) {
                             self.fileLength = fileLength;
                             // debug('nodeFilter fileLength:'+fileLength);
@@ -427,6 +426,7 @@ Worker.prototype._startPlaying = function (nodes) {
 
             if (nodes.length) {
 
+                self._debugInfo.usefulHTTPAndHTTPS += nodes.length;
                 nodes.map(function (item) {
 
                     var hd = new HttpDownloader(item.uri, item.type);
@@ -518,12 +518,7 @@ Worker.prototype._startPlaying = function (nodes) {
     });
     d.on('fograte', function (fogRate) {
 
-        self.emit('fograte', fogRate);
-    });
-
-    d.on('bitfieldchange', function (bitfield) {
-
-        self.emit('bitfieldchange', bitfield, d.chunks);
+        self.emit('fogratio', fogRate);
     });
     d.on('fogspeed', function (speed) {
 

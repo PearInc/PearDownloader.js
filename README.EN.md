@@ -79,7 +79,7 @@ Congratulations! You can use the PearDownloader now!
 
 - 2017.08.18  （IT大咖说） - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
 - 2017.07.11 （OSChina开源中国） - [PearPlayer.js —— 混合P2P-CDN的流媒体播放器](https://www.oschina.net/p/PearPlayerjs)
-- 2017.06.24 （腾讯Web前端大会） - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakashuo/new/dakalive/detail/2577)
+- 2017.06.24 （腾讯Web前端大会） - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakalive/detail/2577)
 - 2017.05.17 （SUSTC） - Edge Computing and Shared Fog Streaming
 - 2017.05.08 （FCU） - A Cooler Fruit Venture: Scaling up a Network from Cloud to Fog with Crowdsourcing
 - 2016.08.17 （HKUST） - From Cloud to Fog: Scaling up a Network with Crowdsourcing
