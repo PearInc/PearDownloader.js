@@ -80,6 +80,7 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 + [UCloud](https://www.ucloud.cn)
 + [Tencent Cloud](https://qcloud.com)
 + [Tencent X5/TBS](https://x5.tencent.com/tbs/)
++ [Tencent APD](http://www.chinaz.com/news/2016/0707/548873.shtml)
 
 ### PearDownloader文档
 - **[阅读get-started文档](docs/get-started.md)**
