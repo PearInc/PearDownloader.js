@@ -80,7 +80,7 @@ if (PearDownloader.isSupported()) {
 
 通过该事件可以监听fog节点（包括WebRTC和HTTP）的平均下载速度（单位KB/s）。(useMonitor需设为true)
 
-## `downloader.on('fograte', function (p2pRate) {})`
+## `downloader.on('fogratio', function (p2pRatio) {})`
 
 通过该事件可以监听fog节点（包括WebRTC和HTTP）总的下载比率（fog下载的字节数除以目前总的下载字节数）。(useMonitor需设为true)
 

@@ -21,7 +21,7 @@ PearPlayer 发布后，吸引了大家持续的关注，同时我们也收集到
 PearDownloader的发布，可以降低已有成熟播放器的内容提供商的迁移成本，内容提供商可以按需将其集成到自有产品中，使用PearFog服务。
 PearDownloader支持更多样化的文件类型，更灵活的调度算法、调度策略的选择，满足更广阔、灵活、多变的业务场景与业务需求。
 
-**PearDownloader（梨享下载器）** 是[PearPlayer](https://github.com/PearInc/PearPlayer.js)的底层下载模块，
+PearDownloader（梨享下载器）**[Demo](https://demo.webrtc.win/peardownloader)** 是[PearPlayer](https://github.com/PearInc/PearPlayer.js)的底层下载模块，
 实现了融合HTTP（包含HTTPS、HTTP2）、WebRTC的多协议、多源、低延迟、高带宽利用率的无插件Web端下载加速能力。
 基于高效的调度算法将来自多个节点的数据进行拼接形成完整的文件或将有序的数据/媒体流喂给上层的应用，例如音视频播放器，
 PearDownloader能在保证下载速度前提下最大化P2P率。
@@ -38,7 +38,6 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 ### 特性
 
 - P2P能力基于**WebRTC**，无须安装任何插件
-- **下载快速**，严格测试，稳定可靠
 - 多协议(HTTP、HTTPS、WebRTC)、多源
 - 自研的调度算法，在保证下载速度的前提下最大化P2P率
 - 默认无需填参数（内部根据文件属性作自适应），高级使用模式可自行调整算法和参数
@@ -63,14 +62,16 @@ Demo演示地址：https://demo.webrtc.win/peardownloader/
 假设要下载https://example.com/file.zip
 ```html
 <script>
-var downloader = new PearDownloader('https://example.com/file.zip');
+if (PearDownloader.isSupported()) {
+    var downloader = new PearDownloader('https://example.com/file.zip');
+}
 </script>
 ```
 
 ## 如何为自己的文件加速？
-示例中的文件是已经分发过的，那么如何为任意文件加速呢？很简单，我们拥有海量的边缘节点（共享CDN），只需在我们的[文件分发系统](https://oss.webrtc.win/)中添加您的文件url，
-即可利用我们海量的节点为您的文件加速！<br>
-具体教程请点击[这里](https://manual.webrtc.win/oss/)(PS:文件的名字需要加上“Pear-Demo”前缀，如：Pear-Demo-file.zip)
+示例中的文件是已经分发过的，那么如何为任意文件加速呢？很简单，只需在[文件分发系统](https://oss.webrtc.win/)中添加您的文件url，
+即可利用Pear的海量节点为您的文件下载加速！具体教程请点击[这里](https://manual.webrtc.win/oss/)（文件的名字需要加上`Pear-Demo`前缀，
+如`Pear-Demo-file.zip`）
 
 ### 谁在用我们的产品？
 
@@ -94,6 +95,7 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 
 ### 演讲与媒体报道
 
+- 2017.11.24 （金色财经） - [谛听科技正式进军区块链领域，战略投资梨享计算](http://www.jinse.com/blockchain/99767.html)
 - 2017.08.18  （IT大咖说） - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
 - 2017.07.11 （OSChina开源中国） - [PearPlayer.js —— 混合P2P-CDN的流媒体播放器](https://www.oschina.net/p/PearPlayerjs)
 - 2017.06.24 （腾讯Web前端大会） - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakalive/detail/2577)
