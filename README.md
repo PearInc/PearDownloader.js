@@ -60,9 +60,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 假设要下载https://example.com/file.zip
 ```html
 <script>
-if (PearDownloader.isSupported()) {
-    var downloader = new PearDownloader('https://example.com/file.zip');
-}
+var downloader = new PearDownloader('https://example.com/file.zip');
 </script>
 ```
 
