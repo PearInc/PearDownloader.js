@@ -13,32 +13,34 @@
 
     //第一个参数为video标签的id或class
     var url = 'https://qq.webrtc.win/tv/Pear-Demo-Yosemite_National_Park.mp4';
-    var downloader = new PearDownloader(url, {
-        scheduler: 'WebRTCFirst',      //节点调度算法，默认IdleFirst，其它内置调度算法有“WebRTCFirst“和”CloudFirst”
-        auto: true,                    //是否全部下载,默认true
-        interval: 5000,                //滑动窗口的时间间隔,单位毫秒,默认5s
-        useDataChannel: true,          //是否开启data channel,默认true
-        dataChannels: 20,              //创建data channel的最大数量,默认20
-        useTorrent: false,             //是否开启Browser P2P(基于Webtorrent)，默认true
+    if (PearDownloader.isSupported()) {
+        var downloader = new PearDownloader(url, {
+            scheduler: 'WebRTCFirst',      //节点调度算法，默认IdleFirst，其它内置调度算法有“WebRTCFirst“和”CloudFirst”
+            auto: true,                    //是否全部下载,默认true
+            interval: 5000,                //滑动窗口的时间间隔,单位毫秒,默认5s
+            useDataChannel: true,          //是否开启data channel,默认true
+            dataChannels: 20,              //创建data channel的最大数量,默认20
+            useTorrent: false,             //是否开启Browser P2P(基于Webtorrent)，默认true
 //        magnetURI: magnetURI,        //可手动传入magnetURI，需先将useTorrent设为true
 //        trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true
 //        sources: [],                 //指定下载源，增加这个字段后pearplayer不会再向后台请求节点，建议下载源多于5个以保证流畅播放
-        useMonitor: true,              //是否开启monitor,会稍微影响性能,默认false
-        debug: false                   //是否开启debug模式，开启后可以在console中查看log，默认false
-    });
+            useMonitor: true,              //是否开启monitor,会稍微影响性能,默认false
+            debug: false                   //是否开启debug模式，开启后可以在console中查看log，默认false
+        });
 
 
-    downloader.on('exception', onException);             //播放器出现异常时的回调函数
-    downloader.on('begin', onBegin);　　　　　　　　　　　　 //开始下载时触发
-    downloader.on('progress', onProgress);               //回调目前的下载进度
-    downloader.on('cloudspeed', onCloudSpeed);           //来自server的HTTP的平均下载速度
-    downloader.on('fogspeed', onFogSpeed);               //来自fog的节点（包括HTTP和WebRTC）的平均下载速度
-    downloader.on('fogratio', onFogRatio);　　　　　　　　　//fog节点的下载比率（下载的字节数除以总的字节数）
-    downloader.on('buffersources', onBufferSources);      //buffer map，记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
-    downloader.on('done', onDone);　　　　　　　　           //结束下载时触发
-    downloader.on('traffic', onTraffic);                  //节点流量统计,每次下载buffer都会触发该事件
-    downloader.on('sourcemap', onSourceMap);              //记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
-    downloader.on('metadata', onMetaData);
+        downloader.on('exception', onException);             //播放器出现异常时的回调函数
+        downloader.on('begin', onBegin);　　　　　　　　　　　　 //开始下载时触发
+        downloader.on('progress', onProgress);               //回调目前的下载进度
+        downloader.on('cloudspeed', onCloudSpeed);           //来自server的HTTP的平均下载速度
+        downloader.on('fogspeed', onFogSpeed);               //来自fog的节点（包括HTTP和WebRTC）的平均下载速度
+        downloader.on('fogratio', onFogRatio);　　　　　　　　　//fog节点的下载比率（下载的字节数除以总的字节数）
+        downloader.on('buffersources', onBufferSources);      //buffer map，记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
+        downloader.on('done', onDone);　　　　　　　　           //结束下载时触发
+        downloader.on('traffic', onTraffic);                  //节点流量统计,每次下载buffer都会触发该事件
+        downloader.on('sourcemap', onSourceMap);              //记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
+        downloader.on('metadata', onMetaData);
+    }
 
     function onBegin(fileLength, chunks) {
         console.log('start downloading buffer by first aid, file length is:' + fileLength/1024/1024 + ' total chunks:' + chunks);

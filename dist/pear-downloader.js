@@ -13490,6 +13490,11 @@ function PearDownloader(urlStr, token, opts) {
     Worker.call(self, urlStr, token, opts);
 }
 
+PearDownloader.isSupported = function () {
+
+    return Worker.isSupported();
+}
+
 class  PearDownloaderTag extends HTMLElement {
     constructor() {
         super();
@@ -17612,9 +17617,16 @@ function Worker(urlStr, token, opts) {
 
 }
 
+Worker.isSupported = function () {
+
+    return !!getBrowserRTC();
+}
+
 Object.defineProperty(Worker.prototype, 'debugInfo', {
     get: function () { return this._debugInfo }
 });
+
+
 
 Worker.prototype._start = function () {
     var self = this;

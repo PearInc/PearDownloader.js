@@ -27,6 +27,17 @@ var PearDownloader = require('PearDownloader');
 
 # PearDownloader API
 
+## PearDownloader.isSupported()
+
+静态方法，检测当前浏览器环境是否支持WebRTC。
+```js
+if (PearDownloader.isSupported()) {
+  // WebRTC is supported
+} else {
+  // Use a fallback
+}
+```
+
 ## `var downloader = new PearDownloader(url, token, opts)`
 
 创建一个新的PearDownloader实例，url是待下载文件的url，token是登陆pear服务器获取的授权，有效期7个小时。
