@@ -45,8 +45,6 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 - 可选接入低成本、高可用的Pear [Fog CDN](https://github.com/PearInc/FogVDN)
 - 协议默认通过TLS/DTLS全加密，无DPI特征；并可通过Pear Fog组件的动态端口映射进一步消除统计学特征
 - 具备Browser P2P能力（基于WebTorrent）
-<br>
-Demo演示地址：https://demo.webrtc.win/peardownloader/
 
 
 ## 使用方法
