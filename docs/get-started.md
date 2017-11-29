@@ -63,7 +63,7 @@ function onDone() {
 function onException(exception) {
   var errCode = exception.errCode;
   switch (errCode) {
-    case 1:
+    case 1:
       //当前浏览器不支持WebRTC
       console.log(exception.errMsg);
       break;
