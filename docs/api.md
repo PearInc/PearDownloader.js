@@ -46,17 +46,17 @@ if (PearDownloader.isSupported()) {
 
 ```js
 {
-  scheduler: 'WebRTCFirst',      //节点调度算法，默认IdleFirst，其它内置调度算法有“WebRTCFirst“和”CloudFirst”
-  auto: true,                    //是否全部下载,默认true
-  interval: 5000,                //滑动窗口的时间间隔,单位毫秒,默认10s
-  useDataChannel: true,          //是否开启data channel,默认true
-  dataChannels: 20,              //创建data channel的最大数量,默认20
-  useTorrent: false,             //是否开启Browser P2P(基于Webtorrent)，默认true
-  magnetURI: magnetURI,          //可手动传入magnetURI，需先将useTorrent设为true
+  scheduler: 'WebRTCFirst',                         //节点调度算法，默认IdleFirst，其它内置调度算法有“WebRTCFirst“和”CloudFirst”
+  auto: true,                                       //是否全部下载,默认true
+  interval: 5000,                                   //滑动窗口的时间间隔,单位毫秒,默认10s
+  useDataChannel: true,                             //是否开启data channel,默认true
+  dataChannels: 20,                                 //创建data channel的最大数量,默认20
+  useTorrent: false,                                //是否开启Browser P2P(基于Webtorrent)，默认true
+  magnetURI: magnetURI,                             //可手动传入magnetURI，需先将useTorrent设为true
   trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true
-  sources: ['http://example.com/a'],    //指定下载源，增加这个字段后pearplayer不会再向后台请求节点，建议下载源多于5个以保证流畅播放
-  useMonitor: true,              //是否开启monitor,会稍微影响性能,默认false
-  debug: false                   //是否开启debug模式，开启后可以在console中查看log，默认false
+  sources: ['http://example.com/a'],                //指定下载源，增加这个字段后pearplayer不会再向后台请求节点，建议下载源多于5个以保证流畅播放
+  useMonitor: true,                                 //是否开启monitor,会稍微影响性能,默认false
+  debug: false                                      //是否开启debug模式，开启后可以在console中查看log，默认false
 }
 ```
 
@@ -87,11 +87,11 @@ if (PearDownloader.isSupported()) {
 ## `player.on('sourcemap', function (sourceType, index) {})`
 
 每下载一个buffer都会触发该事件，sourceType是一个string，代表该buffer是从哪个源下载的，有以下几种取值：(useMonitor需设为true)<br/>
-null: 该处的buffer还未下载<br/>
-s: server，从服务器端下载（HTTP协议）<br/>
-n: node，从节点下载（HTTP协议）<br/>
-d: data channel，从节点下载（WebRTC协议）<br/>
-b: browser，从其它浏览器下载（WebRTC协议）<br/>
+* null: 该处的buffer还未下载<br/>
+* s: server，从服务器端下载（HTTP协议）<br/>
+* n: node，从节点下载（HTTP协议）<br/>
+* d: data channel，从节点下载（WebRTC协议）<br/>
+* b: browser，从其它浏览器下载（WebRTC协议）<br/>
 
 index是对应的索引。
 
@@ -104,16 +104,14 @@ index是对应的索引。
 当PearDownloader内部发生异常时会触发该事件，通过回调函数中的exception可以获取errCode和对应的errMsg：
 ```js
 function onException(exception) {
-        var errCode = exception.errCode;
-        switch (errCode) {
-            case 1:                              //当前浏览器不支持WebRTC
-                console.log(exception.errMsg);
-                break
-        }
-    }
+  var errCode = exception.errCode;
+  switch (errCode) {
+    case 1:
+      //当前浏览器不支持WebRTC
+      console.log(exception.errMsg);
+      break;
+  }
+}
 ```
 
 请参考[`../examples/test.html`](/examples/download.html)来了解API使用方法。
-
-
-

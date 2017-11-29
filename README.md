@@ -1,8 +1,8 @@
 
 <h1 align="center">
-  <img src="fig/pear.png" height="220"></img>
+  <img src="fig/pear.png" height="110"></img>
   <br>
-  PearDownloader.js
+  <a href="http://demo.webrtc.win/pear/downloader">PearDownloader.js</a>
   <br>
   <br>
 </h1>
@@ -30,7 +30,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 <a href="https://www.npmjs.com/package/peardownloader"><img src="./fig/player-arch.png" alt="arch"></a>
 </p>
 
-只需将`pear-downloader.min.js`通过`<script>`标签导入到HTML就可以使用。 
+只需将`pear-downloader.min.js`通过`<script>`标签导入到HTML就可以使用。
 参考以下[代码示例](#使用方法)，也可以查看[`/examples/downloader-test.html`](/examples/downloader-test.html)来了解使用方法。
 
 参考[get-started](docs/get-started.md)来了解基本使用方法。<br/>
@@ -60,7 +60,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 假设要下载https://example.com/file.zip
 ```html
 <script>
-    var downloader = new PearDownloader('https://example.com/file.zip');
+var downloader = new PearDownloader('https://example.com/file.zip');
 </script>
 ```
 

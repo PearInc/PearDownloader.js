@@ -36,39 +36,43 @@ There is a complete example in [examples/downloader-test.html](../examples/downl
 ### Listen to PearDownloader events
 
 ```js
-var downloader = new PearDownloader(url, {      //第一个参数为url
-                    useMonitor: true             //是否开启monitor,会稍微影响性能,默认false
-                });
+/**
+ * @param {string} url 第一个参数为url
+ * @param {boolean} object.useMonitor 是否开启monitor，会稍微影响性能，默认false
+ */
+var downloader = new PearDownloader(url, { useMonitor: true });
 
 downloader.on('exception', onException);
 downloader.on('begin', onBegin);
 downloader.on('progress', onProgress);
-downloader.on('sourcemap', onSourceMap);        
+downloader.on('sourcemap', onSourceMap);
 downloader.on('done', onDone);
-                
+
 function onBegin(fileLength, chunks) {
-    console.log('start downloading buffer by first aid, file length is:' + fileLength + ' total chunks:' + chunks);
+  console.log('start downloading buffer by first aid, file length is:' + fileLength + ' total chunks:' + chunks);
 }
 
 function onProgress(downloaded) {
-    console.log('Progress: ' + (downloaded * 100).toFixed(1) + '%');
+  console.log('Progress: ' + (downloaded * 100).toFixed(1) + '%');
 }
 
 function onDone() {
-    console.log('finished downloading buffer by first aid');
+  console.log('finished downloading buffer by first aid');
 }
 
 function onException(exception) {
-    var errCode = exception.errCode;
-    switch (errCode) {
-        case 1:                   //当前浏览器不支持WebRTC
-        console.log(exception.errMsg);
-            break
-    }
+  var errCode = exception.errCode;
+  switch (errCode) {
+    case 1:
+      //当前浏览器不支持WebRTC
+      console.log(exception.errMsg);
+      break;
+  }
 }
+
 function onSourceMap(sourceType, index) {
-        console.log('Received source type:' + sourceType + ' index:' + index);
-    }
+  console.log('Received source type:' + sourceType + ' index:' + index);
+}
 ```
 
 ## Build
