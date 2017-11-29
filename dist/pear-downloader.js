@@ -13492,7 +13492,7 @@ function PearDownloader(urlStr, token, opts) {
 
 PearDownloader.isSupported = function () {
 
-    return Worker.isSupported();
+    return Worker.isRTCSupported();
 }
 
 class  PearDownloaderTag extends HTMLElement {
@@ -17026,7 +17026,7 @@ SimpleRTC.prototype.createPeerConnect = function () {
     var self = this;
 
     try {
-        this.peerConnection = new RTCPeerConnection(this.pc_config);
+        this.peerConnection = new self.RTCPeerConnection(this.pc_config);
         // debug('[simpleRTC] PeerConnection created!');
         if (this.config.initiator && this.config.initiator == true){
             debug('[pear_webrtc]  sendOffer');
@@ -17617,7 +17617,7 @@ function Worker(urlStr, token, opts) {
 
 }
 
-Worker.isSupported = function () {
+Worker.isRTCSupported = function () {
 
     return !!getBrowserRTC();
 }
@@ -17630,11 +17630,6 @@ Object.defineProperty(Worker.prototype, 'debugInfo', {
 
 Worker.prototype._start = function () {
     var self = this;
-    if (!getBrowserRTC()) {
-        self.emit('exception', {errCode: 1, errMsg: 'This browser do not support WebRTC communication'});
-        alert('This browser do not support WebRTC communication');
-        self.useDataChannel = false;
-    }
     if (!window.WebSocket) {
         self.useDataChannel = false;
     }
