@@ -37,16 +37,15 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 
 ### 特性
 
-- P2P能力基于**WebRTC**，无须安装任何客户端或插件
-- 多协议(HTTP、HTTPS、WebRTC)、多源
+- P2P能力基于国际标准的WebRTC，无须安装任何客户端或插件
+- 多协议(HTTP, HTTPS, WebRTC)、多源
 - 多源传输能力支持目前所有已知主流浏览器（当浏览器不支持WebRTC时全调度HTTP节点）
-- 通过浏览器内核的MSE，可支持边下边播
+- 通过浏览器内核的MSE，可支持音视频的边下边播
 - 自研的调度算法，在保证下载速度的前提下最大化P2P率（用户亦可实现自己的调度算法，以满足不同场景需求）
 - 默认无需填参数（内部根据文件属性作自适应），高级使用模式可自行调整算法和参数
 - 可选接入低成本、高可用的Pear [Fog CDN](https://github.com/PearInc/FogVDN)
 - 协议默认通过TLS/DTLS全加密，无DPI特征；并可通过Pear Fog组件的动态端口映射进一步消除统计学特征
 - 具备Browser P2P能力（基于WebTorrent）
-
 
 ## 使用方法
 
