@@ -15,13 +15,13 @@
 </p>
 <br>
 
-[PearPlayer.js](https://github.com/PearInc/PearPlayer.js)发布后，吸引了大家持续的关注，同时我们也收集到了大家许多宝贵的建议。
+[PearPlayer.js](https://github.com/PearInc/PearPlayer.js)发布后，吸引了业界持续的关注，同时我们也收集到了许多宝贵建议。
 一方面我们将持续维护更新PearPlayer，使其支持更多的拓展功能；
-另一方面我们将更底层、更基础的且适用范围更广的相关组件重新整理，专注于节点的选择以及数据的调度，将多源传输部分剥离出来，形成PearDownloader.js。
-PearDownloader的发布，可以降低已有成熟播放器的内容提供商的迁移成本，内容提供商可以按需将其集成到自有产品中，使用PearFog服务。
+另一方面我们将更底层、更基础，且适用范围更广的相关组件重新整理，专注于节点的选择及数据的调度，将多源传输部分剥离出来，形成PearDownloader.js。
+PearDownloader的发布，可以降低已有成熟播放器的内容提供商(CP)的迁移成本，CP厂商可以按需将其集成到自有产品中，使用[PearFog](https://github.com/PearInc)服务。
 PearDownloader支持更多样化的文件类型，更灵活的调度算法、调度策略的选择，满足更广阔、灵活、多变的业务场景与业务需求。
 
-PearDownloader（梨享下载器）**[[Demo](http://demo.webrtc.win/pear/downloader)]** 是[PearPlayer](https://github.com/PearInc/PearPlayer.js)的底层下载模块，
+PearDownloader（梨享下载器）**[[Demo](http://demo.webrtc.win/pear/downloader)]** 是PearPlayer的底层下载模块，
 实现了融合HTTP（包含HTTPS、HTTP2）、WebRTC的多协议、多源、低延迟、高带宽利用率的无插件Web端下载加速能力。
 基于高效的调度算法将来自多个节点的数据进行拼接形成完整的文件或将有序的数据/媒体流喂给上层的应用，例如音视频播放器，
 PearDownloader能在保证下载速度前提下最大化P2P率。
@@ -67,7 +67,7 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 
 ## 如何为自己的文件加速？
 示例中的文件是已经分发过的，那么如何为任意文件加速呢？很简单，只需在[文件分发系统](https://oss.webrtc.win/)中添加您的文件url，
-即可利用Pear的海量节点为您的文件下载加速！具体教程请点击[这里](https://manual.webrtc.win/oss/)（文件的名字需要加上`Pear-Demo`前缀，
+即可利用Pear的海量节点为您的文件下载加速！具体教程请点击[这里](https://manual.webrtc.win/oss/)（文件的名字需要加上`Pear-Demo-`前缀，
 如`Pear-Demo-file.zip`）
 
 ### 谁在用我们的产品？
