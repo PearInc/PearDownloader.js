@@ -15,9 +15,9 @@
 </p>
 <br>
 
-PearPlayer 发布后，吸引了大家持续的关注，同时我们也收集到了大家许多宝贵的建议。
+[PearPlayer.js](https://github.com/PearInc/PearPlayer.js)发布后，吸引了大家持续的关注，同时我们也收集到了大家许多宝贵的建议。
 一方面我们将持续维护更新PearPlayer，使其支持更多的拓展功能；
-另一方面我们将更底层、更基础的且适用范围更广的相关组件重新整理，专注于节点的选择以及数据的调度，将多源传输部分剥离出来，形成PearDownloader。
+另一方面我们将更底层、更基础的且适用范围更广的相关组件重新整理，专注于节点的选择以及数据的调度，将多源传输部分剥离出来，形成PearDownloader.js。
 PearDownloader的发布，可以降低已有成熟播放器的内容提供商的迁移成本，内容提供商可以按需将其集成到自有产品中，使用PearFog服务。
 PearDownloader支持更多样化的文件类型，更灵活的调度算法、调度策略的选择，满足更广阔、灵活、多变的业务场景与业务需求。
 
@@ -93,7 +93,7 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 ### 演讲与媒体报道
 
 - 2017.11.24 （金色财经） - [谛听科技正式进军区块链领域，战略投资梨享计算](http://www.jinse.com/blockchain/99767.html)
-- 2017.08.18  （IT大咖说） - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
+- 2017.08.18 （IT大咖说） - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
 - 2017.07.11 （OSChina开源中国） - [PearPlayer.js —— 混合P2P-CDN的流媒体播放器](https://www.oschina.net/p/PearPlayerjs)
 - 2017.06.24 （腾讯Web前端大会） - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakalive/detail/2577)
 - 2017.05.17 （南方科技大学） - Edge Computing and Shared Fog Streaming
