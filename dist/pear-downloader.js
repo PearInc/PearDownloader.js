@@ -12370,7 +12370,7 @@ module.exports = function zeroFill (width, number, pad) {
 
 },{}],83:[function(require,module,exports){
 module.exports={
-  "version": "1.1.6"
+  "version": "1.1.7"
 }
 },{}],84:[function(require,module,exports){
 (function (process){
