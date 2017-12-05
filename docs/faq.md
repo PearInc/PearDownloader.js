@@ -3,5 +3,5 @@
 
 ### 这个会像webtorrent一样支持torrent、magnet吗？
 目前已集成webtorrent（对部分源码作了修改），并且可以通过参数配置的方式传入magnetURI，
-但注意pieceLength必须是512(1*1024*512)。
+但注意pieceLength必须是512K(1*1024*512)。
 
