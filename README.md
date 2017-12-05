@@ -15,7 +15,7 @@
 </p>
 <br>
 
-[English](README_EN.md)
+[English](./README_EN.md)
 
 [PearPlayer.js](https://github.com/PearInc/PearPlayer.js)发布后，吸引了业界持续的关注，同时我们也收集到了许多宝贵建议。
 一方面我们将持续维护更新PearPlayer，使其支持更多的拓展功能；
