@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
+<div> 文件名： <span id="filename"></span></div>
+<div> 进度： <span id="progress">0%</span></div>
+<div> 速度： <span id="speed">0KB/s</span></div>
+<div> P2P率： <span id="p2pRatio">0%</span></div>
 <!--<script src="https://cdn.jsdelivr.net/npm/pearplayer@latest/dist/pear-player.min.js"></script>-->
 <script src="../dist/pear-downloader.js"></script>
 <script>
@@ -17,7 +20,6 @@
         var downloader = new PearDownloader(url, {
             scheduler: 'WebRTCFirst',      //节点调度算法，默认IdleFirst，其它内置调度算法有“WebRTCFirst“和”CloudFirst”
             auto: true,                    //是否全部下载,默认true
-            interval: 5000,                //滑动窗口的时间间隔,单位毫秒,默认5s
             useDataChannel: true,          //是否开启data channel,默认true
             dataChannels: 20,              //创建data channel的最大数量,默认20
             useTorrent: false,             //是否开启Browser P2P(基于Webtorrent)，默认true
@@ -25,15 +27,14 @@
 //        trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true
 //        sources: [],                 //指定下载源，增加这个字段后pearplayer不会再向后台请求节点，建议下载源多于5个以保证流畅播放
             useMonitor: true,              //是否开启monitor,会稍微影响性能,默认false
-            debug: true                   //是否开启debug模式，开启后可以在console中查看log，默认false
+            maxLoaders: 15,                //同时下载的节点数量，默认15个
+            sequencial: false,              //是否有序下载，默认false
+            debug: true,                   //是否开启debug模式，开启后可以在console中查看log，默认false
         });
 
-
-        downloader.on('exception', onException);             //播放器出现异常时的回调函数
         downloader.on('begin', onBegin);　　　　　　　　　　　　 //开始下载时触发
         downloader.on('progress', onProgress);               //回调目前的下载进度
-        downloader.on('cloudspeed', onCloudSpeed);           //来自server的HTTP的平均下载速度
-        downloader.on('fogspeed', onFogSpeed);               //来自fog的节点（包括HTTP和WebRTC）的平均下载速度
+        downloader.on('meanspeed', onMeanSpeed);           //平均下载速度
         downloader.on('fogratio', onFogRatio);　　　　　　　　　//fog节点的下载比率（下载的字节数除以总的字节数）
         downloader.on('buffersources', onBufferSources);      //buffer map，记录每个buffer的下载源类型，其中s: server   n: node  d: data channel  b: browser
         downloader.on('done', onDone);　　　　　　　　           //结束下载时触发
@@ -45,8 +46,7 @@
     function onBegin(fileLength, chunks) {
         console.log('start downloading buffer by first aid, file length is:' + fileLength/1024/1024 + ' total chunks:' + chunks);
 
-
-
+        document.getElementById('filename').innerHTML = downloader.fileName;
 //        var stream = downloader.file.createReadStream({start: 0, end: 156478});
 //
 //        stream.on('data', function (chunk) {
@@ -62,32 +62,21 @@
 
     function onProgress(downloaded) {
         console.log('Progress: ' + (downloaded * 100).toFixed(1) + '%');
+        document.getElementById('progress').innerHTML =(downloaded * 100).toFixed(1) + '%';
     }
 
-    function onCloudSpeed(speed) {
-        console.log('Cloud download speed: ' + speed + 'KBps');
+    function onMeanSpeed(speed) {
+        document.getElementById('speed').innerHTML = Math.round(speed) + 'KB/s';
     }
 
-    function onFogSpeed(speed) {
-        console.log('Fog download speed: ' + speed + 'KBps');
-    }
 
     function onFogRatio(p2pRatio) {
-        console.log('Fog Ratio: ' + (p2pRatio * 100).toFixed(1) + '%');
+        document.getElementById('p2pRatio').innerHTML = (p2pRatio * 100).toFixed(1) + '%';
     }
 
     function onDone() {
         console.log('finished downloading buffer by first aid');
 
-    }
-
-    function onException(exception) {
-        var errCode = exception.errCode;
-        switch (errCode) {
-            case 1:
-                console.log(exception.errMsg);
-                break
-        }
     }
     function onBufferSources(bufferSources) {            //s: server   n: node  d: data channel  b: browser
         console.log('Current Buffer Sources:' + bufferSources);
