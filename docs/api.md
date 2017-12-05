@@ -33,8 +33,10 @@ var PearDownloader = require('PearDownloader');
 ```js
 if (PearDownloader.isWebRTCSupported()) {
   // WebRTC is supported
+  
 } else {
   // Use a fallback
+  
 }
 ```
 
