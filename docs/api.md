@@ -1,7 +1,5 @@
 # PearDownloader 文档
 
-使用PearDownloader，需确保浏览器支持[WebRTC](https://en.wikipedia.org/wiki/WebRTC)(Chrome, Firefox, Opera)。
-
 ## 导入
 PearDownloader有两种导入方式：通过script标签导入和npm安装
 
