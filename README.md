@@ -15,6 +15,8 @@
 </p>
 <br>
 
+[English](./README_EN.md)
+
 [PearPlayer.js](https://github.com/PearInc/PearPlayer.js)发布后，吸引了业界持续的关注，同时我们也收集到了许多宝贵建议。
 一方面我们将持续维护更新PearPlayer，使其支持更多的拓展功能；
 另一方面我们将更底层、更基础，且适用范围更广的相关组件重新整理，专注于节点的选择及数据的调度，将多源传输部分剥离出来，形成PearDownloader.js。
