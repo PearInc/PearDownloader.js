@@ -28,7 +28,7 @@ function PearDownloader(urlStr, token, opts) {
     Worker.call(self, urlStr, token, opts);
 }
 
-PearDownloader.isSupported = function () {
+PearDownloader.isWebRTCSupported = function () {
 
     return Worker.isRTCSupported();
 }
@@ -113,7 +113,7 @@ class  PearDownloaderTag extends HTMLElement {
 
 
         });
-        this.downloader.on('fograte', (p2pRatio) => {
+        this.downloader.on('fogratio', (p2pRatio) => {
 
             this.p2pRatio = p2pRatio;
         });
@@ -121,7 +121,5 @@ class  PearDownloaderTag extends HTMLElement {
     }
 }
 
-if (!window.customElements.get('pear-downloader')) {
-    window.customElements.define('pear-downloader', PearDownloaderTag);
-}
+window.customElements.define('pear-downloader', PearDownloaderTag);
 

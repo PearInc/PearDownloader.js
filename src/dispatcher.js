@@ -32,7 +32,7 @@ function Dispatcher(config) {
     if (!(config.initialDownloaders && config.fileSize && config.scheduler)) throw new Error('config is not completed');
     self.fileSize = config.fileSize;
     self.initialDownloaders = config.initialDownloaders;
-    self.pieceLength = config.chunkSize || 1*1024*1024;
+    self.pieceLength = config.chunkSize || 1*1024*512;
     self.interval = config.interval || 5000;
     self.auto = config.auto || false;
     // self.auto = true;
@@ -101,7 +101,7 @@ Dispatcher.prototype._init = function () {
         // self.startFrom(0, false);
         self.select(0, self.chunks-1, true);
         self.autoSlide();
-        self.slide = noop;Pear-Demo-Yosemite_National_Park.mp4
+        self.slide = noop;
     } else {
         // self.slide = this._throttle(this._slide, this);
     }
@@ -517,7 +517,8 @@ Dispatcher.prototype.addTorrent = function (torrent) {
     torrent.pear_downloaded = 0;
     debug('addTorrent _windowOffset:' + self._windowOffset);
     if (self._windowOffset + self._windowLength < torrent.pieces.length-1) {
-        torrent.critical(self._windowOffset+self._windowLength, torrent.pieces.length-1);
+        debug('torrent.select:%d to %d', self._windowOffset+self._windowLength, torrent.pieces.length-1);
+        torrent.select(self._windowOffset+self._windowLength, torrent.pieces.length-1, 1000);
     }
     torrent.on('piecefromtorrent', function (index) {
 

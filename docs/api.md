@@ -31,7 +31,7 @@ var PearDownloader = require('PearDownloader');
 
 静态方法，检测当前浏览器环境是否支持WebRTC。
 ```js
-if (PearDownloader.isSupported()) {
+if (PearDownloader.isWebRTCSupported()) {
   // WebRTC is supported
 } else {
   // Use a fallback

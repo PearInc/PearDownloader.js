@@ -35,7 +35,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 
 参考[get-started](docs/get-started.md)来了解基本使用方法。<br/>
 
-### 特性
+## 特性
 
 - P2P能力基于国际标准的WebRTC，无须安装任何客户端或插件
 - 多协议(HTTP, HTTPS, WebRTC)、多源
@@ -69,7 +69,7 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 即可利用Pear的海量节点为您的文件下载加速！具体教程请点击[这里](https://manual.webrtc.win/oss/)（文件的名字需要加上`Pear-Demo-`前缀，
 如`Pear-Demo-file.zip`）
 
-### 谁在用我们的产品？
+## 谁在用我们的产品？
 
 + [Pear Limited](https://pear.hk)
 + [Lenovo China](https://www.lenovo.com.cn/)
@@ -79,17 +79,17 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 + [Tencent X5/TBS](https://x5.tencent.com/tbs/)
 + [Tencent APD](http://www.chinaz.com/news/2016/0707/548873.shtml)
 
-### PearDownloader文档
+## PearDownloader文档
 - **[阅读get-started文档](docs/get-started.md)**
 - **[阅读API文档](docs/api.md)**
 
-### 致谢
+## 致谢
 特别感谢以下项目，为本项目提供了部分灵感来源以及API设计参考：
 
 - [WebTorrent](https://github.com/webtorrent/webtorrent)
 - [Peer5](https://www.peer5.com/#)
 
-### 演讲与媒体报道
+## 演讲与媒体报道
 
 - 2017.11.24 （金色财经） - [谛听科技正式进军区块链领域，战略投资梨享计算](http://www.jinse.com/blockchain/99767.html)
 - 2017.08.18 （IT大咖说） - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
@@ -99,9 +99,9 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 - 2017.05.08 （台湾逢甲大学） - A Cooler Fruit Venture: Scaling up a Network from Cloud to Fog with Crowdsourcing
 - 2016.08.17 （香港科技大学） - From Cloud to Fog: Scaling up a Network with Crowdsourcing
 
-### License
+## License
 
 MIT. Copyright (c) [Pear Limited](https://pear.hk) and [snowinszu](https://github.com/snowinszu).
 
-### 帮助与支持
+## 帮助与支持
 E-mail: <service@pear.hk>；用户QQ群：`373594967`；[CP/CDN接入、OEM与其他商务合作](https://github.com/PearInc/FogVDN)
