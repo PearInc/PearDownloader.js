@@ -114,4 +114,4 @@ function onException(exception) {
 }
 ```
 
-请参考[`../examples/test.html`](/examples/download.html)来了解API使用方法。
+请参考[`../examples/downloader-test.html`](/examples/downloader-test.html)来了解API使用方法。
