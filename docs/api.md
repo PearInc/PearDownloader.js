@@ -60,6 +60,10 @@ if (PearDownloader.isWebRTCSupported()) {
 }
 ```
 
+## `downloader.on('fallback', function () {})`
+
+downloader出现异常时的回调函数，建议在此处作降级处理，如直接调用默认下载器。
+
 ## `downloader.on('begin', function (fileLength, chunks) {})`
 
 当PearDownloader完成初始化后会触发该事件，通过回调函数中的fileLength获取文件总大小，chunks获取文件被分成的块数（每块1M）。
@@ -98,20 +102,5 @@ index是对应的索引。
 ## `downloader.on('traffic', function (mac, size, type) {})`
 通过该事件可以监听每个节点的实时流量，其中mac是节点的mac地址，size是对应节点的瞬时下载流量（字节），type是
 节点的类型（http、datachannel等）。(useMonitor需设为true)
-
-## `downloader.on('exception', onException)`
-
-当PearDownloader内部发生异常时会触发该事件，通过回调函数中的exception可以获取errCode和对应的errMsg：
-```js
-function onException(exception) {
-  var errCode = exception.errCode;
-  switch (errCode) {
-    case 1:
-      //当前浏览器不支持WebRTC
-      console.log(exception.errMsg);
-      break;
-  }
-}
-```
 
 请参考[`../examples/downloader-test.html`](/examples/downloader-test.html)来了解API使用方法。
