@@ -1,7 +1,7 @@
 <h1 align="center">
   <img src="fig/pear.png" height="110"></img>
   <br>
-  <a href="http://demo.webrtc.win/pear/downloader">PearDownloader.js</a>
+  <a href="http://demo.webrtc.win/downloader">PearDownloader.js</a>
   <br>
   <br>
 </h1>
