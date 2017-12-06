@@ -9,27 +9,26 @@
 <h4 align="center">A multi-protocol, multi-source and P2P-CDN supporting Downloader</h4>
 <br>
 
-**PearDownloader** is an open soure downloader written by JavaScript, combine HTTP (including HTTPS, HTTP2) and WebRTC.It would be  multi-protocol, multi-source, low latency, high bandwidth utilization.With a well  designed algorithm, PearDownloader can guarantee high P2P rate  as well as download speed.
+**PearDownloader** is an open soure downloader written in JavaScript, combine HTTP (including HTTPS, HTTP2) and WebRTC. It supports multi-protocol, multi-source, and achieves low latency and high bandwidth utilization. With well designed algorithms, PearDownloader can guarantee high P2P rate as well as download speed. 
 
 ![multisources](fig/fogvdn_multisources.png)
 
-`pear-downloader.min.js` can be imported by the html label`<script>`, refer to  [code example](#使用方法), also [`/examples/download.html`](/examples/download.html) can help you.
+`pear-downloader.min.js` can be imported with the html label`<script>`, refer to  [code example](#使用方法), also [`/examples/download.html`](/examples/download.html) can help you. 
 
 To know more information [API document](docs/get-started.md).<br/>
 
 ### Feature
 
-- P2P based on **WebRTC**,no plug in
-- **Speed up**,reliable
-- Multi-protocol(HTTP,HTTPS,WebRTC), multi-source
+- P2P based on **WebRTC**, no plug in
+- **Speed up**, reliable
+- Multi-protocol (HTTP, HTTPS, WebRTC), multi-source
 - No parameter
-- Save the data usage
-- Run well in Chrome,Firefox,Opera,Safari11
-- Support  [Pear FogVDN](https://github.com/PearInc/FogVDN)
-- Encode by TLS/DTLS, no DPI feature,Pear Fog dynamic port mapping
-- Use easily like `<video>` label, can integrate
+- Saves data usage
+- Supports all well-known browsers
+- Supports [Pear Fog CDN](https://github.com/PearInc/FogVDN)
+- Encoded with TLS/DTLS, no DPI feature; Pear Fog dynamic port mapping
 <br>
-Demo: https://demo.webrtc.win/peardownloader/
+Demo: https://demo.webrtc.win/pear/downloader/
 
 
 ## Quick Start
@@ -77,12 +76,12 @@ Congratulations! You can use the PearDownloader now!
 
 ###  Talks
 
-- 2017.08.18  （IT大咖说） - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
-- 2017.07.11 （OSChina开源中国） - [PearPlayer.js —— 混合P2P-CDN的流媒体播放器](https://www.oschina.net/p/PearPlayerjs)
-- 2017.06.24 （腾讯Web前端大会） - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakalive/detail/2577)
-- 2017.05.17 （SUSTC） - Edge Computing and Shared Fog Streaming
-- 2017.05.08 （FCU） - A Cooler Fruit Venture: Scaling up a Network from Cloud to Fog with Crowdsourcing
-- 2016.08.17 （HKUST） - From Cloud to Fog: Scaling up a Network with Crowdsourcing
+- 2017.08.18 (IT Talks) - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
+- 2017.07.11 (OSChina) - [PearPlayer.js —— 混合P2P-CDN的流媒体播放器](https://www.oschina.net/p/PearPlayerjs)
+- 2017.06.24 (Tencent Frontend Conference] - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakalive/detail/2577)
+- 2017.05.17 (SUSTech) - Edge Computing and Shared Fog Streaming
+- 2017.05.08 (FCU) - A Cooler Fruit Venture: Scaling up a Network from Cloud to Fog with Crowdsourcing
+- 2016.08.17 (HKUST) - From Cloud to Fog: Scaling up a Network with Crowdsourcing
 
 ### License
 

@@ -12370,7 +12370,7 @@ module.exports = function zeroFill (width, number, pad) {
 
 },{}],83:[function(require,module,exports){
 module.exports={
-  "version": "1.1.5"
+  "version": "1.1.7"
 }
 },{}],84:[function(require,module,exports){
 (function (process){
@@ -12387,6 +12387,8 @@ module.exports={
  auto: boolean,           //true为连续下载buffer
  useMonitor: boolean,      //开启监控器,默认关闭
  scheduler: function       //节点调度算法
+ sequencial: boolean       //是否有序下载，默认false
+ maxLoaders: number        //同时下载的节点数量
  }
  */
 module.exports = Dispatcher;
@@ -12408,7 +12410,7 @@ function Dispatcher(config) {
     if (!(config.initialDownloaders && config.fileSize && config.scheduler)) throw new Error('config is not completed');
     self.fileSize = config.fileSize;
     self.initialDownloaders = config.initialDownloaders;
-    self.pieceLength = config.chunkSize || 1*1024*1024;
+    self.pieceLength = config.chunkSize || 1*1024*512;
     self.interval = config.interval || 5000;
     self.auto = config.auto || false;
     // self.auto = true;
@@ -12440,7 +12442,9 @@ function Dispatcher(config) {
     self.fogRatio = 0.0;
 
     //firstaid参数自适应
-    self._windowLength = self.initialDownloaders.length <= 5 ? self.initialDownloaders.length : 5;
+    self.sequencial = config.sequencial || false;
+    self.maxLoaders = config.maxLoaders;
+    self._windowLength = self.initialDownloaders.length <= self.maxLoaders ? self.initialDownloaders.length : self.maxLoaders;
     // self._windowLength = 15;
     // self._colddown = self._windowLength;                        //窗口滑动的冷却时间
     self._colddown = 5;                        //窗口滑动的冷却时间
@@ -12451,6 +12455,7 @@ function Dispatcher(config) {
 
     //scheduler
     self.scheduler = config.scheduler;
+    self._windowEnd = 0;                        //当前窗口的end
 };
 
 Dispatcher.prototype._init = function () {
@@ -12640,7 +12645,18 @@ Dispatcher.prototype._update = function () {
         // self.slide();
         // self._throttle(self.slide,self);
     }
+};
 
+Dispatcher.prototype._resetWindow = function () {
+
+    if (!this.done) {
+        for (var piece = 0; piece < this.chunks; piece++) {
+            if (!this.bitfield.get(piece)) {
+                this._windowEnd = piece;
+                break;
+            }
+        }
+    }
 };
 
 Dispatcher.prototype._checkDone = function () {
@@ -12681,6 +12697,9 @@ Dispatcher.prototype._checkDone = function () {
             }
 
         }
+    } else if (!self.sequencial && self._windowEnd === self.chunks) {               //当滑到最后一个窗口，如果前面还有没有下载的buffer，则重新开始滑动窗口
+
+        self._resetWindow();
     }
     self._gcSelections();
 
@@ -12724,8 +12743,10 @@ Dispatcher.prototype._fillWindow = function () {
     if (sortedNodes.length === 0) return;
 
     var count = 0;
-    var index = self._windowOffset;                       //TODO:修复auto下为零
-    self.emit('fillwindow', self._windowOffset, self._windowLength);
+    // var index = self._windowOffset;                       //TODO:修复auto下为零
+    var index = self.sequencial ? self._windowOffset : self._windowEnd;
+    console.log('_fillWindow _windowEnd:'+self._windowEnd);
+    self.emit('fillwindow', index, self._windowLength);
     while (count !== self._windowLength){
         debug('_fillWindow _windowLength:'+self._windowLength + ' downloadersLength:' + self.downloaders.length);
         if (index >= self.chunks){
@@ -12748,7 +12769,7 @@ Dispatcher.prototype._fillWindow = function () {
         }
         index ++;
     }
-
+    self._windowEnd = index;
 };
 
 Dispatcher.prototype._setupHttp = function (hd) {
@@ -12893,7 +12914,8 @@ Dispatcher.prototype.addTorrent = function (torrent) {
     torrent.pear_downloaded = 0;
     debug('addTorrent _windowOffset:' + self._windowOffset);
     if (self._windowOffset + self._windowLength < torrent.pieces.length-1) {
-        torrent.critical(self._windowOffset+self._windowLength, torrent.pieces.length-1);
+        debug('torrent.select:%d to %d', self._windowOffset+self._windowLength, torrent.pieces.length-1);
+        torrent.select(self._windowOffset+self._windowLength, torrent.pieces.length-1, 1000);
     }
     torrent.on('piecefromtorrent', function (index) {
 
@@ -12925,10 +12947,11 @@ Dispatcher.prototype.addDataChannel = function (dc) {
 
     // this.downloaders.push(dc);
     this.downloaders.splice(this._windowLength-1,0,dc);
-    if (this._windowLength < 8 && this.downloaders.length > this._windowLength) {
-        this._windowLength ++;
-    }
+    // if (this._windowLength < 8 && this.downloaders.length > this._windowLength) {
+    //     this._windowLength ++;
+    // }
     this._setupDC(dc);
+    if (!this.sequencial && this._windowLength < this.maxLoaders) this._windowLength ++;     //
 };
 
 Dispatcher.prototype.addNode = function (node) {     //node是httpdownloader对象
@@ -12936,7 +12959,7 @@ Dispatcher.prototype.addNode = function (node) {     //node是httpdownloader对�
     this._setupHttp(node);
     this.downloaders.push(node);
     debug('dispatcher add node: '+node.uri);
-
+    if (!this.sequencial && this._windowLength < this.maxLoaders) this._windowLength ++;
 };
 
 Dispatcher.prototype.requestMoreNodes = function () {
@@ -13490,102 +13513,100 @@ function PearDownloader(urlStr, token, opts) {
     Worker.call(self, urlStr, token, opts);
 }
 
-PearDownloader.isSupported = function () {
+PearDownloader.isWebRTCSupported = function () {
 
     return Worker.isRTCSupported();
-}
+};
 
-class  PearDownloaderTag extends HTMLElement {
-    constructor() {
-        super();
-        this.progress = 0;
-        this.status = 'ready';
-        this.speed = 0;
-        this.fileName = 'unknown';
-        this.p2pRatio = 0;
-        this.autoDownload = false;
-
-        this.addEventListener('click', e => {
-            if (this.disabled) {
-            return;
-        }
-        this.downloader = this.createDownloader();
-        this.downloaderLifeCycle();
-    });
-    }
-
-    connectedCallback() {
-        // this.textContent = "卧槽！！！ - ";
-    }
-
-    createDownloader() {
-
-        if (!this.dataset.src) {
-            console.error('Must set data-src attribuite!');
-            return false;
-        }
-        let token = '';
-        if (this.dataset.token) {
-            token = this.dataset.token;
-        }
-
-        let downloader = new PearDownloader(this.dataset.src, token, {
-            useMonitor: true,             //是否开启monitor,会稍微影响性能,默认false
-        });
-
-
-        if (this.dataset.autoDownload == 'true') {
-            this.autoDownload = true;
-        }
-
-        return downloader;
-    }
-
-    downloaderLifeCycle() {
-        this.downloader.on('begin', () => {
-            this.status = 'ready';
-            this.fileName = this.downloader.fileName;
-
-            let ev = new CustomEvent("progress");
-            this.dispatchEvent(ev);
-        });
-
-        this.downloader.on("progress", (prog) => {
-
-            this.progress = prog;
-            this.status = prog < 1.0 ? 'downloading' : 'done';
-
-            let ev = new CustomEvent("progress");
-            this.dispatchEvent(ev);
-        });
-
-        this.downloader.on('meanspeed', (speed) => {
-            this.speed = speed;
-        });
-
-        this.downloader.on('done', () => {
-            if (this.autoDownload) {
-                let aTag = document.createElement('a');
-                aTag.download = this.fileName;
-                this.downloader.file.getBlobURL(function (error, url) {
-                    aTag.href = url;
-                    aTag.click();
-                })
-            }
-
-
-        });
-        this.downloader.on('fograte', (p2pRatio) => {
-
-            this.p2pRatio = p2pRatio;
-        });
-
-    }
-}
-
-if (!window.customElements.get('pear-downloader')) {
-    window.customElements.define('pear-downloader', PearDownloaderTag);
-}
+// class  PearDownloaderTag extends HTMLElement {
+//     constructor() {
+//         super();
+//         this.progress = 0;
+//         this.status = 'ready';
+//         this.speed = 0;
+//         this.fileName = 'unknown';
+//         this.p2pRatio = 0;
+//         this.autoDownload = false;
+//
+//         this.addEventListener('click', e => {
+//             if (this.disabled) {
+//             return;
+//         }
+//         this.downloader = this.createDownloader();
+//         this.downloaderLifeCycle();
+//     });
+//     }
+//
+//     connectedCallback() {
+//         // this.textContent = "卧槽！！！ - ";
+//     }
+//
+//     createDownloader() {
+//
+//         if (!this.dataset.src) {
+//             console.error('Must set data-src attribuite!');
+//             return false;
+//         }
+//         let token = '';
+//         if (this.dataset.token) {
+//             token = this.dataset.token;
+//         }
+//
+//         let downloader = new PearDownloader(this.dataset.src, token, {
+//             useMonitor: true,             //是否开启monitor,会稍微影响性能,默认false
+//         });
+//
+//
+//         if (this.dataset.autoDownload == 'true') {
+//             this.autoDownload = true;
+//         }
+//
+//         return downloader;
+//     }
+//
+//     downloaderLifeCycle() {
+//         this.downloader.on('begin', () => {
+//             this.status = 'ready';
+//             this.fileName = this.downloader.fileName;
+//
+//             let ev = new CustomEvent("progress");
+//             this.dispatchEvent(ev);
+//         });
+//
+//         this.downloader.on("progress", (prog) => {
+//
+//             this.progress = prog;
+//             this.status = prog < 1.0 ? 'downloading' : 'done';
+//
+//             let ev = new CustomEvent("progress");
+//             this.dispatchEvent(ev);
+//         });
+//
+//         this.downloader.on('meanspeed', (speed) => {
+//             this.speed = speed;
+//         });
+//
+//         this.downloader.on('done', () => {
+//             if (this.autoDownload) {
+//                 let aTag = document.createElement('a');
+//                 aTag.download = this.fileName;
+//                 this.downloader.file.getBlobURL(function (error, url) {
+//                     aTag.href = url;
+//                     aTag.click();
+//                 })
+//             }
+//
+//
+//         });
+//         this.downloader.on('fogratio', (p2pRatio) => {
+//
+//             this.p2pRatio = p2pRatio;
+//         });
+//
+//     }
+// }
+//
+// window.customElements.define('pear-downloader', PearDownloaderTag);
 
 
 },{"../package.json":83,"./worker":103,"debug":20,"inherits":29}],89:[function(require,module,exports){
@@ -16213,6 +16234,7 @@ function NodeFilter(nodesArray, cb, range) {
             chenkDone();
         };
         xhr.send();
+
     };
 
     function chenkDone() {
@@ -16996,7 +17018,7 @@ function SimpleRTC(config) {
     self.sdp = "";
 
     self.isDataChannelCreating = false;
-    self.iceServers = [ {url:'stun:stun.miwifi.com'},{url:'stun:stun.ekiga.net'},{url:'stun:stun.ideasip.com'}];
+    self.iceServers = [ {urls:'stun:stun.miwifi.com'},{urls:'stun:stun.ekiga.net'},{urls:'stun:stun.ideasip.com'}];
     self.pc_config = {
         iceServers: self.iceServers
     };
@@ -17531,7 +17553,7 @@ var nodeFilter = require('./node-filter');
 var inherits = require('inherits');
 var EventEmitter = require('events').EventEmitter;
 var Set = require('./set');
-var WebTorrent = require('./pear-torrent');
+var PearTorrent = require('./pear-torrent');
 var Scheduler = require('./node-scheduler');
 
 // var WEBSOCKET_ADDR = 'ws://signal.webrtc.win:9600/ws';             //test
@@ -17585,10 +17607,12 @@ function Worker(urlStr, token, opts) {
     self.dispatcherConfig = {
 
         chunkSize: opts.chunkSize && (opts.chunkSize%BLOCK_LENGTH === 0 ? opts.chunkSize : Math.ceil(opts.chunkSize/BLOCK_LENGTH)*BLOCK_LENGTH),   //每个chunk的大小,默认1M
-        interval: opts.interval,                                 //滑动窗口的时间间隔,单位毫秒,默认10s,
+        interval: opts.interval ? opts.interval : (opts.sequencial ? 5000 : 2000),                                 //滑动窗口的时间间隔,单位毫秒,默认10s,
         auto: self.auto,
         useMonitor: self.useMonitor,
-        scheduler: Scheduler[self.scheduler]
+        scheduler: Scheduler[self.scheduler],
+        sequencial: opts.sequencial,
+        maxLoaders: opts.maxLoaders || (opts.sequencial ? 5 : 15)
     };
 
     if (self.useDataChannel) {
@@ -17614,7 +17638,6 @@ function Worker(urlStr, token, opts) {
     };
 
     self._start();
-
 }
 
 Worker.isRTCSupported = function () {
@@ -17665,7 +17688,7 @@ Worker.prototype._start = function () {
                 //     self._pearSignalHandshake();
                 // }
             } else {
-                self._fallBack();
+                self._fallBackToWRTC();
             }
         });
     }
@@ -17674,7 +17697,32 @@ Worker.prototype._start = function () {
 Worker.prototype._fallBack = function () {
 
     debug('PearDownloader _fallBack');
-}
+
+    this.emit('fallback');
+};
+
+Worker.prototype._fallBackToWRTC = function () {
+    var self = this;
+    debug('_fallBackToWRTC');
+    if (self._debugInfo.signalServerConnected === true) {         //如果websocket已经连接上
+        nodeFilter([{uri: self.src, type: 'server'}], function (nodes, fileLength) {            //筛选出可用的节点,以及回调文件大小
+
+            var length = nodes.length;
+            if (length) {
+                // self.fileLength = fileLength;
+                debug('nodeFilter fileLength:'+fileLength);
+                self.fileLength = fileLength;
+                self._startPlaying(nodes);
+            } else {
+
+                self._fallBack();
+            }
+        });
+    } else {
+        self._fallBack();
+    }
+
+};
 
 Worker.prototype._getNodes = function (token, cb) {
     var self = this;
@@ -17702,7 +17750,7 @@ Worker.prototype._getNodes = function (token, cb) {
         cb(null);
     };
     xhr.onerror = function () {
-        self._fallBack();
+        self._fallBackToWRTC();
     };
     xhr.onload = function () {
         if (this.status >= 200 && this.status < 300 || this.status == 304) {
@@ -17712,15 +17760,16 @@ Worker.prototype._getNodes = function (token, cb) {
             var res = JSON.parse(this.response);
             // debug(res.nodes);
             if (res.size) {                         //如果filesize大于0
-                // self.fileLength = res.size;           //test
+                self.fileLength = res.size;
 
                 // if (self.useDataChannel) {
                 //     self._pearSignalHandshake();
                 // }
 
-                if (!res.nodes){      //如果没有可用节点则回源
+                if (!res.nodes){                            //如果没有可用节点则切换到纯webrtc模式
                     // cb(null);
-                    cb([{uri: self.src, type: 'server'}]);
+                    // cb([{uri: self.src, type: 'server'}]);
+                    self._fallBackToWRTC();
                 } else {
 
                     var nodes = res.nodes;
@@ -17786,7 +17835,7 @@ Worker.prototype._getNodes = function (token, cb) {
             } else {
                 cb(null);
             }
-        } else {
+        } else {                             //返回码不正常
             // self._fallBack();
             cb(null);
         }
@@ -17951,6 +18000,29 @@ Worker.prototype._startPlaying = function (nodes) {
                 });
             }
         }, {start: 10, end: 30});
+
+        if (self.useTorrent && self.magnetURI) {
+            var client = new PearTorrent();
+            // client.on('error', function () {
+            //
+            // });
+            debug('magnetURI:'+self.magnetURI);
+            client.add(self.magnetURI, {
+                    announce: self.trackers || [
+                        "wss://tracker.openwebtorrent.com",
+                        "wss://tracker.btorrent.xyz"
+                    ],
+                    store: d.store,
+                    bitfield: d.bitfield,
+                    strategy: 'rarest'
+                },
+                function (torrent) {
+                    debug('Torrent:', torrent);
+
+                    d.addTorrent(torrent);
+                }
+            );
+        }
     });
 
     var file = new File(d, fileConfig);

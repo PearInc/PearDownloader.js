@@ -42,7 +42,6 @@ There is a complete example in [examples/downloader-test.html](../examples/downl
  */
 var downloader = new PearDownloader(url, { useMonitor: true });
 
-downloader.on('exception', onException);
 downloader.on('begin', onBegin);
 downloader.on('progress', onProgress);
 downloader.on('sourcemap', onSourceMap);
@@ -58,16 +57,6 @@ function onProgress(downloaded) {
 
 function onDone() {
   console.log('finished downloading buffer by first aid');
-}
-
-function onException(exception) {
-  var errCode = exception.errCode;
-  switch (errCode) {
-    case 1:
-      //当前浏览器不支持WebRTC
-      console.log(exception.errMsg);
-      break;
-  }
 }
 
 function onSourceMap(sourceType, index) {

@@ -1,7 +1,5 @@
 # PearDownloader 文档
 
-使用PearDownloader，需确保浏览器支持[WebRTC](https://en.wikipedia.org/wiki/WebRTC)(Chrome, Firefox, Opera)。
-
 ## 导入
 PearDownloader有两种导入方式：通过script标签导入和npm安装
 
@@ -12,29 +10,31 @@ PearDownloader有两种导入方式：通过script标签导入和npm安装
 ```
 或者使用CDN：
 ```html
-<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest/dist/pear-downloader.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest"></script>
 ```
 
 ### npm安装
-在项目目录中通过npm安装pearplayer：
+在项目目录中通过npm安装PearDownloader：
 ```bash
 npm install peardownloader --save
 ```
-然后就可以用require方式引入PearPlayer：
+然后就可以用require方式引入PearDownloader：
 ```js
 var PearDownloader = require('PearDownloader');
 ```
 
 # PearDownloader API
 
-## PearDownloader.isSupported()
+## PearDownloader.isWebRTCSupported()
 
 静态方法，检测当前浏览器环境是否支持WebRTC。
 ```js
-if (PearDownloader.isSupported()) {
+if (PearDownloader.isWebRTCSupported()) {
   // WebRTC is supported
+  
 } else {
   // Use a fallback
+  
 }
 ```
 
@@ -54,11 +54,15 @@ if (PearDownloader.isSupported()) {
   useTorrent: false,                                //是否开启Browser P2P(基于Webtorrent)，默认true
   magnetURI: magnetURI,                             //可手动传入magnetURI，需先将useTorrent设为true
   trackers:["wss://tracker.openwebtorrent.com"],    //可手动传入tracker服务器，需先将useTorrent设为true
-  sources: ['http://example.com/a'],                //指定下载源，增加这个字段后pearplayer不会再向后台请求节点，建议下载源多于5个以保证流畅播放
+  sources: ['http://example.com/a'],                //指定下载源，增加这个字段后PearDownloader不会再向后台请求节点，建议下载源多于5个以保证流畅播放
   useMonitor: true,                                 //是否开启monitor,会稍微影响性能,默认false
   debug: false                                      //是否开启debug模式，开启后可以在console中查看log，默认false
 }
 ```
+
+## `downloader.on('fallback', function () {})`
+
+downloader出现异常时的回调函数，建议在此处作降级处理，如直接调用默认下载器。
 
 ## `downloader.on('begin', function (fileLength, chunks) {})`
 
@@ -66,11 +70,11 @@ if (PearDownloader.isSupported()) {
 
 ## `downloader.on('done', function () {})`
 
-当PearPlayer完成下载会触发该事件。
+当PearDownloader完成下载会触发该事件。
 
 ## `downloader.on('progress', function (downloaded) {})`
 
-通过该事件可以监听PearPlayer的下载进度（下载的字节数除以总的字节数）。(useMonitor需设为true)
+通过该事件可以监听PearDownloader的下载进度（下载的字节数除以总的字节数）。(useMonitor需设为true)
 
 ## `downloader.on('cloudspeed', function (speed) {})`
 
@@ -84,7 +88,7 @@ if (PearDownloader.isSupported()) {
 
 通过该事件可以监听fog节点（包括WebRTC和HTTP）总的下载比率（fog下载的字节数除以目前总的下载字节数）。(useMonitor需设为true)
 
-## `player.on('sourcemap', function (sourceType, index) {})`
+## `downloader.on('sourcemap', function (sourceType, index) {})`
 
 每下载一个buffer都会触发该事件，sourceType是一个string，代表该buffer是从哪个源下载的，有以下几种取值：(useMonitor需设为true)<br/>
 * null: 该处的buffer还未下载<br/>
@@ -95,23 +99,8 @@ if (PearDownloader.isSupported()) {
 
 index是对应的索引。
 
-## `player.on('traffic', function (mac, size, type) {})`
+## `downloader.on('traffic', function (mac, size, type) {})`
 通过该事件可以监听每个节点的实时流量，其中mac是节点的mac地址，size是对应节点的瞬时下载流量（字节），type是
 节点的类型（http、datachannel等）。(useMonitor需设为true)
 
-## `downloader.on('exception', onException)`
-
-当PearDownloader内部发生异常时会触发该事件，通过回调函数中的exception可以获取errCode和对应的errMsg：
-```js
-function onException(exception) {
-  var errCode = exception.errCode;
-  switch (errCode) {
-    case 1:
-      //当前浏览器不支持WebRTC
-      console.log(exception.errMsg);
-      break;
-  }
-}
-```
-
-请参考[`../examples/test.html`](/examples/download.html)来了解API使用方法。
+请参考[`../examples/downloader-test.html`](/examples/downloader-test.html)来了解API使用方法。

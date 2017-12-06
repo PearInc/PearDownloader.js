@@ -15,13 +15,19 @@
 </p>
 <br>
 
-PearPlayer 发布后，吸引了大家持续的关注，同时我们也收集到了大家许多宝贵的建议。
+[English](./README_EN.md)
+
+[PearPlayer.js](https://github.com/PearInc/PearPlayer.js)发布后，吸引了业界持续的关注，同时我们也收集到了许多宝贵建议。
 一方面我们将持续维护更新PearPlayer，使其支持更多的拓展功能；
-另一方面我们将更底层、更基础的且适用范围更广的相关组件重新整理，专注于节点的选择以及数据的调度，将多源传输部分剥离出来，形成PearDownloader。
-PearDownloader的发布，可以降低已有成熟播放器的内容提供商的迁移成本，内容提供商可以按需将其集成到自有产品中，使用PearFog服务。
+另一方面我们将更底层、更基础，且适用范围更广的相关组件重新整理，专注于节点的选择及数据的调度，将多源传输部分剥离出来，形成PearDownloader.js。
+PearDownloader的发布，旨在降低已有成熟播放器的内容提供商(CP)的迁移成本：CP厂商可以按需将其集成到自有产品中，实现Web P2P能力；或者调度[Pear Fog](https://github.com/PearInc)的海量节点资源，享受低成本、高质量的共享雾CDN服务。
 PearDownloader支持更多样化的文件类型，更灵活的调度算法、调度策略的选择，满足更广阔、灵活、多变的业务场景与业务需求。
 
+<<<<<<< HEAD
 PearDownloader（梨享下载器）**[[Demo](http://demo.webrtc.win/downloader)]** 是[PearPlayer](https://github.com/PearInc/PearPlayer.js)的底层下载模块，
+=======
+PearDownloader（梨享下载器）**[[Demo](http://demo.webrtc.win/pear/downloader)]** 是PearPlayer的底层下载模块，
+>>>>>>> a30e69e404fa46bdd1dd9485a3caf0795ca3af2e
 实现了融合HTTP（包含HTTPS、HTTP2）、WebRTC的多协议、多源、低延迟、高带宽利用率的无插件Web端下载加速能力。
 基于高效的调度算法将来自多个节点的数据进行拼接形成完整的文件或将有序的数据/媒体流喂给上层的应用，例如音视频播放器，
 PearDownloader能在保证下载速度前提下最大化P2P率。
@@ -37,17 +43,17 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 
 ### 特性
 
-- P2P能力基于**WebRTC**，无须安装任何插件
-- 多协议(HTTP、HTTPS、WebRTC)、多源
-- 自研的调度算法，在保证下载速度的前提下最大化P2P率
+- P2P能力基于国际标准的WebRTC，无须安装任何客户端或插件
+- 多协议(HTTP, HTTPS, WebRTC)、多源
+- 多源传输能力支持目前所有已知主流浏览器（当浏览器不支持WebRTC时全调度HTTP节点）
+- 通过浏览器内核的MSE，可支持音视频的边下边播
+- 自研的调度算法，在保证下载速度的前提下最大化P2P率（用户亦可实现自己的调度算法，以满足不同场景需求）
 - 默认无需填参数（内部根据文件属性作自适应），高级使用模式可自行调整算法和参数
-- 支持Chrome、Firefox、Opera、腾讯微信、X5/TBS等主流浏览器，不久将支持Safari11
 - 可选接入低成本、高可用的Pear [Fog CDN](https://github.com/PearInc/FogVDN)
 - 协议默认通过TLS/DTLS全加密，无DPI特征；并可通过Pear Fog组件的动态端口映射进一步消除统计学特征
 - 具备Browser P2P能力（基于WebTorrent）
 
-
-## 使用方法
+### 使用方法
 
 首先通过script标签导入pear-downloader.min.js：
 ```html
@@ -60,13 +66,13 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 假设要下载https://example.com/file.zip
 ```html
 <script>
-var downloader = new PearDownloader('https://example.com/file.zip');
+  var downloader = new PearDownloader('https://example.com/file.zip');
 </script>
 ```
 
-## 如何为自己的文件加速？
+### 如何为自己的文件加速？
 示例中的文件是已经分发过的，那么如何为任意文件加速呢？很简单，只需在[文件分发系统](https://oss.webrtc.win/)中添加您的文件url，
-即可利用Pear的海量节点为您的文件下载加速！具体教程请点击[这里](https://manual.webrtc.win/oss/)（文件的名字需要加上`Pear-Demo`前缀，
+即可利用Pear的海量节点为您的文件下载加速！具体教程请点击[这里](https://manual.webrtc.win/oss/)（文件的名字需要加上`Pear-Demo-`前缀，
 如`Pear-Demo-file.zip`）
 
 ### 谁在用我们的产品？
@@ -92,7 +98,7 @@ var downloader = new PearDownloader('https://example.com/file.zip');
 ### 演讲与媒体报道
 
 - 2017.11.24 （金色财经） - [谛听科技正式进军区块链领域，战略投资梨享计算](http://www.jinse.com/blockchain/99767.html)
-- 2017.08.18  （IT大咖说） - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
+- 2017.08.18 （IT大咖说） - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
 - 2017.07.11 （OSChina开源中国） - [PearPlayer.js —— 混合P2P-CDN的流媒体播放器](https://www.oschina.net/p/PearPlayerjs)
 - 2017.06.24 （腾讯Web前端大会） - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakalive/detail/2577)
 - 2017.05.17 （南方科技大学） - Edge Computing and Shared Fog Streaming
