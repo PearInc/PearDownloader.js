@@ -13608,6 +13608,100 @@ PearDownloader.isWebRTCSupported = function () {
 //
 // window.customElements.define('pear-downloader', PearDownloaderTag);
 
+var PRDownloaderProto = Object.create(HTMLElement.prototype);
+PRDownloaderProto.createdCallback = function() {
+
+}
+
+PRDownloaderProto.attachedCallback = function() {
+
+    PRDownloaderProto.progress = 0;
+    PRDownloaderProto.status = 'ready';
+    PRDownloaderProto.speed = 0;
+    PRDownloaderProto.fileName = 'unknown';
+    PRDownloaderProto.p2pRatio = 0;
+    PRDownloaderProto.autoDownload = false;
+    this.addEventListener('click', e => {
+        if (this.disabled) {
+        return;
+    }
+        this.downloader = this.createDownloader();
+        this.downloaderLifeCycle();
+    });
+};
+
+PRDownloaderProto.detachedCallback = function() {
+
+};
+
+PRDownloaderProto.createDownloader = function () {
+
+    if (!this.dataset.src) {
+        console.error('Must set data-src attribuite!');
+        return false;
+    }
+    let token = '';
+    if (this.dataset.token) {
+        token = this.dataset.token;
+    }
+
+    let downloader = new PearDownloader(this.dataset.src, token, {
+        useMonitor: true,             //是否开启monitor,会稍微影响性能,默认false
+    });
+
+
+    if (this.dataset.autoDownload == 'true') {
+        this.autoDownload = true;
+    }
+
+    return downloader;
+};
+
+PRDownloaderProto.downloaderLifeCycle = function() {
+    this.downloader.on('begin', () => {
+        this.status = 'ready';
+        this.fileName = this.downloader.fileName;
+
+        let ev = new CustomEvent("progress");
+        this.dispatchEvent(ev);
+    });
+
+    this.downloader.on("progress", (prog) => {
+
+        this.progress = prog;
+        this.status = prog < 1.0 ? 'downloading' : 'done';
+
+        let ev = new CustomEvent("progress");
+        this.dispatchEvent(ev);
+    });
+
+    this.downloader.on('meanspeed', (speed) => {
+        this.speed = speed;
+    });
+
+    this.downloader.on('done', () => {
+        if (this.autoDownload) {
+            let aTag = document.createElement('a');
+            aTag.download = this.fileName;
+            this.downloader.file.getBlobURL(function (error, url) {
+                aTag.href = url;
+                aTag.click();
+            })
+        }
+
+
+    });
+    this.downloader.on('fogratio', (p2pRatio) => {
+
+        this.p2pRatio = p2pRatio;
+    });
+
+};
+
+PRDownloaderProto.attributeChangedCallback = function(attrName, oldValue, newValue) {}
+
+var PRDownloader = document.registerElement('pear-downloader', { prototype: PRDownloaderProto });
+
 
 },{"../package.json":83,"./worker":103,"debug":20,"inherits":29}],89:[function(require,module,exports){
 module.exports = FileStream
