@@ -12745,7 +12745,6 @@ Dispatcher.prototype._fillWindow = function () {
     var count = 0;
     // var index = self._windowOffset;                       //TODO:修复auto下为零
     var index = self.sequencial ? self._windowOffset : self._windowEnd;
-    console.log('_fillWindow _windowEnd:'+self._windowEnd);
     self.emit('fillwindow', index, self._windowLength);
     while (count !== self._windowLength){
         debug('_fillWindow _windowLength:'+self._windowLength + ' downloadersLength:' + self.downloaders.length);
@@ -13501,7 +13500,7 @@ function PearDownloader(urlStr, token, opts) {
     if (!(self instanceof PearDownloader)) return new PearDownloader(urlStr, token, opts);
     // if (!(self instanceof PearPlayer)) return new PearPlayer(selector, opts);
     if (typeof token === 'object') return PearDownloader(urlStr, '', token);
-
+    if (!opts) opts = {};
     if (opts.debug) {
         debug.enable('pear:*');
     } else {
@@ -13517,204 +13516,6 @@ PearDownloader.isWebRTCSupported = function () {
 
     return Worker.isRTCSupported();
 };
-
-
-
-// if (document.registerElement) {
-//
-//     var PRDownloaderProto = Object.create(HTMLElement.prototype);
-//     PRDownloaderProto.createdCallback = function() {
-//
-//     }
-//
-//     PRDownloaderProto.attachedCallback = function() {
-//
-//         PRDownloaderProto.progress = 0;
-//         PRDownloaderProto.status = 'ready';
-//         PRDownloaderProto.speed = 0;
-//         PRDownloaderProto.fileName = 'unknown';
-//         PRDownloaderProto.p2pRatio = 0;
-//         PRDownloaderProto.autoDownload = false;
-//         this.addEventListener('click', e => {
-//
-//             if (this.disabled) {
-//                 return;
-//             }
-//             this.downloader = this.createDownloader();
-//             this.downloaderLifeCycle();
-//         });
-//     };
-//
-//     PRDownloaderProto.detachedCallback = function() {
-//
-//     };
-//
-//     PRDownloaderProto.createDownloader = function () {
-//
-//         if (!this.dataset.src) {
-//             console.error('Must set data-src attribuite!');
-//             return false;
-//         }
-//         let token = '';
-//         if (this.dataset.token) {
-//             token = this.dataset.token;
-//         }
-//
-//         let downloader = new PearDownloader(this.dataset.src, token, {
-//             useMonitor: true,             //是否开启monitor,会稍微影响性能,默认false
-//         });
-//
-//
-//         if (this.dataset.autoDownload == 'true') {
-//             this.autoDownload = true;
-//         }
-//
-//         return downloader;
-//     };
-//
-//     PRDownloaderProto.downloaderLifeCycle = function() {
-//         this.downloader.on('begin', () => {
-//             this.status = 'ready';
-//             this.fileName = this.downloader.fileName;
-//
-//             let ev = new CustomEvent("progress");
-//             this.dispatchEvent(ev);
-//         });
-//
-//         this.downloader.on("progress", (prog) => {
-//
-//             this.progress = prog;
-//             this.status = prog < 1.0 ? 'downloading' : 'done';
-//
-//             let ev = new CustomEvent("progress");
-//             this.dispatchEvent(ev);
-//         });
-//
-//         this.downloader.on('meanspeed', (speed) => {
-//             this.speed = speed;
-//         });
-//
-//         this.downloader.on('done', () => {
-//             if (this.autoDownload) {
-//                 let aTag = document.createElement('a');
-//                 aTag.download = this.fileName;
-//                 this.downloader.file.getBlobURL(function (error, url) {
-//                     aTag.href = url;
-//                     aTag.click();
-//                 })
-//             }
-//
-//
-//         });
-//         this.downloader.on('fogratio', (p2pRatio) => {
-//
-//             this.p2pRatio = p2pRatio;
-//         });
-//
-//     };
-//
-//     PRDownloaderProto.attributeChangedCallback = function(attrName, oldValue, newValue) {}
-//
-//     PRDownloader = document.registerElement('pear-downloader', { prototype: PRDownloaderProto });
-//
-// } else if (window.customElements.define) {
-//
-//     class  PearDownloaderTag extends HTMLElement {
-//         constructor() {
-//             super();
-//             this.progress = 0;
-//             this.status = 'ready';
-//             this.speed = 0;
-//             this.fileName = 'unknown';
-//             this.p2pRatio = 0;
-//             this.autoDownload = false;
-//
-//             this.addEventListener('click', e => {
-//                 if (this.disabled) {
-//                     return;
-//                 }
-//                 this.downloader = this.createDownloader();
-//                 this.downloaderLifeCycle();
-//             });
-//         }
-//
-//         connectedCallback() {
-//             // this.textContent = "卧槽！！！ - ";
-//         }
-//
-//         createDownloader() {
-//
-//             if (!this.dataset.src) {
-//                 console.error('Must set data-src attribuite!');
-//                 return false;
-//             }
-//             let token = '';
-//             if (this.dataset.token) {
-//                 token = this.dataset.token;
-//             }
-//
-//             let downloader = new PearDownloader(this.dataset.src, token, {
-//                 useMonitor: true,             //是否开启monitor,会稍微影响性能,默认false
-//             });
-//
-//
-//             if (this.dataset.autoDownload == 'true') {
-//                 this.autoDownload = true;
-//             }
-//
-//             return downloader;
-//         }
-//
-//         downloaderLifeCycle() {
-//             this.downloader.on('begin', () => {
-//                 this.status = 'ready';
-//                 this.fileName = this.downloader.fileName;
-//
-//                 let ev = new CustomEvent("progress");
-//                 this.dispatchEvent(ev);
-//             });
-//
-//             this.downloader.on("progress", (prog) => {
-//
-//                 this.progress = prog;
-//                 this.status = prog < 1.0 ? 'downloading' : 'done';
-//
-//                 let ev = new CustomEvent("progress");
-//                 this.dispatchEvent(ev);
-//             });
-//
-//             this.downloader.on('meanspeed', (speed) => {
-//                 this.speed = speed;
-//             });
-//
-//             this.downloader.on('done', () => {
-//                 if (this.autoDownload) {
-//                     let aTag = document.createElement('a');
-//                     aTag.download = this.fileName;
-//                     this.downloader.file.getBlobURL(function (error, url) {
-//                         aTag.href = url;
-//                         aTag.click();
-//                     })
-//                 }
-//
-//
-//             });
-//             this.downloader.on('fogratio', (p2pRatio) => {
-//
-//                 this.p2pRatio = p2pRatio;
-//             });
-//
-//         }
-//     }
-//     console.warn('66666666666')
-//     customElements.define('pear-downloader', PearDownloaderTag);
-//
-// }
-
-
-
-
-
 
 
 
@@ -17695,7 +17496,7 @@ function Worker(urlStr, token, opts) {
     self.scheduler = opts.scheduler || 'IdleFirst';
     self.token = token;
     self.useDataChannel = (opts.useDataChannel === false)? false : true;
-    self.useMonitor = (opts.useMonitor === true)? true : false;
+    self.useMonitor = (opts.useMonitor === false)? false : true;
     self.useTorrent = (opts.useTorrent === false)? false : true;
     self.magnetURI = opts.magnetURI || undefined;
     self.trackers = opts.trackers && Array.isArray(opts.trackers) && opts.trackers.length > 0 ? opts.trackers : null;
