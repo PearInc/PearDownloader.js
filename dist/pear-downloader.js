@@ -13813,7 +13813,7 @@ module.exports = function zeroFill (width, number, pad) {
 
 },{}],109:[function(require,module,exports){
 module.exports={
-  "version": "1.1.9"
+  "version": "1.1.11"
 }
 },{}],110:[function(require,module,exports){
 (function (process){
@@ -18266,11 +18266,11 @@ function reportTraffic(uuid, fileSize, traffics) {
         temp += traffics[i].traffic;
     }
     if (temp >= totalReportTraffic + 10485760) {             //如果流量增加大于10
-        var body = JSON.stringify({
+        var body = {
             uuid: uuid,
             size: Number(fileSize),
             traffic: traffics
-        });
+        };
         axios({
             method: 'post',
             url: '/traffic',
