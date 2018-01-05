@@ -1,6 +1,6 @@
 {
   "name": "peardownloader",
-  "version": "1.1.11",
+  "version": "1.1.14",
   "description": "",
   "main": "./dist/pear-downloader.js",
   "dependencies": {
