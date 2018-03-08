@@ -23,6 +23,7 @@ var Reporter = require('./reporter');
 // var WEBSOCKET_ADDR = 'ws://signal.webrtc.win:9600/ws';             //test
 var WEBSOCKET_ADDR = 'wss://signal.webrtc.win:7601/wss';
 var GETNODES_ADDR = 'https://api.webrtc.win:6601/v1/customer/nodes';
+
 var BLOCK_LENGTH = 32 * 1024;
 
 inherits(Worker, EventEmitter);
@@ -301,9 +302,9 @@ Worker.prototype._getNodes = function (token, cb) {
                         var length = nodes.length;
                         debug('nodes:'+JSON.stringify(nodes));
 
-                        self._debugInfo.usefulHTTPAndHTTPS = length;
+                        self._debugInfo.usefulHTTPAndHTTPS = self._debugInfo.totalHTTPS;
                         if (length) {
-                            self.fileLength = fileLength;
+                            // self.fileLength = fileLength;
                             // debug('nodeFilter fileLength:'+fileLength);
                             // self.nodes = nodes;
                             if (length <= 2) {
@@ -671,6 +672,9 @@ Worker.prototype._startPlaying = function (nodes) {
         self._debugInfo.windowOffset = windowOffset;
         self._debugInfo.windowLength = windowLength;
     });
+    d.on('httperror', function () {
+        self._debugInfo.usefulHTTPAndHTTPS --;
+    })
 };
 
 function getBrowserRTC () {

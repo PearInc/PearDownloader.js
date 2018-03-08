@@ -5754,8 +5754,8 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 
-}).call(this,{"isBuffer":require("../../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js")})
-},{"../../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js":141}],45:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js")})
+},{"../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js":141}],45:[function(require,module,exports){
 (function (process,global,Buffer){
 module.exports = createTorrent
 module.exports.parseInput = parseInput
@@ -14283,6 +14283,7 @@ Dispatcher.prototype._setupHttp = function (hd) {
             if (self._windowLength > 3) self._windowLength --;
         }
         self.checkoutDownloaders();
+        self.emit('httperror');
     });
     hd.on('data',function (buffer, start, end, speed) {
 
@@ -14919,7 +14920,7 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
     self._xhr = xhr;
     xhr.open("GET", self.uri);
     xhr.responseType = "arraybuffer";
-    xhr.timeout = 2000;
+    // xhr.timeout = 2000;
     self.startTime=(new Date()).getTime();
     // debug('get_file_index: start:'+begin+' end:'+end);
     var range = "bytes="+begin+"-"+end;
@@ -17589,41 +17590,41 @@ WebConn.prototype.destroy = function () {
 module.exports = NodeFilter;
 
 /*
-    nodesArray: {uri: string type: string capacity: number}
-    cb: function
-    range: {start: number end: number}
+ nodesArray: {uri: string type: string capacity: number}
+ cb: function
+ range: {start: number end: number}
  */
 
 var debug = require('debug')('pear:node-filter');
 
 function NodeFilter(nodesArray, cb, range) {
 
-    // var ipArray = array.unique();
-    var doneCount = 0;
-    var usefulNodes = [];
-    var fileLength = 0;
-    if (!range) {
-        range = {
-            start: 0,
-            end: nodesArray.length
-        }
-    } else if (range.end > nodesArray.length) {
-        range.end = nodesArray.length;
-    }
-
-    for (var i=range.start;i<range.end;++i) {
-
-        try {
-            connectTest(nodesArray[i]);
-        } catch (e) {
-            // debug(nodesArray[i].uri + ':' + JSON.stringify(e))
-        }
-    }
+    cb(nodesArray, 0);
+    // var doneCount = 0;
+    // var usefulNodes = [];
+    // var fileLength = 0;
+    // if (!range) {
+    //     range = {
+    //         start: 0,
+    //         end: nodesArray.length
+    //     }
+    // } else if (range.end > nodesArray.length) {
+    //     range.end = nodesArray.length;
+    // }
+    //
+    // for (var i=range.start;i<range.end;++i) {
+    //
+    //     try {
+    //         connectTest(nodesArray[i]);
+    //     } catch (e) {
+    //         // debug(nodesArray[i].uri + ':' + JSON.stringify(e))
+    //     }
+    // }
 
     function connectTest(node) {
 
         var xhr = new XMLHttpRequest;
-        xhr.timeout = 1000;
+        xhr.timeout = 6000;
         xhr.open('head', node.uri);
         xhr.onload = function () {
             doneCount ++;
@@ -17663,8 +17664,8 @@ function NodeFilter(nodesArray, cb, range) {
                 debug('node ' + i + ' capacity ' + usefulNodes[i].capacity);
             }
             debug('length: ' + usefulNodes.filter(function (node) {
-                return node.capacity >= 5;
-            }).length);
+                    return node.capacity >= 5;
+                }).length);
 
             cb(usefulNodes, fileLength);
         }
@@ -19062,6 +19063,7 @@ var Reporter = require('./reporter');
 // var WEBSOCKET_ADDR = 'ws://signal.webrtc.win:9600/ws';             //test
 var WEBSOCKET_ADDR = 'wss://signal.webrtc.win:7601/wss';
 var GETNODES_ADDR = 'https://api.webrtc.win:6601/v1/customer/nodes';
+
 var BLOCK_LENGTH = 32 * 1024;
 
 inherits(Worker, EventEmitter);
@@ -19340,9 +19342,9 @@ Worker.prototype._getNodes = function (token, cb) {
                         var length = nodes.length;
                         debug('nodes:'+JSON.stringify(nodes));
 
-                        self._debugInfo.usefulHTTPAndHTTPS = length;
+                        self._debugInfo.usefulHTTPAndHTTPS = self._debugInfo.totalHTTPS;
                         if (length) {
-                            self.fileLength = fileLength;
+                            // self.fileLength = fileLength;
                             // debug('nodeFilter fileLength:'+fileLength);
                             // self.nodes = nodes;
                             if (length <= 2) {
@@ -19710,6 +19712,9 @@ Worker.prototype._startPlaying = function (nodes) {
         self._debugInfo.windowOffset = windowOffset;
         self._debugInfo.windowLength = windowLength;
     });
+    d.on('httperror', function () {
+        self._debugInfo.usefulHTTPAndHTTPS --;
+    })
 };
 
 function getBrowserRTC () {
