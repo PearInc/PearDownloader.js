@@ -76,6 +76,7 @@ Congratulations! You can use the PearDownloader now!
 
 ###  Talks
 
+- 2018.02.07 （36Kr） - [「Pear梨享」让雾计算落地，百万边缘节点的背后是提高效率和成本控制](http://36kr.com/p/5118296.html) 
 - 2017.08.18 (IT Talks) - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
 - 2017.07.11 (OSChina) - [PearPlayer.js —— 混合P2P-CDN的流媒体播放器](https://www.oschina.net/p/PearPlayerjs)
 - 2017.06.24 (Tencent Frontend Conference] - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakalive/detail/2577)
