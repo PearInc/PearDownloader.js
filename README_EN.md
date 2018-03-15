@@ -1,61 +1,63 @@
 <h1 align="center">
-  <img src="fig/pear.png" height="110"></img>
+  <img src="fig/pear.png" height="110"></img>
   <br>
   <a href="http://demo.webrtc.win/downloader">PearDownloader.js</a>
   <br>
   <br>
 </h1>
 
-<h4 align="center">A multi-protocol, multi-source and P2P-CDN supporting Downloader</h4>
+<h4 align="center">A multi-protocol, multi-source and hybrid P2P-CDN downloader </h4>
 <br>
 
-**PearDownloader** is an open soure downloader written in JavaScript, combine HTTP (including HTTPS, HTTP2) and WebRTC. It supports multi-protocol, multi-source, and achieves low latency and high bandwidth utilization. With well designed algorithms, PearDownloader can guarantee high P2P rate as well as download speed. 
+The release of [PearPlayer.js](https://github.com/PearInc/PearPlayer.js) has attracted constant attention from industry and we have received many precious suggestions. On the one hand, we will continue maintaining and updating PearPlayer to support more extended functions. On the other hand, we will rearrange the related module that is of deeper layer, more flexible and applicable to wider areas. Besides, focused on node selection and data scheduling, we separate out multi-source transmission parts and thus form PearDownloader.js.
 
-![multisources](fig/fogvdn_multisources.png)
+PearDownloader (梨享下载器) **[[Demo](http://demo.webrtc.win/)]**, serving as base download module of the [PearPlayer](https://github.com/PearInc/PearPlayer.js), combines HTTP (including HTTPS, HTTP2) & WebRTC and accelarates the streaming media on Web. It supports multiple protocols, multiple sources, and achieves low latency and high bandwidth utilization. Our customized algorithms, based on high efficiency, can integrate data from multi nodes to form a complete file or transfer well-organised data/media stream to upper layer applications like audio & video players. Thus, PearDownloader can ensure the downloading speed while maximizing the P2P ratio at the same time.
+ 
+ 
+PearDownloader aims to lower the migration cost for Content Providers (CP) of the present well-developed players: CP manufacturers can choose to integrate it into their own products and achieve Web P2P ability. They can also schedule the massive node sources of [Pear Fog](https://github.com/PearInc) to enjoy low-cost, high-quality shared fog CDN service. PearDownloader supports more kinds of file types, provides more flexible scheduling algorithm & strategies and satisfies broader and more flexible business situations and needs.
 
-`pear-downloader.min.js` can be imported with the html label`<script>`, refer to  [code example](#使用方法), also [`/examples/download.html`](/examples/download.html) can help you. 
+<p align="center">
+<a href="https://www.npmjs.com/package/peardownloader"><img src="./fig/player-arch.png" alt="arch"></a>
+</p>
 
-To know more information [API document](docs/get-started.md).<br/>
+Simply import `pear-downloader.min.js` to HTML via `<script>` tag. Refer to [code example](#usages) or consult [`/examples/downloader-test.html`](/examples/downloader-test.html) or [get-started](docs/get-started.md) for usages.<br/>
 
-### Feature
 
-- P2P based on **WebRTC**, no plug in
-- **Speed up**, reliable
+## Features
+
+- Client- and plugin-free thanks to P2P ability based on WebRTC
 - Multi-protocol (HTTP, HTTPS, WebRTC), multi-source
-- No parameter
-- Saves data usage
-- Supports all well-known browsers
-- Supports [Pear Fog CDN](https://github.com/PearInc/FogVDN)
-- Encoded with TLS/DTLS, no DPI feature; Pear Fog dynamic port mapping
-<br>
-Demo: https://demo.webrtc.win/pear/downloader/
+- Support the present mainstream browsers thanks to the multi-source transmission ability (Fully schedule HTTP nodes when browser does not support WebRTC.)
+- Support simultaneously playing and downloading of audios & videos using MSE within the browser kernel
+- Customized algorithms ensure the downloading speed while maximizing the P2P ratio at the same time. (Users can also adopt their own algorithms to fulfill various situation needs.)
+- Parameter-free by default (dynamic adaptive internally according to bitrate, etc.). Clients can fill in their preferred parameters in advanced mode.
+- Optional access to low-cost, high-availability Pear [Fog CDN](https://github.com/PearInc/FogVDN)
+- Fully encrypted via TLS/DTLS by default, no DPI features; Statistical characteristics can be further eliminated using dynamic port mapping of Pear Fog Suite.
+- With Browser-to-Browser P2P ability (based on WebTorrent)
+ 
 
+## Usages
 
-## Quick Start
-
-### Import the js packet
-use script label to import pear-downloader.min.js：
+First, use script tag to import pear-downloader.min.js：
 ```html
 <script src="./dist/pear-downloader.min.js"></script>
 ```
-or
-
+or use CDN
 ```html
-<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest/dist/pear-downloader.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest"></script></script>
 ```
-suppose we want to download（/tv/pear001.mp4）
+If we want to download https://example.com/file.zip
 ```html
 <script>
-/**
- * first parameter is the file's URL
- * opts is optional parameter
- */
-var downloader = new PearDownloader('/tv/pear001.mp4', opts);
+  var downloader = new PearDownloader('https://example.com/file.zip');
 </script>
 ```
-Congratulations! You can use the PearDownloader now!
 
-### Who is using Pear Downloader today?
+### How to accelerate your files?
+The file above has already been dispatched. So how to speed up other files? It's a piece of cake. Just add your file URL into [File distribution system](https://oss.webrtc.win/). And then you can feel free to use Pear's massive nodes to accelerate your file downloading! Please click [here](https://manual.webrtc.win/oss/) for detailed guide. (You need to add `Pear-Demo` prefix in front of the file name, such as `Pear-Demo-file.zip`)
+
+
+### Who's using PearDownloader today?
 
 + [Pear Limited](https://pear.hk)
 + [Lenovo China](https://www.lenovo.com.cn/)
@@ -63,30 +65,32 @@ Congratulations! You can use the PearDownloader now!
 + [UCloud](https://www.ucloud.cn)
 + [Tencent Cloud](https://qcloud.com)
 + [Tencent X5/TBS](https://x5.tencent.com/tbs/)
++ [Tencent APD](http://www.chinaz.com/news/2016/0707/548873.shtml)
 
-### Pear Downloader document
+### PearDownloader Documents
 - **[get-started](docs/get-started.md)**
 - **[API](docs/api.md)**
 
-### Thanks
-
+### Acknowledgement
+Special thanks goes to the following projects that provide some inspirations and API design references:
 
 - [WebTorrent](https://github.com/webtorrent/webtorrent)
 - [Peer5](https://www.peer5.com/#)
 
 ###  Talks
 
-- 2018.02.07 （36Kr） - [「Pear梨享」让雾计算落地，百万边缘节点的背后是提高效率和成本控制](http://36kr.com/p/5118296.html) 
-- 2017.08.18 (IT Talks) - [WebRTC会成主流吗？众包CDN时代到了！](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
-- 2017.07.11 (OSChina) - [PearPlayer.js —— 混合P2P-CDN的流媒体播放器](https://www.oschina.net/p/PearPlayerjs)
-- 2017.06.24 (Tencent Frontend Conference] - [基于WebRTC的P2P-CDN流媒体加速](http://www.itdks.com/dakalive/detail/2577)
-- 2017.05.17 (SUSTech) - Edge Computing and Shared Fog Streaming
-- 2017.05.08 (FCU) - A Cooler Fruit Venture: Scaling up a Network from Cloud to Fog with Crowdsourcing
-- 2016.08.17 (HKUST) - From Cloud to Fog: Scaling up a Network with Crowdsourcing
+- Feb 2018 (36Kr) - [「Pear Share」practises fog computing, behind millions of fringe nodes are efficiency promotion and cost control](http://36kr.com/p/5118296.html) 
+- Nov 2017 (CoinTime) - [DITING Technologies Inc. officially enters the blockchain domain and invests Pear Limited](http://www.jinse.com/blockchain/99767.html)
+- Aug 2017 (IT Biggie Talks) - [Will WebRTC be the mainstream? Here comes the era of CDN crowdsourcing!](http://mp.weixin.qq.com/s/cx_ljl2sexE0XkgliZfnmQ)
+- Jul 2017 (OSChina) - [PearPlayer.js - A streaming media player supports Mixed P2P-CDN](https://www.oschina.net/p/PearPlayerjs)
+- Jun 2017 (Tencent Frontend Conference) - [P2P-CDN streaming media acceleration based on WebRTC](http://www.itdks.com/dakalive/detail/2577)
+- May 2017 (Southern University of Science and Technology) - Edge Computing and Shared Fog Streaming
+- May 2017 (Feng Chia University) - A Cooler Fruit Venture: Scaling up a Network from Cloud to Fog with Crowdsourcing
+- Aug 2016 (Hong Kong University of Science and Technology) - From Cloud to Fog: Scaling up a Network with Crowdsourcing
 
 ### License
 
 MIT. Copyright (c) [Pear Limited](https://pear.hk) and [snowinszu](https://github.com/snowinszu).
 
-### Service
-E-mail: <service@pear.hk>; QQ group：`373594967`; [Business](https://github.com/PearInc/FogVDN)
+### Help and Support
+E-mail: <service@pear.hk>; QQ Group: `373594967`; [CP/CDN, OEM and other business cooperations](https://github.com/PearInc/FogVDN)
