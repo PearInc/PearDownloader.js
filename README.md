@@ -1,13 +1,13 @@
 
 <h1 align="center">
-  <img src="fig/pear.png" height="110"></img>
+  <img src="fig/pear.png" height="110"></img>
   <br>
   <a href="http://demo.webrtc.win/downloader">PearDownloader.js</a>
   <br>
   <br>
 </h1>
 
-<h4 align="center">一个支持多协议、多源、混合P2P-CDN的下载器</h4>
+<h4 align="center">一个支持多协议、多源和混合P2P-CDN的下载器</h4>
 <p align="center">
   <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/npm/v/peardownloader.svg?style=flat" alt="npm"></a>
    <a href="https://www.jsdelivr.com/package/npm/peardownloader"><img src="https://data.jsdelivr.com/v1/package/npm/peardownloader/badge" alt="jsdelivr"></a>
@@ -17,25 +17,25 @@
 
 [English](./README_EN.md)
 
-[PearPlayer.js](https://github.com/PearInc/PearPlayer.js)发布后，吸引了业界持续的关注，同时我们也收集到了许多宝贵建议。
+[PearPlayer.js](https://github.com/PearInc/PearPlayer.js)的发布吸引了业界的持续关注，同时，我们也收集到许多宝贵建议。
 一方面我们将持续维护更新PearPlayer，使其支持更多的拓展功能；
-另一方面我们将更底层、更基础，且适用范围更广的相关组件重新整理，专注于节点的选择及数据的调度，将多源传输部分剥离出来，形成PearDownloader.js。
-PearDownloader的发布，旨在降低已有成熟播放器的内容提供商(CP)的迁移成本：CP厂商可以按需将其集成到自有产品中，实现Web P2P能力；或者调度[Pear Fog](https://github.com/PearInc)的海量节点资源，享受低成本、高质量的共享雾CDN服务。
-PearDownloader支持更多样化的文件类型，更灵活的调度算法、调度策略的选择，满足更广阔、灵活、多变的业务场景与业务需求。
+另一方面我们将更底层、更基础且适用范围更广的相关组件重新整理，专注于节点的选择及数据的调度，将多源传输部分剥离出来，形成PearDownloader.js。
 
 PearDownloader（梨享下载器）**[[Demo](http://demo.webrtc.win/)]** 是[PearPlayer](https://github.com/PearInc/PearPlayer.js)的底层下载模块，
-实现了融合HTTP（包含HTTPS、HTTP2）、WebRTC的多协议、多源、低延迟、高带宽利用率的无插件Web端下载加速能力。
-基于高效的调度算法将来自多个节点的数据进行拼接形成完整的文件或将有序的数据/媒体流喂给上层的应用，例如音视频播放器，
-PearDownloader能在保证下载速度前提下最大化P2P率。
+实现了融合HTTP（包含HTTPS、HTTP2）、WebRTC的多协议、多源、低延迟和高带宽利用率的无插件Web端下载加速能力。
+基于高效的调度算法将来自多个节点的数据拼接形成完整的文件或将有序的数据/媒体流喂给上层应用，例如音视频播放器，
+PearDownloader由此能在保证下载速度的前提下最大化P2P率。
+
+PearDownloader的发布，旨在降低已有成熟播放器的内容提供商(CP)的迁移成本：CP厂商可以按需将其集成到自有产品中，实现Web P2P能力；或者调度[Pear Fog](https://github.com/PearInc)的海量节点资源，享受低成本、高质量的共享雾CDN服务。
+PearDownloader支持更多样化的文件类型，以及更灵活的调度算法、调度策略的选择，满足更广阔、灵活、多变的业务场景与业务需求。
 
 <p align="center">
 <a href="https://www.npmjs.com/package/peardownloader"><img src="./fig/player-arch.png" alt="arch"></a>
 </p>
 
-只需将`pear-downloader.min.js`通过`<script>`标签导入到HTML就可以使用。
-参考以下[代码示例](#使用方法)，也可以查看[`/examples/downloader-test.html`](/examples/downloader-test.html)来了解使用方法。
-
-参考[get-started](docs/get-started.md)来了解基本使用方法。<br/>
+通过`<script>`标签将`pear-downloader.min.js`导入到HTML即可使用。
+参考以下[代码示例](#使用方法)，或查看[`/examples/downloader-test.html`](/examples/downloader-test.html)
+和[get-started](docs/get-started.md)了解使用方法。<br/>
 
 ### 特性
 
@@ -55,7 +55,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 ```html
 <script src="./dist/pear-downloader.min.js"></script>
 ```
-或者使用CDN：
+或使用CDN：
 ```html
 <script src="https://cdn.jsdelivr.net/npm/peardownloader@latest"></script>
 ```
@@ -71,7 +71,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 即可利用Pear的海量节点为您的文件下载加速！具体教程请点击[这里](https://manual.webrtc.win/oss/)（文件的名字需要加上`Pear-Demo-`前缀，
 如`Pear-Demo-file.zip`）
 
-### 谁在用我们的产品？
+### 谁在使用我们的产品？
 
 + [Pear Limited](https://pear.hk)
 + [Lenovo China](https://www.lenovo.com.cn/)
@@ -86,7 +86,7 @@ PearDownloader能在保证下载速度前提下最大化P2P率。
 - **[阅读API文档](docs/api.md)**
 
 ### 致谢
-特别感谢以下项目，为本项目提供了部分灵感来源以及API设计参考：
+特别感谢以下项目，为本项目提供了部分灵感以及API设计参考：
 
 - [WebTorrent](https://github.com/webtorrent/webtorrent)
 - [Peer5](https://www.peer5.com/#)
