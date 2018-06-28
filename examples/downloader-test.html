@@ -23,6 +23,7 @@
         alert("登录超时！");
     }
     var loginData = {
+        // 使用时替换为正式的账号密码
         'userName': 'test',
         'password': '123456'
     }
@@ -30,6 +31,7 @@
     loginXhr.send(JSON.stringify(loginData));
     loginXhr.onreadystatechange = function () {
         if (loginXhr.readyState == 4 && loginXhr.status == 200) {
+            // 调用接口获取到的token
             token = JSON.parse(loginXhr.responseText).token
             console.log(loginXhr.responseText)
             if (PearDownloader.isWebRTCSupported()) {
