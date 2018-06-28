@@ -76,14 +76,14 @@
     }
 
     function onDone() {
-        //如果需要文件保存到本地，将下面代码解除注释
+        //如果不需要文件保存到本地，将下面代码注释
 
-//        downloader.file.getBlobURL(function(error, url) {
-//            var aTag = document.createElement('a');
-//            aTag.download = downloader.fileName;
-//            aTag.href = url;
-//            aTag.click();
-//        });
+       downloader.file.getBlobURL(function(error, url) {
+           var aTag = document.createElement('a');
+           aTag.download = downloader.fileName;
+           aTag.href = url;
+           aTag.click();
+       });
         console.log('finished downloading buffer by first aid');
 
     }
