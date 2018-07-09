@@ -478,7 +478,6 @@ Dispatcher.prototype._setupHttp = function (hd) {
 
 
 
-            self._checkDone();
             if (self.useMonitor) {
                 self.downloaded += size;
                 self.emit('downloaded', self.downloaded/self.fileSize);
@@ -502,6 +501,7 @@ Dispatcher.prototype._setupHttp = function (hd) {
                 self.emit('buffersources', self.bufferSources);
                 self.emit('sourcemap', hd.type === 1 ? 'n' : 's', index);
             }
+            self._checkDone();
             // debug('bufferSources:'+self.bufferSources);
         } else {
             debug('重复下载');
