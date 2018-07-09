@@ -529,7 +529,6 @@ Dispatcher.prototype._setupDC = function (jd) {
 
             self.store.put(index, buffer);
 
-            self._checkDone();
             if (self.useMonitor) {
                 self.downloaded += size;
                 self.fogDownloaded += size;
@@ -546,6 +545,7 @@ Dispatcher.prototype._setupDC = function (jd) {
                 // jd.downloaded += size;
                 self.emit('traffic', jd.mac, size, 'WebRTC_Node', jd.meanSpeed);
             }
+            self._checkDone();
         } else {
             debug('重复下载');
             for (var k=0;k<self.downloaders.length;++k) {
