@@ -27312,6 +27312,12 @@ Worker.prototype._fallBack = function () {
 
     debug('PearDownloader _fallBack');
 
+    // 回源下载  添加者：gooni@pear.hk
+    var aTag = document.createElement('a');
+    aTag.download = this.fileName;
+    aTag.href = this.src;
+    aTag.click()
+    
     this.emit('fallback');
 };
 
