@@ -10,7 +10,7 @@ PearDownloader有两种导入方式：通过script标签导入和npm安装
 ```
 或者使用CDN：
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fogdownloader@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest"></script>
 ```
 
 ### npm安装

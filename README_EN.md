@@ -17,7 +17,7 @@ PearDownloader (梨享下载器) **[[Demo](http://demo.webrtc.win/)]**, serving 
 PearDownloader aims to lower the migration cost for Content Providers (CP) of the present well-developed players: CP manufacturers can choose to integrate it into their own products and achieve Web P2P ability. They can also schedule the massive node sources of [Pear Fog](https://github.com/PearInc) to enjoy low-cost, high-quality shared fog CDN service. PearDownloader supports more kinds of file types, provides more flexible scheduling algorithm & strategies and satisfies broader and more flexible business situations and needs.
 
 <p align="center">
-<a href="https://www.npmjs.com/package/fogdownloader"><img src="./fig/player-arch.png" alt="arch"></a>
+<a href="https://www.npmjs.com/package/peardownloader"><img src="./fig/player-arch.png" alt="arch"></a>
 </p>
 
 Simply import `pear-downloader.min.js` to HTML via `<script>` tag. Refer to [code example](#usages) or consult [`/examples/downloader-test.html`](/examples/downloader-test.html) or [get-started](docs/get-started.md) for usages.<br/>
@@ -44,7 +44,7 @@ First, use script tag to import pear-downloader.min.js：
 ```
 or use CDN
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fogdownloader@latest"></script></script>
+<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest"></script></script>
 ```
 If we want to download https://example.com/file.zip
 ```html

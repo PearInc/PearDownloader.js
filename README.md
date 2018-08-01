@@ -9,9 +9,9 @@
 
 <h4 align="center">一个支持多协议、多源和混合P2P-CDN的下载器</h4>
 <p align="center">
-  <a href="https://www.npmjs.com/package/fogdownloader"><img src="https://img.shields.io/npm/v/peardownloader.svg?style=flat" alt="npm"></a>
-   <a href="https://www.jsdelivr.com/package/npm/fogdownloader"><img src="https://data.jsdelivr.com/v1/package/npm/peardownloader/badge" alt="jsdelivr"></a>
- <a href="https://www.jsdelivr.com/package/npm/fogdownloader"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+  <a href="https://www.npmjs.com/package/peardownloader"><img src="https://img.shields.io/npm/v/peardownloader.svg?style=flat" alt="npm"></a>
+   <a href="https://www.jsdelivr.com/package/npm/peardownloader"><img src="https://data.jsdelivr.com/v1/package/npm/peardownloader/badge" alt="jsdelivr"></a>
+ <a href="https://www.jsdelivr.com/package/npm/peardownloader"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
 </p>
 <br>
 
@@ -30,7 +30,7 @@ PearDownloader的发布，旨在降低已有成熟播放器的内容提供商(CP
 PearDownloader支持更多样化的文件类型，以及更灵活的调度算法、调度策略的选择，满足更广阔、灵活、多变的业务场景与业务需求。
 
 <p align="center">
-<a href="https://www.npmjs.com/package/fogdownloader"><img src="./fig/player-arch.png" alt="arch"></a>
+<a href="https://www.npmjs.com/package/peardownloader"><img src="./fig/player-arch.png" alt="arch"></a>
 </p>
 
 通过`<script>`标签将`pear-downloader.min.js`导入到HTML即可使用。
@@ -57,7 +57,7 @@ PearDownloader支持更多样化的文件类型，以及更灵活的调度算法
 ```
 或使用CDN：
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fogdownloader@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/peardownloader@latest"></script>
 ```
 假设要下载https://example.com/file.zip
 ```html
