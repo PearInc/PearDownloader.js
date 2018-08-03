@@ -75,7 +75,6 @@ PearDownloader支持更多样化的文件类型，以及更灵活的调度算法
 
 + [Pear Limited](https://pear.hk)
 + [Lenovo China](https://www.lenovo.com.cn/)
-+ [Newifi xCloud](http://www.newifi.com/)
 + [UCloud](https://www.ucloud.cn)
 + [Tencent Cloud](https://qcloud.com)
 + [Tencent X5/TBS](https://x5.tencent.com/tbs/)
