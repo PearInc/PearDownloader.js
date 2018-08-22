@@ -1,6 +1,6 @@
 {
   "name": "peardownloader",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "",
   "main": "./dist/pear-downloader.js",
   "dependencies": {
@@ -17,6 +17,7 @@
     "mp4box": "^0.3.15",
     "readable-stream": "^2.2.9",
     "render-media": "^2.10.0",
+    "rusha": "^0.8.13",
     "webtorrent": "^0.98.16"
   },
   "devDependencies": {
