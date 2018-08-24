@@ -22726,7 +22726,7 @@ module.exports = function zeroFill (width, number, pad) {
 
 },{}],161:[function(require,module,exports){
 module.exports={
-  "version": "1.2.4"
+  "version": "1.2.5"
 }
 },{}],162:[function(require,module,exports){
 (function (process){
@@ -28012,7 +28012,7 @@ var PieceValidator = require('./piece-validator');
 
 // var WEBSOCKET_ADDR = 'ws://signal.webrtc.win:9600/ws';             //test
 var WEBSOCKET_ADDR = 'wss://signal.webrtc.win:7601/wss';
-var GETNODES_ADDR = 'https://api.webrtc.win:6601/v1/customer/nodes';
+var GETNODES_ADDR = 'https://api.webrtc.win/v1/customer/nodes';
 
 var BLOCK_LENGTH = 32 * 1024;
 

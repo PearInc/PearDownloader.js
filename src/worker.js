@@ -24,7 +24,7 @@ var PieceValidator = require('./piece-validator');
 
 // var WEBSOCKET_ADDR = 'ws://signal.webrtc.win:9600/ws';             //test
 var WEBSOCKET_ADDR = 'wss://signal.webrtc.win:7601/wss';
-var GETNODES_ADDR = 'https://api.webrtc.win:6601/v1/customer/nodes';
+var GETNODES_ADDR = 'https://api.webrtc.win/v1/customer/nodes';
 
 var BLOCK_LENGTH = 32 * 1024;
 
