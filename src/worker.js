@@ -244,7 +244,7 @@ Worker.prototype._getNodes = function (token, cb) {
     xhr.timeout = 2000;
     xhr.setRequestHeader('X-Pear-Token', self.token);
     xhr.ontimeout = function() {
-        // self._fallBack();
+        self._fallBack();
         cb(null);
     };
     xhr.onerror = function () {
@@ -360,7 +360,7 @@ Worker.prototype._getNodes = function (token, cb) {
                 cb(null);
             }
         } else {                             //返回码不正常
-            // self._fallBack();
+            self._fallBack();
             cb(null);
         }
     };
