@@ -484,6 +484,7 @@ Worker.prototype._startPlaying = function (nodes) {
     for (var i=0;i<nodes.length;++i) {
         var node = nodes[i];
         var hd = new HttpDownloader(node.uri, node.type);
+        hd.on('error', self._fallBack());
         hd.id = i;                                                 //test
         self.dispatcherConfig.initialDownloaders.push(hd);
     }

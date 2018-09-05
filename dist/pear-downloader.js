@@ -23840,7 +23840,7 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
     // debug('request range: ' + range);
     xhr.setRequestHeader("Range", range);
     xhr.onload = function (event) {
-        if (this.status >= 200 || this.status < 300) {
+        if (this.status >= 200 && this.status < 300) {
             self.downloading = false;
 
             self.endTime = (new Date()).getTime();
@@ -28472,6 +28472,7 @@ Worker.prototype._startPlaying = function (nodes) {
     for (var i=0;i<nodes.length;++i) {
         var node = nodes[i];
         var hd = new HttpDownloader(node.uri, node.type);
+        hd.on('error', self._fallBack());
         hd.id = i;                                                 //test
         self.dispatcherConfig.initialDownloaders.push(hd);
     }

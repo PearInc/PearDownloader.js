@@ -90,7 +90,7 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
     // debug('request range: ' + range);
     xhr.setRequestHeader("Range", range);
     xhr.onload = function (event) {
-        if (this.status >= 200 || this.status < 300) {
+        if (this.status >= 200 && this.status < 300) {
             self.downloading = false;
 
             self.endTime = (new Date()).getTime();
