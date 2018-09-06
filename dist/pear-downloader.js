@@ -22726,7 +22726,7 @@ module.exports = function zeroFill (width, number, pad) {
 
 },{}],161:[function(require,module,exports){
 module.exports={
-  "version": "1.2.5"
+  "version": "1.2.8"
 }
 },{}],162:[function(require,module,exports){
 (function (process){
@@ -23862,17 +23862,17 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
             // self.emit('done');
             self._handleChunk(range,this.response);
         } else {
+            
             self.emit('error');
         }
     };
-    xhr.onerror = function(_) {
-
-        self.emit('error');
-    };
-    xhr.ontimeout = function (_) {
-        debug('HttpDownloader ' + self.uri + ' timeout');
-        self.emit('error');
-    };
+    // xhr.onerror = function(_) {
+    //     self.emit('error');
+    // };
+    // xhr.ontimeout = function (_) {
+    //     debug('HttpDownloader ' + self.uri + ' timeout');
+    //     self.emit('error');
+    // };
     xhr.send();
 };
 
@@ -28194,7 +28194,7 @@ Worker.prototype._fallBackToWRTC = function () {
         nodeFilter([{uri: self.src, type: 'server'}], function (nodes, fileLength) {            //筛选出可用的节点,以及回调文件大小
 
             var length = nodes.length;
-            if (length) {
+            if (length > 1) {
                 // self.fileLength = fileLength;
                 debug('nodeFilter fileLength:'+fileLength);
                 self.fileLength = fileLength;
@@ -28472,7 +28472,9 @@ Worker.prototype._startPlaying = function (nodes) {
     for (var i=0;i<nodes.length;++i) {
         var node = nodes[i];
         var hd = new HttpDownloader(node.uri, node.type);
-        hd.on('error', self._fallBack());
+        hd.on('error', function() {
+            self._fallBack();
+        });
         hd.id = i;                                                 //test
         self.dispatcherConfig.initialDownloaders.push(hd);
     }

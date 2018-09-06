@@ -112,17 +112,17 @@ HttpDownloader.prototype._getChunk = function (begin,end) {
             // self.emit('done');
             self._handleChunk(range,this.response);
         } else {
+            
             self.emit('error');
         }
     };
-    xhr.onerror = function(_) {
-
-        self.emit('error');
-    };
-    xhr.ontimeout = function (_) {
-        debug('HttpDownloader ' + self.uri + ' timeout');
-        self.emit('error');
-    };
+    // xhr.onerror = function(_) {
+    //     self.emit('error');
+    // };
+    // xhr.ontimeout = function (_) {
+    //     debug('HttpDownloader ' + self.uri + ' timeout');
+    //     self.emit('error');
+    // };
     xhr.send();
 };
 
