@@ -470,6 +470,13 @@ Dispatcher.prototype._setupHttp = function (hd) {
 
         var index = self._calIndex(start);
         debug('httpDownloader' + hd.uri +' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+hd.meanSpeed);
+
+        //校验哈希值
+        if (self.validator && !self.validator.validate(buffer, index)) {
+            hd.emit('error');
+            return;
+        }
+        
         var size = end - start + 1;
         if (!self.bitfield.get(index)){
             self.bitfield.set(index,true);

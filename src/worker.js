@@ -190,7 +190,6 @@ Worker.prototype._fallBack = function () {
 
     debug('PearDownloader _fallBack');
 
-    // 回源下载  添加者：gooni@pear.hk
     var aTag = document.createElement('a');
     aTag.download = this.fileName;
     aTag.href = this.src;
@@ -226,7 +225,7 @@ Worker.prototype._getNodes = function (token, cb) {
     var self = this;
 
     var postData = {
-        client_ip:'116.77.208.118',
+        client_ip: '116.77.208.118',
         host: self.urlObj.host,
         uri: self.urlObj.path
     };

@@ -22726,7 +22726,7 @@ module.exports = function zeroFill (width, number, pad) {
 
 },{}],161:[function(require,module,exports){
 module.exports={
-  "version": "1.2.8"
+  "version": "1.2.9"
 }
 },{}],162:[function(require,module,exports){
 (function (process){
@@ -23202,6 +23202,13 @@ Dispatcher.prototype._setupHttp = function (hd) {
 
         var index = self._calIndex(start);
         debug('httpDownloader' + hd.uri +' ondata range:'+start+'-'+end+' at index:'+index+' speed:'+hd.meanSpeed);
+
+        //校验哈希值
+        if (self.validator && !self.validator.validate(buffer, index)) {
+            hd.emit('error');
+            return;
+        }
+        
         var size = end - start + 1;
         if (!self.bitfield.get(index)){
             self.bitfield.set(index,true);
@@ -28178,7 +28185,6 @@ Worker.prototype._fallBack = function () {
 
     debug('PearDownloader _fallBack');
 
-    // 回源下载  添加者：gooni@pear.hk
     var aTag = document.createElement('a');
     aTag.download = this.fileName;
     aTag.href = this.src;
@@ -28214,7 +28220,7 @@ Worker.prototype._getNodes = function (token, cb) {
     var self = this;
 
     var postData = {
-        client_ip:'116.77.208.118',
+        client_ip: '116.77.208.118',
         host: self.urlObj.host,
         uri: self.urlObj.path
     };
