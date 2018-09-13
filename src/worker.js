@@ -500,7 +500,8 @@ Worker.prototype._startPlaying = function (nodes) {
 
     var d = new Dispatcher(self.dispatcherConfig);
     self.dispatcher = d;
-
+    d.validator = self.validator;
+    
     while (self.tempDCQueue.length) {
         var jd = self.tempDCQueue.shift();
         self.dispatcher.addDataChannel(jd);

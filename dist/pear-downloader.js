@@ -22726,7 +22726,7 @@ module.exports = function zeroFill (width, number, pad) {
 
 },{}],161:[function(require,module,exports){
 module.exports={
-  "version": "1.2.9"
+  "version": "1.2.10"
 }
 },{}],162:[function(require,module,exports){
 (function (process){
@@ -23205,7 +23205,7 @@ Dispatcher.prototype._setupHttp = function (hd) {
 
         //校验哈希值
         if (self.validator && !self.validator.validate(buffer, index)) {
-            hd.emit('error');
+            // hd.emit('error');
             return;
         }
         
@@ -25139,7 +25139,7 @@ Torrent.prototype._verifyPieces = function () {
         if (self.destroyed) return cb(new Error('torrent is destroyed'))
 
         if (err) return process.nextTick(cb, null) // ignore error
-
+        
         var hexHash = Rusha.createHash().update(buf).digest('hex')
         if (self.destroyed) return cb(new Error('torrent is destroyed'))
 
@@ -26078,7 +26078,7 @@ Torrent.prototype._request = function (wire, index, hotswap) {
 
     var buf = piece.flush()
 
-    var hexHash = Rusha.createHash().update(buf).digest('hex'); 
+    var hexHash = Rusha.createHash().update(buf).digest('hex');
     if (self.destroyed) return
 
     if (hexHash === self._hashes[index]) {
@@ -28495,7 +28495,8 @@ Worker.prototype._startPlaying = function (nodes) {
 
     var d = new Dispatcher(self.dispatcherConfig);
     self.dispatcher = d;
-
+    d.validator = self.validator;
+    
     while (self.tempDCQueue.length) {
         var jd = self.tempDCQueue.shift();
         self.dispatcher.addDataChannel(jd);

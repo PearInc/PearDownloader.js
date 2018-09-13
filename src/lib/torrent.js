@@ -593,7 +593,7 @@ Torrent.prototype._verifyPieces = function () {
         if (self.destroyed) return cb(new Error('torrent is destroyed'))
 
         if (err) return process.nextTick(cb, null) // ignore error
-
+        
         var hexHash = Rusha.createHash().update(buf).digest('hex')
         if (self.destroyed) return cb(new Error('torrent is destroyed'))
 
@@ -1532,7 +1532,7 @@ Torrent.prototype._request = function (wire, index, hotswap) {
 
     var buf = piece.flush()
 
-    var hexHash = Rusha.createHash().update(buf).digest('hex'); 
+    var hexHash = Rusha.createHash().update(buf).digest('hex');
     if (self.destroyed) return
 
     if (hexHash === self._hashes[index]) {

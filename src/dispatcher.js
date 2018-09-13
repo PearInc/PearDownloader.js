@@ -473,7 +473,7 @@ Dispatcher.prototype._setupHttp = function (hd) {
 
         //校验哈希值
         if (self.validator && !self.validator.validate(buffer, index)) {
-            hd.emit('error');
+            // hd.emit('error');
             return;
         }
         
